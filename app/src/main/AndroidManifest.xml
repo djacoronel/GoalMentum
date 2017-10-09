@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.djacoronel.goalmentum">
+
+    <application
+        android:name=".AndroidApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".presentation.ui.activities.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.ui.activities.AddGoalActivity"
+            android:label="@string/title_activity_edit_goal" />
+        <activity
+            android:name=".presentation.ui.activities.ViewGoalActivity"
+            android:label="@string/title_activity_view_goal"/>
+    </application>
+
+</manifest>
