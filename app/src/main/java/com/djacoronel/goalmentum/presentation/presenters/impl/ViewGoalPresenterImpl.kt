@@ -24,10 +24,8 @@ class ViewGoalPresenterImpl(
         executor: Executor,
         mainThread: MainThread,
         private val mView: ViewGoalPresenter.View,
-        private val mGoalRepository: GoalRepository,
         private val mMilestoneRepository: MilestoneRepository
         ) : AbstractPresenter(executor, mainThread), ViewGoalPresenter,
-        GetGoalByIdInteractor.Callback,
         AddMilestoneInteractor.Callback,
         GetAllMilestonesByAssignedGoalInteractor.Callback,
         DeleteMilestoneInteractor.Callback {
@@ -49,25 +47,6 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onError(message: String) {
-
-    }
-
-    override fun getGoalById(goalId: Long) {
-        val getGoalByIdInteractor = GetGoalByIdInteractorImpl(
-                mExecutor,
-                mMainThread,
-                goalId,
-                mGoalRepository,
-                this
-        )
-        getGoalByIdInteractor.execute()
-    }
-
-    override fun onGoalRetrieved(goal: Goal) {
-        mView.setGoalDescription(goal.description!!)
-    }
-
-    override fun noGoalFound() {
 
     }
 

@@ -10,7 +10,6 @@ import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.ViewGoalPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.adapters.MilestoneItemAdapter
-import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.activity_view_goal.*
@@ -32,18 +31,15 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     private fun init() {
-        // instantiate the presenter
+        goalId = intent.getLongExtra("extra_goal_id_key", -1)
+        title =  intent.getStringExtra("extra_goal_desc_key")
+
         mViewGoalPresenter = ViewGoalPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
-                GoalRepositoryImpl(),
                 MilestoneRepositoryImpl()
         )
-
-        // get milestones
-        goalId = intent.getLongExtra("extra_goal_id_key", -1)
-        mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
 
         // setup recycler view adapter
         mAdapter = MilestoneItemAdapter(this)
@@ -53,13 +49,8 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         milestone_recycler.layoutManager.isAutoMeasureEnabled = false
         milestone_recycler.adapter = mAdapter
 
-        // set goal description
-        mViewGoalPresenter.getGoalById(goalId)
-    }
-
-    override fun setGoalDescription(goalDesc: String) {
-        Log.i("TAGGERS:",goalDesc)
-        title = goalDesc
+        // get milestones
+        mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 
     override fun showMilestones(milestones: List<Milestone>) {

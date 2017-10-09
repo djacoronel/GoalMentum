@@ -77,7 +77,7 @@ class GoalItemAdapter(
 
     override fun onClickViewGoal(position: Int) {
         val goal = mGoals[position]
-        mView.onClickViewGoal(goal.id)
+        mView.onClickViewGoal(goal)
     }
 
     override fun onClickAddGoal(position: Int) {

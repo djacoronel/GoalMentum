@@ -60,9 +60,10 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
 
     }
 
-    override fun onClickViewGoal(goalId: Long) {
+    override fun onClickViewGoal(goal: Goal) {
         val intent = Intent(context, ViewGoalActivity::class.java)
-        intent.putExtra(EXTRA_GOAL_ID, goalId)
+        intent.putExtra(EXTRA_GOAL_ID, goal.id)
+        intent.putExtra(EXTRA_GOAL_DESC, goal.description)
         startActivity(intent)
     }
 
@@ -92,6 +93,7 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
 
     companion object {
         const val EXTRA_GOAL_ID = "extra_goal_id_key"
+        const val EXTRA_GOAL_DESC = "extra_goal_desc_key"
         const val EDIT_GOAL_REQUEST = 0
     }
 

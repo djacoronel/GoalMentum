@@ -10,8 +10,6 @@ interface ViewGoalPresenter : BasePresenter {
 
     interface View : BaseView {
 
-        fun setGoalDescription(goalDesc: String)
-
         fun onMilestoneAdded()
 
         fun showMilestones(milestones: List<Milestone>)
@@ -24,8 +22,6 @@ interface ViewGoalPresenter : BasePresenter {
 
         fun onMilestoneDeleted(milestone: Milestone)
     }
-
-    fun getGoalById(goalId: Long)
 
     fun addNewMilestone(goalId: Long, description: String)
 

@@ -12,7 +12,7 @@ interface GoalPresenter : BasePresenter {
 
         fun showGoals(goals: List<Goal>)
 
-        fun onClickViewGoal(goalId: Long)
+        fun onClickViewGoal(goal: Goal)
 
         fun onClickAddGoal(goalId: Long)
 
