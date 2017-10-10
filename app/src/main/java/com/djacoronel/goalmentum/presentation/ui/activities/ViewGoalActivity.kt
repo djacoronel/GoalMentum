@@ -3,7 +3,6 @@ package com.djacoronel.goalmentum.presentation.ui.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
 import android.view.View
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
@@ -31,7 +30,19 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         setContentView(R.layout.activity_view_goal)
         setSupportActionBar(toolbar)
 
+        setupFab()
         init()
+    }
+
+    fun setupFab(){
+        fab.setOnClickListener {
+            val view = View.inflate(this, R.layout.input_work_item, null)
+            alert {
+                customView = view
+                positiveButton("Add Work"){}
+                negativeButton("Add Milestone"){}
+            }.show()
+        }
     }
 
     private fun init() {

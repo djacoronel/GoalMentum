@@ -24,7 +24,11 @@
             android:label="@string/title_activity_edit_goal" />
         <activity
             android:name=".presentation.ui.activities.ViewGoalActivity"
-            android:label="@string/title_activity_view_goal"/>
+            android:label="@string/title_activity_view_goal" />
+        <activity
+            android:name=".presentation.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

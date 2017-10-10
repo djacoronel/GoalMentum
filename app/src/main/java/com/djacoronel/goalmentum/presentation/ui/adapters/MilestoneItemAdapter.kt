@@ -70,7 +70,7 @@ class MilestoneItemAdapter(
         fun bind(milestone: Milestone) = with(itemView) {
             collapsed_milestone_card_text.text = milestone.description
 
-            itemView.expand_button.setOnClickListener {
+            itemView.setOnClickListener {
                 mListener.onClickExpandMilestone(adapterPosition)
             }
             itemView.setOnLongClickListener {
@@ -84,7 +84,7 @@ class MilestoneItemAdapter(
         fun bind(milestone: Milestone, mAdapter: WorkItemAdapter) = with(itemView) {
             expanded_milestone_card_text.text = milestone.description
 
-            itemView.collapse_button.setOnClickListener {
+            itemView.setOnClickListener {
                 mListener.onClickCollapseMilestone(adapterPosition)
             }
             itemView.setOnLongClickListener {
