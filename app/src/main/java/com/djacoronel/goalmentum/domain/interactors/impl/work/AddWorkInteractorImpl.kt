@@ -18,12 +18,11 @@ class AddWorkInteractorImpl(
         private val mCallback: AddWorkInteractor.Callback,
         private val mWorkRepository: WorkRepository,
         private val mAssignedWork: Long,
-        private val mDescription: String,
-        private val mDate: Date
+        private val mDescription: String
 ) : AbstractInteractor(threadExecutor, mainThread), AddWorkInteractor {
 
     override fun run() {
-        val work = Work(mAssignedWork, mDescription, mDate)
+        val work = Work(mAssignedWork, mDescription)
         mWorkRepository.insert(work)
 
         mMainThread.post(Runnable { mCallback.onWorkAdded() })

@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.domain.model
 
+import com.djacoronel.goalmentum.util.DateUtils
 import java.util.*
 
 /**
@@ -13,12 +14,12 @@ class Work {
     var date: Date? = null
     var achieved: Boolean = false
 
-    constructor(assignedMilestone: Long, description: String, date: Date) {
+    constructor(assignedMilestone: Long, description: String) {
         id = Date().time
 
         this.assignedMilestone = assignedMilestone
         this.description = description
-        this.date = date
+        this.date = DateUtils.today
         this.achieved = false
     }
 

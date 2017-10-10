@@ -28,7 +28,7 @@ class EditWorkInteractorImpl(
         var workToEdit = mWorkRepository.getWorkById(workId)
 
         if (workToEdit == null) {
-            workToEdit = Work(mAssignedMilestone, mDescription, mDate)
+            workToEdit = Work(mAssignedMilestone, mDescription)
             mWorkRepository.insert(workToEdit)
         } else {
             workToEdit.assignedMilestone = mAssignedMilestone

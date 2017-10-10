@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.ui.adapters
 
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +29,7 @@ class MilestoneItemAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ViewType.INPUT_CARD.ordinal -> InputViewHolder(parent.inflate(R.layout.input_milestone_item), this)
-            ViewType.EXPANDED_CARD.ordinal -> ExpandedViewHolder(parent.inflate(R.layout.expanded_milestone_item), this)
+            ViewType.EXPANDED_CARD.ordinal -> ExpandedViewHolder(parent.inflate(R.layout.expanded_milestone_item), mView,this)
             else -> CollapsedViewHolder(parent.inflate(R.layout.collapsed_milestone_item),this)
         }
     }
@@ -56,7 +57,6 @@ class MilestoneItemAdapter(
     override fun getItemCount() = mMilestones.size
 
     class InputViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
-
         fun bind(milestone: Milestone) = with(itemView) {
             itemView.add_milestone_button.setOnClickListener {
                 mListener.onClickAddMilestone(adapterPosition)
@@ -65,7 +65,6 @@ class MilestoneItemAdapter(
     }
 
     class CollapsedViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
-
         fun bind(milestone: Milestone) = with(itemView) {
             collapsed_milestone_card_text.text = milestone.description
 
@@ -79,8 +78,8 @@ class MilestoneItemAdapter(
         }
     }
 
-    class ExpandedViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
-
+    class ExpandedViewHolder(itemView: View, private val mView: ViewGoalPresenter.View,
+                             private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(milestone: Milestone) = with(itemView) {
             expanded_milestone_card_text.text = milestone.description
 
@@ -91,6 +90,15 @@ class MilestoneItemAdapter(
                 mListener.onLongClickMilestone(adapterPosition)
                 true
             }
+
+            // setup recycler view adapter
+            val mAdapter = WorkItemAdapter(mView)
+
+            // setup recycler view
+            itemView.work_recycler.layoutManager = LinearLayoutManager(context)
+            itemView.work_recycler.adapter = mAdapter
+            //itemView.work_recycler.setHasFixedSize(true)
+            itemView.work_recycler.isNestedScrollingEnabled = false
         }
     }
 
