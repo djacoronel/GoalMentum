@@ -107,11 +107,13 @@ class MilestoneItemAdapter(
     }
 
     override fun onClickExpandMilestone(position: Int) {
-
+        mExpandedMilestones.add(mMilestones[position])
+        notifyItemChanged(position)
     }
 
     override fun onClickCollapseMilestone(position: Int) {
-
+        mExpandedMilestones.remove(mMilestones[position])
+        notifyItemChanged(position)
     }
 
     override fun onLongClickMilestone(position: Int) {
