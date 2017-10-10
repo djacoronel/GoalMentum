@@ -3,17 +3,21 @@ package com.djacoronel.goalmentum.presentation.ui.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.support.v7.widget.PopupMenu
+import android.view.View
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Milestone
+import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.ViewGoalPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.adapters.MilestoneItemAdapter
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
+import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.activity_view_goal.*
 import kotlinx.android.synthetic.main.input_milestone_item.*
+import kotlinx.android.synthetic.main.input_work_item.*
 import org.jetbrains.anko.alert
 
 class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
@@ -38,7 +42,8 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
-                MilestoneRepositoryImpl()
+                MilestoneRepositoryImpl(),
+                WorkRepositoryImpl()
         )
 
         // setup recycler view adapter
@@ -53,12 +58,15 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 
-    override fun showMilestones(milestones: List<Milestone>) {
-        mAdapter.addNewMilestones(milestones)
-    }
-
     override fun showProgress() {
     }
+
+    override fun hideProgress() {
+    }
+
+    override fun showError(message: String) {
+    }
+
 
     override fun onClickMilestone(milestoneId: Long) {
     }
@@ -75,11 +83,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         }.show()
     }
 
-    override fun hideProgress() {
-    }
-
     override fun onMilestoneAdded() {
-        val goalId = intent.getLongExtra("extra_goal_id_key", -1)
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 
@@ -87,7 +91,31 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 
-    override fun showError(message: String) {
+    override fun showMilestones(milestones: List<Milestone>) {
+        mAdapter.addNewMilestones(milestones)
     }
 
+    override fun onExpandMilestone(milestoneId: Long) {
+        mViewGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
+    }
+
+    override fun onClickAddWork(milestoneId: Long) {
+        mViewGoalPresenter.addNewWork(milestoneId, input_work_card_text.text.toString())
+    }
+
+    override fun onWorkAdded(milestoneId: Long) {
+        mViewGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
+    }
+
+    override fun showWork(milestoneId: Long, works: List<Work>) {
+        mAdapter.showWorks(milestoneId, works)
+    }
+
+    override fun onClickDeleteWork(workId: Long) {
+        mViewGoalPresenter.deleteWork(workId)
+    }
+
+    override fun onWorkDeleted(work: Work) {
+        mViewGoalPresenter.getAllWorkByAssignedMilestone(work.assignedMilestone)
+    }
 }

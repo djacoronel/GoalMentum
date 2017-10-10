@@ -4,13 +4,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/input_work_card"
     android:layout_width="match_parent"
-    android:layout_marginTop="3dp"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginBottom="3dp"
     android:layout_height="60dp"
-    android:layout_gravity="center"
-    card_view:cardCornerRadius="4dp">
+    android:layout_gravity="center">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

@@ -1,20 +1,24 @@
 package com.djacoronel.goalmentum.presentation.ui.adapters
 
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.WorkRecyclerClickListener
 import kotlinx.android.synthetic.main.input_work_item.view.*
 import kotlinx.android.synthetic.main.work_item.view.*
+import android.widget.Toast
+import android.view.*
+
+
+
 
 /**
  * Created by djacoronel on 10/10/17.
  */
-class WorkItemAdapter(val mView: ViewGoalPresenter.View) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), WorkRecyclerClickListener {
+class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+        WorkRecyclerClickListener {
     val mWorks = mutableListOf(Work(0, "Input Work"))
 
     private enum class ViewType {
@@ -27,7 +31,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View) : RecyclerView.Adapter<
         return if (viewType == ViewType.INPUT_CARD.ordinal)
             InputViewHolder(parent.inflate(R.layout.input_work_item), this)
         else
-            NormalViewHolder(parent.inflate(R.layout.input_work_item), this)
+            NormalViewHolder(parent.inflate(R.layout.work_item), this)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
@@ -48,6 +52,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View) : RecyclerView.Adapter<
             ViewType.NORMAL_CARD.ordinal
     }
 
+
     class InputViewHolder(itemView: View, private val mListener: WorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind() = with(itemView) {
             itemView.add_work_button.setOnClickListener {
@@ -57,20 +62,41 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View) : RecyclerView.Adapter<
     }
 
     class NormalViewHolder(itemView: View, private val mListener: WorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
-        fun bind(work:Work) = with (itemView){
+        fun bind(work: Work) = with(itemView) {
             itemView.work_card_text.text = work.description
+            itemView.setOnLongClickListener {
+                val popup = PopupMenu(context, this,Gravity.RIGHT)
+                popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
+                popup.setOnMenuItemClickListener { item ->
+                    when(item.title){
+                        "Edit" -> mListener.onClickEditWork(adapterPosition)
+                        "Delete" -> mListener.onClickDeleteWork(adapterPosition)
+                    }
+                    true
+                }
+                popup.show()
+                true
+            }
         }
     }
 
+    fun showWorks(works: List<Work>) {
+        mWorks.clear()
+        mWorks.addAll(works)
+        val inputWorkEntry = Work(0, "Input Work")
+        mWorks.add(inputWorkEntry)
+        notifyDataSetChanged()
+    }
+
     override fun onClickAddWork(position: Int) {
+        mView.onClickAddWork(milestoneId)
+    }
+
+    override fun onClickEditWork(position: Int) {
 
     }
 
-    override fun onLongClickWork(position: Int) {
-
-    }
-
-    override fun onClickFinishWork(position: Int) {
-
+    override fun onClickDeleteWork(position: Int) {
+        mView.onClickDeleteWork(mWorks[position].id)
     }
 }

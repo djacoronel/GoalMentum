@@ -1,6 +1,7 @@
 package com.djacoronel.goalmentum.presentation.presenters
 
 import com.djacoronel.goalmentum.domain.model.Milestone
+import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.ui.BaseView
 
 /**
@@ -21,6 +22,19 @@ interface ViewGoalPresenter : BasePresenter {
         fun onLongClickMilestone(milestoneId: Long)
 
         fun onMilestoneDeleted(milestone: Milestone)
+
+        fun onExpandMilestone(milestoneId: Long)
+
+
+        fun onClickAddWork(milestoneId: Long)
+
+        fun onWorkAdded(milestoneId: Long)
+
+        fun showWork(milestoneId: Long, works: List<Work>)
+
+        fun onWorkDeleted(work: Work)
+
+        fun onClickDeleteWork(workId: Long)
     }
 
     fun addNewMilestone(goalId: Long, description: String)
@@ -28,4 +42,10 @@ interface ViewGoalPresenter : BasePresenter {
     fun getAllMilestonesByAssignedGoal(goalId: Long)
 
     fun deleteMilestone(milestoneId: Long)
+
+    fun addNewWork(milestoneId: Long, description: String)
+
+    fun getAllWorkByAssignedMilestone(milestoneId: Long)
+
+    fun deleteWork(workId: Long)
 }

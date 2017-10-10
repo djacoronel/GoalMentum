@@ -8,6 +8,6 @@ import com.djacoronel.goalmentum.domain.interactors.base.Interactor
 interface AddWorkInteractor : Interactor {
 
     interface Callback {
-        fun onWorkAdded()
+        fun onWorkAdded(milestoneId: Long)
     }
 }

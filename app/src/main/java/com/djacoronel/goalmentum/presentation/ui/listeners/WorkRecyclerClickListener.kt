@@ -5,6 +5,6 @@ package com.djacoronel.goalmentum.presentation.ui.listeners
  */
 interface WorkRecyclerClickListener {
     fun onClickAddWork(position: Int)
-    fun onLongClickWork(position: Int)
-    fun onClickFinishWork(position: Int)
+    fun onClickEditWork(position: Int)
+    fun onClickDeleteWork(position: Int)
 }

@@ -9,8 +9,6 @@ import com.djacoronel.goalmentum.domain.model.Work
 interface GetAllWorksByAssignedMilestoneInteractor : Interactor {
 
     interface Callback {
-        fun onWorksRetrieved(works: List<Work>)
-
-        fun noWorksFound()
+        fun onWorksRetrieved(milestoneId: Long, works: List<Work>)
     }
 }
