@@ -11,6 +11,6 @@ interface EditMilestoneInteractor : Interactor {
 
     interface Callback {
 
-        fun onMilestoneUpdated(cost: Milestone)
+        fun onMilestoneUpdated(milestone: Milestone)
     }
 }

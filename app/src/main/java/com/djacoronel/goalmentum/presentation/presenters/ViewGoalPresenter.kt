@@ -17,11 +17,9 @@ interface ViewGoalPresenter : BasePresenter {
 
         fun onClickAddMilestone()
 
-        fun onClickEditMilestone(milestoneId: Long)
+        fun onClickEditMilestone(milestone: Milestone)
 
         fun onClickDeleteMilestone(milestoneId: Long)
-
-        fun onMilestoneDeleted(milestone: Milestone)
 
         fun onExpandMilestone(milestoneId: Long)
 
@@ -32,14 +30,14 @@ interface ViewGoalPresenter : BasePresenter {
 
         fun showWork(milestoneId: Long, works: List<Work>)
 
-        fun onWorkDeleted(work: Work)
-
         fun onClickDeleteWork(workId: Long)
     }
 
     fun addNewMilestone(goalId: Long, description: String)
 
     fun getAllMilestonesByAssignedGoal(goalId: Long)
+
+    fun editMilestone(milestone: Milestone)
 
     fun deleteMilestone(milestoneId: Long)
 

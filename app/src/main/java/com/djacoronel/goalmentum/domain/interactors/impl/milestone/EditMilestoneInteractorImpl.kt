@@ -18,24 +18,17 @@ class EditMilestoneInteractorImpl(
         mainThread: MainThread,
         private val mCallback: EditMilestoneInteractor.Callback,
         private val mMilestoneRepository: MilestoneRepository,
-        private val mUpdatedMilestone: Milestone,
-        private val mAssignedGoal: Long,
-        private val mDescription: String,
-        private val mDate: Date
+        private val mUpdatedMilestone: Milestone
 ) : AbstractInteractor(threadExecutor, mainThread), EditMilestoneInteractor {
 
     override fun run() {
         val milestoneId = mUpdatedMilestone.id
-        var milestoneToEdit = mMilestoneRepository.getMilestoneById(milestoneId)
+        val milestoneToEdit = mMilestoneRepository.getMilestoneById(milestoneId)
 
         if (milestoneToEdit == null) {
-            milestoneToEdit = Milestone(mAssignedGoal, mDescription)
-            mMilestoneRepository.insert(milestoneToEdit)
+            mMilestoneRepository.insert(mUpdatedMilestone)
         } else {
-            milestoneToEdit.assignedGoal = mAssignedGoal
-            milestoneToEdit.description = mDescription
-            milestoneToEdit.date = mDate
-            mMilestoneRepository.update(milestoneToEdit)
+            mMilestoneRepository.update(mUpdatedMilestone)
         }
 
         mMainThread.post(Runnable { mCallback.onMilestoneUpdated(mUpdatedMilestone) })

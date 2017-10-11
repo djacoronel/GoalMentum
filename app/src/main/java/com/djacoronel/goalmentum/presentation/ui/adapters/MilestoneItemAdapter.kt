@@ -52,7 +52,7 @@ class MilestoneItemAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when{
+        return when {
             position == mMilestones.lastIndex -> ViewType.INPUT_CARD.ordinal
             mMilestones[position] in mExpandedMilestones -> ViewType.EXPANDED_CARD.ordinal
             else -> ViewType.COLLAPSED_CARD.ordinal
@@ -78,10 +78,10 @@ class MilestoneItemAdapter(
                 mListener.onClickExpandMilestone(adapterPosition)
             }
             itemView.setOnLongClickListener {
-                val popup = PopupMenu(context, this,Gravity.RIGHT)
+                val popup = PopupMenu(context, this, Gravity.END)
                 popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
-                    when(item.title){
+                    when (item.title) {
                         "Edit" -> mListener.onClickEditMilestone(adapterPosition)
                         "Delete" -> mListener.onClickDeleteMilestone(adapterPosition)
                     }
@@ -101,10 +101,10 @@ class MilestoneItemAdapter(
                 mListener.onClickCollapseMilestone(adapterPosition)
             }
             itemView.setOnLongClickListener {
-                val popup = PopupMenu(context, this,Gravity.RIGHT)
+                val popup = PopupMenu(context, this, Gravity.END)
                 popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
-                    when(item.title){
+                    when (item.title) {
                         "Edit" -> mListener.onClickEditMilestone(adapterPosition)
                         "Delete" -> mListener.onClickDeleteMilestone(adapterPosition)
                     }
@@ -121,10 +121,10 @@ class MilestoneItemAdapter(
     }
 
 
-    fun addNewMilestones(milestones: List<Milestone>) {
+    fun showNewMilestones(milestones: List<Milestone>) {
         mMilestones.clear()
         mMilestones.addAll(milestones)
-        mMilestones.add(Milestone(0,"Input Milestone"))
+        mMilestones.add(Milestone(0, "Input Milestone"))
 
         onClickExpandMilestone(0)
         notifyDataSetChanged()
@@ -153,12 +153,13 @@ class MilestoneItemAdapter(
         notifyItemChanged(position)
     }
 
-
     override fun onClickEditMilestone(position: Int) {
-        mView.onClickDeleteMilestone(mMilestones[position].id)
+        mView.onClickEditMilestone(mMilestones[position])
     }
 
     override fun onClickDeleteMilestone(position: Int) {
         mView.onClickDeleteMilestone(mMilestones[position].id)
+        mMilestones.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

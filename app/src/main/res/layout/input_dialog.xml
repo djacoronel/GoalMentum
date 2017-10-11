@@ -16,22 +16,27 @@
         tools:layout_editor_absoluteY="0dp">
 
         <EditText
-            android:id="@+id/input_milestone_card_text"
+            android:id="@+id/input_item_text"
             android:layout_width="0dp"
             android:layout_height="43dp"
             android:layout_margin="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
             android:gravity="center_vertical"
+            android:inputType="text"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:hint="Add Target Milestone/Work"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/add_milestone_button"
+            card_view:layout_constraintEnd_toStartOf="@+id/add_item_button"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            card_view:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" />
 
         <ImageView
-            android:id="@+id/add_milestone_button"
+            android:id="@+id/add_item_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -40,8 +45,8 @@
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_add_black_30dp" />
-
+            card_view:srcCompat="@drawable/ic_add_black_30dp"
+            android:layout_marginRight="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

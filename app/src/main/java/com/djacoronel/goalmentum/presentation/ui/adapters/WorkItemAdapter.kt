@@ -63,7 +63,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
         fun bind(work: Work) = with(itemView) {
             itemView.work_card_text.text = work.description
             itemView.setOnLongClickListener {
-                val popup = PopupMenu(context, this,Gravity.RIGHT)
+                val popup = PopupMenu(context, this, Gravity.END)
                 popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
                     when(item.title){
@@ -96,5 +96,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
 
     override fun onClickDeleteWork(position: Int) {
         mView.onClickDeleteWork(mWorks[position].id)
+        mWorks.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

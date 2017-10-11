@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.ui.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -15,8 +16,11 @@ import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.activity_view_goal.*
-import kotlinx.android.synthetic.main.input_milestone_dialog.view.*
+import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
+import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.EditorInfo
+
 
 class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
@@ -34,7 +38,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     private fun init() {
         goalId = intent.getLongExtra("extra_goal_id_key", -1)
-        title =  intent.getStringExtra("extra_goal_desc_key")
+        title = intent.getStringExtra("extra_goal_desc_key")
 
         mViewGoalPresenter = ViewGoalPresenterImpl(
                 ThreadExecutor.instance,
@@ -44,15 +48,10 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
                 WorkRepositoryImpl()
         )
 
-        // setup recycler view adapter
         mAdapter = MilestoneItemAdapter(this)
-
-        // setup recycler view
         milestone_recycler.layoutManager = LinearLayoutManager(this)
-        //milestone_recycler.layoutManager.isAutoMeasureEnabled = false
         milestone_recycler.adapter = mAdapter
 
-        // get milestones
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 
@@ -65,19 +64,49 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     override fun showError(message: String) {
     }
 
+    fun createInputDialogView(): View{
+        val view = View.inflate(this, R.layout.input_dialog, null)
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        view.input_item_text.requestFocus()
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+
+        view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE)
+                view.add_item_button.performClick()
+            false
+        }
+
+        return view
+    }
 
     override fun onClickAddMilestone() {
-        val view = View.inflate(this, R.layout.input_milestone_dialog, null)
+        val view = createInputDialogView()
         val alert = alert { customView = view }.show()
 
-        view.add_milestone_button.setOnClickListener {
-            mViewGoalPresenter.addNewMilestone(goalId,view.input_milestone_card_text.text.toString())
+        view.input_item_text.hint = "Milestone Description"
+        view.add_item_button.setOnClickListener {
+            mViewGoalPresenter.addNewMilestone(goalId, view.input_item_text.text.toString())
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
             alert.dismiss()
         }
     }
 
-    override fun onClickEditMilestone(milestoneId: Long) {
+    override fun onClickEditMilestone(milestone: Milestone) {
+        val view = createInputDialogView()
+        val alert = alert { customView = view }.show()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        view.input_item_text.hint = "Milestone Description"
+        view.input_item_text.setText(milestone.description)
+        view.add_item_button.setOnClickListener {
+            milestone.description = view.input_item_text.text.toString()
+            mAdapter.notifyDataSetChanged()
+            mViewGoalPresenter.editMilestone(milestone)
+            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+            alert.dismiss()
+        }
     }
 
     override fun onClickDeleteMilestone(milestoneId: Long) {
@@ -88,12 +117,8 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 
-    override fun onMilestoneDeleted(milestone: Milestone) {
-        mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
-    }
-
     override fun showMilestones(milestones: List<Milestone>) {
-        mAdapter.addNewMilestones(milestones)
+        mAdapter.showNewMilestones(milestones)
     }
 
     override fun onExpandMilestone(milestoneId: Long) {
@@ -101,31 +126,27 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onClickAddWork(milestoneId: Long) {
-        val view = View.inflate(this, R.layout.input_milestone_dialog, null)
-        view.input_milestone_card_text.hint = "Work Description"
-
+        val view = createInputDialogView()
         val alert = alert { customView = view }.show()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        view.add_milestone_button.setOnClickListener {
-            mViewGoalPresenter.addNewWork(milestoneId, view.input_milestone_card_text.text.toString())
+        view.input_item_text.hint = "Work Description"
+        view.add_item_button.setOnClickListener {
+            mViewGoalPresenter.addNewWork(milestoneId, view.input_item_text.text.toString())
+            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
             alert.dismiss()
         }
-
     }
 
     override fun onWorkAdded(milestoneId: Long) {
         mViewGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
     }
 
-    override fun showWork(assignedId: Long, works: List<Work>) {
-        mAdapter.showWorksInMilestone(assignedId, works)
+    override fun showWork(milestoneId: Long, works: List<Work>) {
+        mAdapter.showWorksInMilestone(milestoneId, works)
     }
 
     override fun onClickDeleteWork(workId: Long) {
         mViewGoalPresenter.deleteWork(workId)
-    }
-
-    override fun onWorkDeleted(work: Work) {
-        mViewGoalPresenter.getAllWorkByAssignedMilestone(work.assignedMilestone)
     }
 }

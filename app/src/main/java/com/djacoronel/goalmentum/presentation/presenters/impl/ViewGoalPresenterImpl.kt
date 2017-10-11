@@ -2,14 +2,13 @@ package com.djacoronel.goalmentum.presentation.presenters.impl
 
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
-import com.djacoronel.goalmentum.domain.interactors.base.milestone.AddMilestoneInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.milestone.DeleteMilestoneInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.milestone.GetAllMilestonesByAssignedGoalInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.AddWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.DeleteWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.AddMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.DeleteMilestoneInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.milestone.EditMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.GetAllMilestonesByAssignedGoalInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.AddWorkInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.DeleteWorkInteractorImpl
@@ -20,6 +19,7 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
+import com.djacoronel.milestonementum.domain.interactors.impl.milestone.GetMilestoneByIdInteractorImpl
 
 /**
  * Created by djacoronel on 10/9/17.
@@ -32,6 +32,7 @@ class ViewGoalPresenterImpl(
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), ViewGoalPresenter,
         AddMilestoneInteractor.Callback,
+        EditMilestoneInteractor.Callback,
         GetAllMilestonesByAssignedGoalInteractor.Callback,
         DeleteMilestoneInteractor.Callback,
         AddWorkInteractor.Callback,
@@ -105,9 +106,22 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onMilestoneDeleted(milestone: Milestone) {
-        mView.onMilestoneDeleted(milestone)
     }
 
+    override fun editMilestone(milestone: Milestone) {
+        val editMilestoneInteractor = EditMilestoneInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mMilestoneRepository,
+                milestone
+        )
+        editMilestoneInteractor.execute()
+    }
+
+    override fun onMilestoneUpdated(milestone: Milestone) {
+
+    }
 
     override fun addNewWork(milestoneId: Long, description: String) {
         val addWorkInteractor = AddWorkInteractorImpl(
@@ -152,6 +166,5 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onWorkDeleted(work: Work) {
-        mView.onWorkDeleted(work)
     }
 }
