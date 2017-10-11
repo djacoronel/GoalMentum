@@ -11,6 +11,6 @@ interface EditWorkInteractor : Interactor {
 
     interface Callback {
 
-        fun onWorkUpdated(cost: Work)
+        fun onWorkUpdated(work: Work)
     }
 }

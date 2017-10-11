@@ -5,6 +5,7 @@ import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.AddWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.DeleteWorkInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.work.EditWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.AddMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.DeleteMilestoneInteractorImpl
@@ -12,6 +13,7 @@ import com.djacoronel.goalmentum.domain.interactors.impl.milestone.EditMilestone
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.GetAllMilestonesByAssignedGoalInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.AddWorkInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.DeleteWorkInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.work.EditWorkInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.GetWorksByAssignedMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
@@ -36,6 +38,7 @@ class ViewGoalPresenterImpl(
         GetAllMilestonesByAssignedGoalInteractor.Callback,
         DeleteMilestoneInteractor.Callback,
         AddWorkInteractor.Callback,
+        EditWorkInteractor.Callback,
         GetAllWorksByAssignedMilestoneInteractor.Callback,
         DeleteWorkInteractor.Callback{
 
@@ -166,5 +169,19 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onWorkDeleted(work: Work) {
+    }
+
+    override fun editWork(work: Work) {
+        val editWorkInteractor = EditWorkInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mWorkRepository,
+                work
+        )
+        editWorkInteractor.execute()
+    }
+
+    override fun onWorkUpdated(work: Work) {
     }
 }

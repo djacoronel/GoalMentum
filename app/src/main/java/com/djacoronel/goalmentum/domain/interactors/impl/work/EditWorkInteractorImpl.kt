@@ -17,24 +17,17 @@ class EditWorkInteractorImpl(
         mainThread: MainThread,
         private val mCallback: EditWorkInteractor.Callback,
         private val mWorkRepository: WorkRepository,
-        private val mUpdatedWork: Work,
-        private val mAssignedMilestone: Long,
-        private val mDescription: String,
-        private val mDate: Date
+        private val mUpdatedWork: Work
 ) : AbstractInteractor(threadExecutor, mainThread), EditWorkInteractor {
 
     override fun run() {
         val workId = mUpdatedWork.id
-        var workToEdit = mWorkRepository.getWorkById(workId)
+        val workToEdit = mWorkRepository.getWorkById(workId)
 
         if (workToEdit == null) {
-            workToEdit = Work(mAssignedMilestone, mDescription)
-            mWorkRepository.insert(workToEdit)
+            mWorkRepository.insert(mUpdatedWork)
         } else {
-            workToEdit.assignedMilestone = mAssignedMilestone
-            workToEdit.description = mDescription
-            workToEdit.date = mDate
-            mWorkRepository.update(workToEdit)
+            mWorkRepository.update(mUpdatedWork)
         }
 
         mMainThread.post(Runnable { mCallback.onWorkUpdated(mUpdatedWork) })

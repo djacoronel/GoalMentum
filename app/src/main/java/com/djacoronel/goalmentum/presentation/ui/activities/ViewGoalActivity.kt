@@ -149,4 +149,20 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     override fun onClickDeleteWork(workId: Long) {
         mViewGoalPresenter.deleteWork(workId)
     }
+
+    override fun onClickEditWork(work: Work) {
+        val view = createInputDialogView()
+        val alert = alert { customView = view }.show()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        view.input_item_text.hint = "Work Description"
+        view.input_item_text.setText(work.description)
+        view.add_item_button.setOnClickListener {
+            work.description = view.input_item_text.text.toString()
+            mAdapter.notifyDataSetChanged()
+            mViewGoalPresenter.editWork(work)
+            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+            alert.dismiss()
+        }
+    }
 }

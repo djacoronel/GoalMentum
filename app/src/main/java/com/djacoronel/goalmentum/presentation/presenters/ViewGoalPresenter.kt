@@ -30,6 +30,8 @@ interface ViewGoalPresenter : BasePresenter {
 
         fun showWork(milestoneId: Long, works: List<Work>)
 
+        fun onClickEditWork(work: Work)
+
         fun onClickDeleteWork(workId: Long)
     }
 
@@ -44,6 +46,8 @@ interface ViewGoalPresenter : BasePresenter {
     fun addNewWork(milestoneId: Long, description: String)
 
     fun getAllWorkByAssignedMilestone(milestoneId: Long)
+
+    fun editWork(work: Work)
 
     fun deleteWork(workId: Long)
 }

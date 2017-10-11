@@ -91,7 +91,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
     }
 
     override fun onClickEditWork(position: Int) {
-
+        mView.onClickEditWork(mWorks[position])
     }
 
     override fun onClickDeleteWork(position: Int) {
