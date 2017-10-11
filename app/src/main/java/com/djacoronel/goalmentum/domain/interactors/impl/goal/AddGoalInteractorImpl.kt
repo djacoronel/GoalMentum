@@ -18,11 +18,9 @@ class AddGoalInteractorImpl(
 ) : AbstractInteractor(threadExecutor, mainThread), AddGoalInteractor {
 
     override fun run() {
-        // create a new cost object and insert it
         val goal = Goal(mDescription, mDuration)
         mGoalRepository.insert(goal)
 
-        // notify on the main thread that we have inserted this item
-        mMainThread.post(Runnable { mCallback.onGoalAdded() })
+        mMainThread.post(Runnable { mCallback.onGoalAdded(goal.id) })
     }
 }

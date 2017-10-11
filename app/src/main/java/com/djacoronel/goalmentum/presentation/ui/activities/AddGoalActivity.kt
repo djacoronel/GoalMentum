@@ -7,6 +7,7 @@ import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.presentation.presenters.AddGoalPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.AddGoalPresenterImpl
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
+import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.activity_add_goal.*
 import org.jetbrains.anko.toast
@@ -24,7 +25,8 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
-                GoalRepositoryImpl()
+                GoalRepositoryImpl(),
+                MilestoneRepositoryImpl()
         )
 
         fab.setOnClickListener { addGoal() }
@@ -34,7 +36,8 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
         mPresenter.addNewGoal(goal_desc_input.text.toString(), "duration placeholder")
     }
 
-    override fun onGoalAdded() {
+    override fun onGoalAdded(goalId: Long) {
+        mPresenter.addNewGeneralMilestone(goalId)
         toast("New goal saved!")
         finish()
     }

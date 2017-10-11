@@ -10,8 +10,10 @@ import com.djacoronel.goalmentum.presentation.ui.BaseView
 interface AddGoalPresenter : BasePresenter {
 
     interface View : BaseView {
-        fun onGoalAdded()
+        fun onGoalAdded(goalId: Long)
     }
 
     fun addNewGoal(description: String, duration: String)
+
+    fun addNewGeneralMilestone(goalId: Long)
 }

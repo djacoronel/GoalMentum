@@ -10,6 +10,6 @@ import com.djacoronel.goalmentum.domain.interactors.base.Interactor
 interface AddGoalInteractor : Interactor {
 
     interface Callback {
-        fun onGoalAdded()
+        fun onGoalAdded(goalId: Long)
     }
 }

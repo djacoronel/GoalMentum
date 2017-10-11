@@ -7,6 +7,7 @@ interface MilestoneRecyclerClickListener {
 
     fun onClickExpandMilestone(position: Int)
     fun onClickCollapseMilestone(position: Int)
-    fun onClickAddMilestone(position: Int)
-    fun onLongClickMilestone(position: Int)
+    fun onClickAddMilestone()
+    fun onClickEditMilestone(position: Int)
+    fun onClickDeleteMilestone(position: Int)
 }

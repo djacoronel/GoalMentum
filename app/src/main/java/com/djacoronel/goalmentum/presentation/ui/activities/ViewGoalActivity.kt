@@ -15,8 +15,7 @@ import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.activity_view_goal.*
-import kotlinx.android.synthetic.main.input_milestone_item.*
-import kotlinx.android.synthetic.main.input_work_item.*
+import kotlinx.android.synthetic.main.input_milestone_dialog.view.*
 import org.jetbrains.anko.alert
 
 class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
@@ -30,19 +29,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         setContentView(R.layout.activity_view_goal)
         setSupportActionBar(toolbar)
 
-        setupFab()
         init()
-    }
-
-    fun setupFab(){
-        fab.setOnClickListener {
-            val view = View.inflate(this, R.layout.input_work_item, null)
-            alert {
-                customView = view
-                positiveButton("Add Work"){}
-                negativeButton("Add Milestone"){}
-            }.show()
-        }
     }
 
     private fun init() {
@@ -62,7 +49,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
         // setup recycler view
         milestone_recycler.layoutManager = LinearLayoutManager(this)
-        milestone_recycler.layoutManager.isAutoMeasureEnabled = false
+        //milestone_recycler.layoutManager.isAutoMeasureEnabled = false
         milestone_recycler.adapter = mAdapter
 
         // get milestones
@@ -79,19 +66,22 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
 
-    override fun onClickMilestone(milestoneId: Long) {
-    }
-
     override fun onClickAddMilestone() {
-        mViewGoalPresenter.addNewMilestone(goalId, input_milestone_card_text.text.toString())
+        val view = View.inflate(this, R.layout.input_milestone_dialog, null)
+        val alert = alert { customView = view }.show()
+
+        view.add_milestone_button.setOnClickListener {
+            mViewGoalPresenter.addNewMilestone(goalId,view.input_milestone_card_text.text.toString())
+            alert.dismiss()
+        }
     }
 
-    override fun onLongClickMilestone(milestoneId: Long) {
-        alert {
-            title = "Edit or delete milestone?"
-            positiveButton("Edit") { }
-            negativeButton("Delete") { mViewGoalPresenter.deleteMilestone(milestoneId) }
-        }.show()
+    override fun onClickEditMilestone(milestoneId: Long) {
+
+    }
+
+    override fun onClickDeleteMilestone(milestoneId: Long) {
+        mViewGoalPresenter.deleteMilestone(milestoneId)
     }
 
     override fun onMilestoneAdded() {
@@ -111,15 +101,24 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onClickAddWork(milestoneId: Long) {
-        mViewGoalPresenter.addNewWork(milestoneId, input_work_card_text.text.toString())
+        val view = View.inflate(this, R.layout.input_milestone_dialog, null)
+        view.input_milestone_card_text.hint = "Work Description"
+
+        val alert = alert { customView = view }.show()
+
+        view.add_milestone_button.setOnClickListener {
+            mViewGoalPresenter.addNewWork(milestoneId, view.input_milestone_card_text.text.toString())
+            alert.dismiss()
+        }
+
     }
 
     override fun onWorkAdded(milestoneId: Long) {
         mViewGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
     }
 
-    override fun showWork(milestoneId: Long, works: List<Work>) {
-        mAdapter.showWorks(milestoneId, works)
+    override fun showWork(assignedId: Long, works: List<Work>) {
+        mAdapter.showWorksInMilestone(assignedId, works)
     }
 
     override fun onClickDeleteWork(workId: Long) {

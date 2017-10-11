@@ -6,12 +6,9 @@ import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.WorkRecyclerClickListener
-import kotlinx.android.synthetic.main.input_work_item.view.*
 import kotlinx.android.synthetic.main.work_item.view.*
-import android.widget.Toast
 import android.view.*
-
-
+import kotlinx.android.synthetic.main.input_recyler_item.view.*
 
 
 /**
@@ -29,7 +26,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == ViewType.INPUT_CARD.ordinal)
-            InputViewHolder(parent.inflate(R.layout.input_work_item), this)
+            InputViewHolder(parent.inflate(R.layout.input_recyler_item), this)
         else
             NormalViewHolder(parent.inflate(R.layout.work_item), this)
     }
@@ -55,8 +52,9 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
 
     class InputViewHolder(itemView: View, private val mListener: WorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind() = with(itemView) {
-            itemView.add_work_button.setOnClickListener {
-                mListener.onClickAddWork(adapterPosition)
+            itemView.input_recycler_text.text = "add new task"
+            itemView.setOnClickListener {
+                mListener.onClickAddWork()
             }
         }
     }
@@ -88,7 +86,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
         notifyDataSetChanged()
     }
 
-    override fun onClickAddWork(position: Int) {
+    override fun onClickAddWork() {
         mView.onClickAddWork(milestoneId)
     }
 

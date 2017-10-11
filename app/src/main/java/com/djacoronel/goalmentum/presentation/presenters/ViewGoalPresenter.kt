@@ -15,11 +15,11 @@ interface ViewGoalPresenter : BasePresenter {
 
         fun showMilestones(milestones: List<Milestone>)
 
-        fun onClickMilestone(milestoneId: Long)
-
         fun onClickAddMilestone()
 
-        fun onLongClickMilestone(milestoneId: Long)
+        fun onClickEditMilestone(milestoneId: Long)
+
+        fun onClickDeleteMilestone(milestoneId: Long)
 
         fun onMilestoneDeleted(milestone: Milestone)
 
