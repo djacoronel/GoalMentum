@@ -25,7 +25,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="input item text"
+            android:text="@string/input_item_text_placeholder"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
@@ -43,6 +43,7 @@
             card_view:layout_constraintTop_toTopOf="parent"
             card_view:layout_constraintVertical_bias="0.0"
             card_view:srcCompat="@drawable/ic_add_black_24dp"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            android:contentDescription="@string/add_entry" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

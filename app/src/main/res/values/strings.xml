@@ -118,4 +118,10 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="expand_milestone_card">Expand Milestone Card</string>
+    <string name="collapse_milestone_card">Collapse Milestone Card</string>
+    <string name="add_entry">Add Entry</string>
+    <string name="input_item_text_placeholder">input item text placeholder</string>
+    <string name="milestone_description_placeholder">Milestone Description Placeholder</string>
+    <string name="add_target_milestone_work_hint">Add Target Milestone/Work</string>
 </resources>

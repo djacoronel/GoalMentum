@@ -9,7 +9,7 @@ def dbflow_version = "4.1.1"
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.djacoronel.goalmentum"
         minSdkVersion 15

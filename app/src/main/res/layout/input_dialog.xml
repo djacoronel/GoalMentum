@@ -26,7 +26,7 @@
             android:inputType="text"
             android:singleLine="true"
             android:imeOptions="actionDone"
-            android:hint="Add Target Milestone/Work"
+            android:hint="@string/add_target_milestone_work_hint"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toStartOf="@+id/add_item_button"
@@ -46,7 +46,8 @@
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
             card_view:srcCompat="@drawable/ic_add_black_30dp"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            android:contentDescription="@string/add_entry" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
