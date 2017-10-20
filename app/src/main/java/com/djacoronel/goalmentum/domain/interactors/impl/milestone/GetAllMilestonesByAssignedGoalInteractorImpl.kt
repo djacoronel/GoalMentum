@@ -30,7 +30,7 @@ class GetAllMilestonesByAssignedGoalInteractorImpl(
 
     override fun run() {
         val milestones = mMilestoneRepository.getMilestonesByAssignedGoal(mGoalId)
-        Collections.sort(milestones, mMilestoneComparator)
+        //Collections.sort(milestones, mMilestoneComparator)
         mMainThread.post(Runnable { mCallback.onMilestonesRetrieved(milestones) })
     }
 }

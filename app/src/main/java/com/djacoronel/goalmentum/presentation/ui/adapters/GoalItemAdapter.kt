@@ -28,6 +28,7 @@ class GoalItemAdapter(
 
         fun bind(goal: Goal) = with(itemView) {
             goal_card_text.text = goal.description
+            duration_text.text = goal.duration + " " + goal.getStringRemainingDays()
 
             itemView.setOnClickListener {
                 mListener.onClickViewGoal(adapterPosition)
