@@ -7,4 +7,5 @@ interface WorkRecyclerClickListener {
     fun onClickAddWork()
     fun onClickEditWork(position: Int)
     fun onClickDeleteWork(position: Int)
+    fun onClickToggleWork(position: Int)
 }

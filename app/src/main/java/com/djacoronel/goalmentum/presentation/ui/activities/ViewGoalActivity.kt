@@ -165,4 +165,9 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
             alert.dismiss()
         }
     }
+
+    override fun onClickToggleWork(work: Work) {
+        work.achieved = !work.achieved
+        mViewGoalPresenter.editWork(work)
+    }
 }

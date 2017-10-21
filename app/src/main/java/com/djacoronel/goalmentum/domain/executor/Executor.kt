@@ -3,14 +3,10 @@ package com.djacoronel.goalmentum.domain.executor
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 
 /**
- * Created by djacoronel on 10/6/17.
- */
-
-/**
  * This executor is responsible for running interactors on background threads.
  *
  *
- * Created by dmilicic on 7/29/15.
+ * Created by djacoronel on 10/6/17.
  */
 interface Executor {
 

@@ -75,6 +75,15 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
                 popup.show()
                 true
             }
+
+            itemView.finish_button.setOnClickListener{
+                mListener.onClickToggleWork(adapterPosition)
+            }
+
+            if (work.achieved == true)
+                itemView.finish_button.setImageResource(R.drawable.ic_check_black_24dp)
+            else
+                itemView.finish_button.setImageResource(R.drawable.ic_dash_black_24dp)
         }
     }
 
@@ -98,5 +107,10 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
         mView.onClickDeleteWork(mWorks[position].id)
         mWorks.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    override fun onClickToggleWork(position: Int) {
+        mView.onClickToggleWork(mWorks[position])
+        notifyItemChanged(position)
     }
 }

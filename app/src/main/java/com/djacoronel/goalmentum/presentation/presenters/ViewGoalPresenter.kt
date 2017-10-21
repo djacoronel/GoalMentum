@@ -33,6 +33,8 @@ interface ViewGoalPresenter : BasePresenter {
         fun onClickEditWork(work: Work)
 
         fun onClickDeleteWork(workId: Long)
+
+        fun onClickToggleWork(work: Work)
     }
 
     fun addNewMilestone(goalId: Long, description: String)
