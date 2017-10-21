@@ -67,7 +67,7 @@ class Goal {
     }
 
     private fun getRemainingDays(): Long{
-        return getDifferenceDays(date!!, getEndDate())
+        return getDifferenceDays(Date(), getEndDate())
     }
 
     private fun getDifferenceDays(d1: Date, d2: Date): Long {

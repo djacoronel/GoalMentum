@@ -29,7 +29,6 @@ class GetWorksByAssignedMilestoneInteractorImpl(
 
     override fun run() {
         val works = mWorkRepository.getWorksByAssignedMilestone(mMilestoneId)
-        //Collections.sort(works, mWorkComparator)
         mMainThread.post(Runnable { mCallback.onWorksRetrieved(mMilestoneId, works) })
     }
 }

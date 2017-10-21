@@ -29,7 +29,6 @@ class GetAllGoalsInteractorImpl(
 
     override fun run() {
         val goals = mGoalRepository.allGoals
-        Collections.sort(goals, mGoalComparator)
         mMainThread.post(Runnable { mCallback.onGoalsRetrieved(goals) })
     }
 }
