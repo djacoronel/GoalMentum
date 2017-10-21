@@ -57,17 +57,18 @@ class Goal {
 
     fun getStringRemainingDays(): String{
         val remainingDays = getRemainingDays()
-
-        return if(remainingDays.toInt() == 0)
-            "(DUE!)"
-        else if(remainingDays.toInt() == 1)
-            "(" + getRemainingDays() + " day remaining)"
-        else
-            "(" + getRemainingDays() + " days remaining)"
+        return when {
+            remainingDays.toInt() == 0 -> "(DUE!)"
+            remainingDays.toInt() == 1 -> "(" + getRemainingDays() + " day remaining)"
+            else -> "(" + getRemainingDays() + " days remaining)"
+        }
     }
 
     private fun getRemainingDays(): Long{
-        return getDifferenceDays(Date(), getEndDate())
+        val currentDate = Date()
+        val totalDays = getDifferenceDays(date!!, getEndDate())
+        val elapsedDays = getDifferenceDays(date!!,currentDate)
+        return totalDays - elapsedDays
     }
 
     private fun getDifferenceDays(d1: Date, d2: Date): Long {
