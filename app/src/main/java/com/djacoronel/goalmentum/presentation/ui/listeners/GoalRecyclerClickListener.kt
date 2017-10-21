@@ -5,7 +5,8 @@ package com.djacoronel.goalmentum.presentation.ui.listeners
  */
 interface GoalRecyclerClickListener {
 
+    fun onClickAddGoal()
     fun onClickViewGoal(position: Int)
-    fun onClickAddGoal(position: Int)
-    fun onLongClickView(position: Int)
+    fun onClickEditGoal(position: Int)
+    fun onClickDeleteGoal(position: Int)
 }

@@ -14,14 +14,20 @@ interface GoalPresenter : BasePresenter {
 
         fun onClickViewGoal(goal: Goal)
 
-        fun onClickAddGoal(goalId: Long)
+        fun onClickAddGoal()
 
-        fun onLongClickGoal(goalId: Long)
+        fun onGoalAdded(goal: Goal)
+
+        fun onClickEditGoal(goal: Goal)
+
+        fun onGoalUpdated(goal: Goal)
+
+        fun onClickDeleteGoal(goal: Goal)
 
         fun onGoalDeleted(goal: Goal)
     }
 
     fun getAllGoals()
 
-    fun deleteGoal(goalId: Long)
+    fun deleteGoal(goal: Goal)
 }

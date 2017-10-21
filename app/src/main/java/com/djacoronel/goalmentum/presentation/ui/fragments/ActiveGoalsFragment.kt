@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Goal
@@ -17,8 +19,8 @@ import com.djacoronel.goalmentum.presentation.ui.activities.ViewGoalActivity
 import com.djacoronel.goalmentum.presentation.ui.adapters.GoalItemAdapter
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
+import kotlinx.android.synthetic.main.fragment_active_goals.*
 import kotlinx.android.synthetic.main.fragment_active_goals.view.*
-import org.jetbrains.anko.support.v4.alert
 
 
 /**
@@ -60,6 +62,20 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
 
     }
 
+    override fun showGoals(goals: List<Goal>) {
+        mAdapter.showGoals(goals)
+        runLayoutAnimation(goal_recycler)
+    }
+
+    private fun runLayoutAnimation(recyclerView: RecyclerView){
+        val context = recyclerView.context
+        val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_bottom)
+
+        recyclerView.layoutAnimation = controller
+        recyclerView.adapter.notifyDataSetChanged()
+        recyclerView.scheduleLayoutAnimation()
+    }
+
     override fun onClickViewGoal(goal: Goal) {
         val intent = Intent(context, ViewGoalActivity::class.java)
         intent.putExtra(EXTRA_GOAL_ID, goal.id)
@@ -67,38 +83,40 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
         startActivity(intent)
     }
 
-    override fun onClickAddGoal(goalId: Long) {
+    override fun onClickAddGoal() {
         val intent = Intent(context, AddGoalActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, ADD_GOAL_REQUEST)
     }
 
-    override fun onLongClickGoal(goalId: Long) {
-        alert {
-            title = "Edit or delete goal?"
-            positiveButton("Edit") { editGoal(goalId) }
-            negativeButton("Delete") { mGoalPresenter.deleteGoal(goalId) }
-        }.show()
+    override fun onGoalAdded(goal: Goal) {
+    }
+
+    override fun onClickEditGoal(goal: Goal) {
+    }
+
+    override fun onGoalUpdated(goal: Goal) {
+        mAdapter.updateGoal(goal)
+    }
+
+    override fun onClickDeleteGoal(goal: Goal) {
+        mGoalPresenter.deleteGoal(goal)
     }
 
     override fun onGoalDeleted(goal: Goal) {
-        mGoalPresenter.getAllGoals()
+        mAdapter.deleteGoal(goal)
     }
 
     fun editGoal(goalId: Long) {
         val intent = Intent(context, AddGoalActivity::class.java)
         intent.putExtra(EXTRA_GOAL_ID, goalId)
-
         startActivityForResult(intent, EDIT_GOAL_REQUEST)
     }
 
     companion object {
         const val EXTRA_GOAL_ID = "extra_goal_id_key"
         const val EXTRA_GOAL_DESC = "extra_goal_desc_key"
-        const val EDIT_GOAL_REQUEST = 0
-    }
-
-    override fun showGoals(goals: List<Goal>) {
-        mAdapter.addNewGoals(goals)
+        const val EDIT_GOAL_REQUEST = 1
+        const val ADD_GOAL_REQUEST = 0
     }
 
     override fun onResume() {

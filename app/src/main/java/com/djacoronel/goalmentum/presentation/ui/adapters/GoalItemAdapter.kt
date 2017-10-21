@@ -1,6 +1,8 @@
 package com.djacoronel.goalmentum.presentation.ui.adapters
 
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +20,7 @@ class GoalItemAdapter(
         val mView: GoalPresenter.View
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), GoalRecyclerClickListener {
 
-    val mGoals = mutableListOf(Goal("Input Goal", "Forever"))
+    val mGoals = mutableListOf<Goal>()
 
     private enum class ViewType {
         NORMAL_CARD, INPUT_CARD
@@ -28,23 +30,32 @@ class GoalItemAdapter(
 
         fun bind(goal: Goal) = with(itemView) {
             goal_card_text.text = goal.description
-            duration_text.text = goal.duration + " " + goal.getStringRemainingDays()
+            val durationText = goal.duration + " " + goal.getStringRemainingDays()
+            duration_text.text = durationText
 
             itemView.setOnClickListener {
                 mListener.onClickViewGoal(adapterPosition)
             }
             itemView.setOnLongClickListener {
-                mListener.onLongClickView(adapterPosition)
+                val popup = PopupMenu(context, this, Gravity.END)
+                popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.title) {
+                        "Edit" -> mListener.onClickEditGoal(adapterPosition)
+                        "Delete" -> mListener.onClickDeleteGoal(adapterPosition)
+                    }
+                    true
+                }
+                popup.show()
                 true
             }
         }
     }
 
     class InputViewHolder(itemView: View, private val mListener: GoalRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
-        fun bind(goal: Goal) = with(itemView) {
-
+        fun bind() = with(itemView) {
             itemView.setOnClickListener {
-                mListener.onClickAddGoal(adapterPosition)
+                mListener.onClickAddGoal()
             }
         }
     }
@@ -69,33 +80,51 @@ class GoalItemAdapter(
         if (viewHolder is NormalViewHolder) {
             viewHolder.bind(mGoals[position])
         } else if (viewHolder is InputViewHolder) {
-            viewHolder.bind(mGoals[position])
+            viewHolder.bind()
         }
     }
 
     override fun getItemCount() = mGoals.size
 
-
     override fun onClickViewGoal(position: Int) {
-        val goal = mGoals[position]
-        mView.onClickViewGoal(goal)
+        mView.onClickViewGoal(mGoals[position])
     }
 
-    override fun onClickAddGoal(position: Int) {
-        val goal = mGoals[position]
-        mView.onClickAddGoal(goal.id)
+    override fun onClickAddGoal() {
+        mView.onClickAddGoal()
     }
 
-    override fun onLongClickView(position: Int) {
-        val goal = mGoals[position]
-        mView.onLongClickGoal(goal.id)
+    override fun onClickEditGoal(position: Int) {
+        mView.onClickEditGoal(mGoals[position])
     }
 
-    fun addNewGoals(goals: List<Goal>) {
+    override fun onClickDeleteGoal(position: Int) {
+        mView.onClickDeleteGoal(mGoals[position])
+    }
+
+    fun showGoals(goals: List<Goal>) {
         mGoals.clear()
         mGoals.addAll(goals)
         val inputGoalEntry = Goal("Input Goal", "Forever")
         mGoals.add(inputGoalEntry)
         notifyDataSetChanged()
+    }
+
+    fun addGoal(goal: Goal){
+        mGoals.add(mGoals.lastIndex,goal)
+        notifyItemInserted(mGoals.indexOf(goal))
+    }
+
+    fun updateGoal(goal: Goal){
+        val goalToBeUpdated = mGoals.find { it.id == goal.id }
+        goalToBeUpdated?.description = goal.description
+        notifyItemChanged(mGoals.indexOf(goalToBeUpdated))
+    }
+
+    fun deleteGoal(goal: Goal){
+        val goalToBeDeleted = mGoals.find { it.id == goal.id }
+        val index = mGoals.indexOf(goalToBeDeleted)
+        mGoals.removeAt(index)
+        notifyItemRemoved(index)
     }
 }

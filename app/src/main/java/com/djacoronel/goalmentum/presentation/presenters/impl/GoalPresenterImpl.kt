@@ -56,11 +56,11 @@ class GoalPresenterImpl(
         mView.showGoals(goalList)
     }
 
-    override fun deleteGoal(goalId: Long) {
+    override fun deleteGoal(goal: Goal) {
         val deleteCostInteractor = DeleteGoalInteractorImpl(
                 mExecutor,
                 mMainThread,
-                goalId,
+                goal,
                 this,
                 mGoalRepository
         )

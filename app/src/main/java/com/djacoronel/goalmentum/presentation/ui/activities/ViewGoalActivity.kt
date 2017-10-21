@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Milestone
@@ -89,6 +91,16 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun showMilestones(milestones: List<Milestone>) {
         mAdapter.showMilestones(milestones)
+        runLayoutAnimation(milestone_recycler)
+    }
+
+    private fun runLayoutAnimation(recyclerView: RecyclerView){
+        val context = recyclerView.context
+        val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+        recyclerView.layoutAnimation = controller
+        recyclerView.adapter.notifyDataSetChanged()
+        recyclerView.scheduleLayoutAnimation()
     }
 
     override fun onClickAddMilestone() {

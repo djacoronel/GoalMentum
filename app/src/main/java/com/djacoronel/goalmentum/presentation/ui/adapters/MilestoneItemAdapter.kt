@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
@@ -117,6 +118,16 @@ class MilestoneItemAdapter(
             itemView.work_recycler.layoutManager = LinearLayoutManager(context)
             itemView.work_recycler.adapter = mAdapter
             itemView.work_recycler.isNestedScrollingEnabled = false
+            runLayoutAnimation(itemView.work_recycler)
+        }
+
+        private fun runLayoutAnimation(recyclerView: RecyclerView){
+            val context = recyclerView.context
+            val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+            recyclerView.layoutAnimation = controller
+            recyclerView.adapter.notifyDataSetChanged()
+            recyclerView.scheduleLayoutAnimation()
         }
     }
 

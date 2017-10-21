@@ -10,7 +10,6 @@ import com.djacoronel.goalmentum.presentation.ui.listeners.WorkRecyclerClickList
 import kotlinx.android.synthetic.main.work_item.view.*
 import android.view.*
 import kotlinx.android.synthetic.main.input_recyler_item.view.*
-import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 
 
 /**
@@ -18,7 +17,7 @@ import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
  */
 class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         WorkRecyclerClickListener {
-    val mWorks = mutableListOf(Work(0, "Input Work"))
+    val mWorks = mutableListOf<Work>()
 
     private enum class ViewType {
         NORMAL_CARD, INPUT_CARD
