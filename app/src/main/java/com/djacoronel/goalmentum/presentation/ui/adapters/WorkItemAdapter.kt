@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.ui.adapters
 
+import android.graphics.Paint
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import com.djacoronel.goalmentum.R
@@ -9,6 +10,7 @@ import com.djacoronel.goalmentum.presentation.ui.listeners.WorkRecyclerClickList
 import kotlinx.android.synthetic.main.work_item.view.*
 import android.view.*
 import kotlinx.android.synthetic.main.input_recyler_item.view.*
+import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 
 
 /**
@@ -66,7 +68,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
                 val popup = PopupMenu(context, this, Gravity.END)
                 popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
-                    when(item.title){
+                    when (item.title) {
                         "Edit" -> mListener.onClickEditWork(adapterPosition)
                         "Delete" -> mListener.onClickDeleteWork(adapterPosition)
                     }
@@ -76,14 +78,19 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
                 true
             }
 
-            itemView.finish_button.setOnClickListener{
+            itemView.finish_button.setOnClickListener {
                 mListener.onClickToggleWork(adapterPosition)
             }
 
-            if (work.achieved == true)
+            if (work.achieved == true) {
                 itemView.finish_button.setImageResource(R.drawable.ic_check_black_24dp)
-            else
+                val textView = itemView.work_card_text
+                textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
                 itemView.finish_button.setImageResource(R.drawable.ic_dash_black_24dp)
+                val textView = itemView.work_card_text
+                textView.paintFlags = 0
+            }
         }
     }
 
