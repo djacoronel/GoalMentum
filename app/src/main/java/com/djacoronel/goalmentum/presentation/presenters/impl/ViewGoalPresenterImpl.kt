@@ -21,7 +21,6 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
-import com.djacoronel.milestonementum.domain.interactors.impl.milestone.GetMilestoneByIdInteractorImpl
 
 /**
  * Created by djacoronel on 10/9/17.
@@ -62,21 +61,6 @@ class ViewGoalPresenterImpl(
 
     }
 
-    override fun addNewMilestone(goalId: Long, description: String) {
-        val addMilestoneInteractor = AddMilestoneInteractorImpl(
-                mExecutor,
-                mMainThread,
-                this,
-                mMilestoneRepository,
-                goalId,
-                description
-        )
-        addMilestoneInteractor.execute()
-    }
-
-    override fun onMilestoneAdded() {
-        mView.onMilestoneAdded()
-    }
 
     override fun getAllMilestonesByAssignedGoal(goalId: Long) {
         val getMilestonesInteractor = GetAllMilestonesByAssignedGoalInteractorImpl(
@@ -88,28 +72,29 @@ class ViewGoalPresenterImpl(
         )
         getMilestonesInteractor.execute()
     }
-
     override fun onMilestonesRetrieved(milestones: List<Milestone>) {
         mView.showMilestones(milestones)
     }
-
     override fun noMilestonesFound() {
 
     }
 
-    override fun deleteMilestone(milestoneId: Long) {
-        val deleteCostInteractor = DeleteMilestoneInteractorImpl(
+
+    override fun addNewMilestone(goalId: Long, description: String) {
+        val addMilestoneInteractor = AddMilestoneInteractorImpl(
                 mExecutor,
                 mMainThread,
-                milestoneId,
                 this,
-                mMilestoneRepository
+                mMilestoneRepository,
+                goalId,
+                description
         )
-        deleteCostInteractor.execute()
+        addMilestoneInteractor.execute()
+    }
+    override fun onMilestoneAdded(milestone: Milestone) {
+        mView.onMilestoneAdded(milestone)
     }
 
-    override fun onMilestoneDeleted(milestone: Milestone) {
-    }
 
     override fun editMilestone(milestone: Milestone) {
         val editMilestoneInteractor = EditMilestoneInteractorImpl(
@@ -121,10 +106,40 @@ class ViewGoalPresenterImpl(
         )
         editMilestoneInteractor.execute()
     }
-
     override fun onMilestoneUpdated(milestone: Milestone) {
-
+        mView.onMilestoneUpdated(milestone)
     }
+
+
+    override fun deleteMilestone(milestoneId: Long) {
+        val deleteCostInteractor = DeleteMilestoneInteractorImpl(
+                mExecutor,
+                mMainThread,
+                milestoneId,
+                this,
+                mMilestoneRepository
+        )
+        deleteCostInteractor.execute()
+    }
+    override fun onMilestoneDeleted(milestoneId: Long) {
+        mView.onMilestoneDeleted(milestoneId)
+    }
+
+
+    override fun getAllWorkByAssignedMilestone(milestoneId: Long) {
+        val getWorksInteractor = GetWorksByAssignedMilestoneInteractorImpl(
+                mExecutor,
+                mMainThread,
+                mWorkRepository,
+                this,
+                milestoneId
+        )
+        getWorksInteractor.execute()
+    }
+    override fun onWorksRetrieved(milestoneId: Long, works: List<Work>) {
+        mView.showWorks(milestoneId, works)
+    }
+
 
     override fun addNewWork(milestoneId: Long, description: String) {
         val addWorkInteractor = AddWorkInteractorImpl(
@@ -137,41 +152,12 @@ class ViewGoalPresenterImpl(
         )
         addWorkInteractor.execute()
     }
-
-    override fun onWorkAdded(milestoneId: Long) {
-        mView.onWorkAdded(milestoneId)
+    override fun onWorkAdded(work: Work) {
+        mView.onWorkAdded(work)
     }
 
-    override fun getAllWorkByAssignedMilestone(milestoneId: Long) {
-        val getWorksInteractor = GetWorksByAssignedMilestoneInteractorImpl(
-                mExecutor,
-                mMainThread,
-                mWorkRepository,
-                this,
-                milestoneId
-        )
-        getWorksInteractor.execute()
-    }
 
-    override fun onWorksRetrieved(milestoneId: Long, works: List<Work>) {
-        mView.showWork(milestoneId, works)
-    }
-
-    override fun deleteWork(workId: Long) {
-        val deleteWorkInteractor = DeleteWorkInteractorImpl(
-                mExecutor,
-                mMainThread,
-                workId,
-                this,
-                mWorkRepository
-        )
-        deleteWorkInteractor.execute()
-    }
-
-    override fun onWorkDeleted(work: Work) {
-    }
-
-    override fun editWork(work: Work) {
+    override fun updateWork(work: Work) {
         val editWorkInteractor = EditWorkInteractorImpl(
                 mExecutor,
                 mMainThread,
@@ -181,7 +167,22 @@ class ViewGoalPresenterImpl(
         )
         editWorkInteractor.execute()
     }
-
     override fun onWorkUpdated(work: Work) {
+        mView.onWorkUpdated(work)
+    }
+
+
+    override fun deleteWork(work: Work) {
+        val deleteWorkInteractor = DeleteWorkInteractorImpl(
+                mExecutor,
+                mMainThread,
+                work,
+                this,
+                mWorkRepository
+        )
+        deleteWorkInteractor.execute()
+    }
+    override fun onWorkDeleted(work: Work) {
+        mView.onWorkDeleted(work)
     }
 }

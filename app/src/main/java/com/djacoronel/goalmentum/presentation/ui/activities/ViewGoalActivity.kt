@@ -64,20 +64,31 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     override fun showError(message: String) {
     }
 
+    fun showKeyboard(){
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    fun hideKeyboard(view: View){
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+    }
+
     fun createInputDialogView(): View{
         val view = View.inflate(this, R.layout.input_dialog, null)
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
         view.input_item_text.requestFocus()
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-
         view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE)
                 view.add_item_button.performClick()
             false
         }
 
+        showKeyboard()
         return view
+    }
+
+    override fun showMilestones(milestones: List<Milestone>) {
+        mAdapter.showMilestones(milestones)
     }
 
     override fun onClickAddMilestone() {
@@ -87,87 +98,97 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         view.input_item_text.hint = "Milestone Description"
         view.add_item_button.setOnClickListener {
             mViewGoalPresenter.addNewMilestone(goalId, view.input_item_text.text.toString())
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+            hideKeyboard(view)
             alert.dismiss()
         }
+    }
+
+    override fun onMilestoneAdded(milestone: Milestone) {
+        mAdapter.addMilestone(milestone)
     }
 
     override fun onClickEditMilestone(milestone: Milestone) {
         val view = createInputDialogView()
         val alert = alert { customView = view }.show()
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         view.input_item_text.hint = "Milestone Description"
         view.input_item_text.setText(milestone.description)
+
         view.add_item_button.setOnClickListener {
             milestone.description = view.input_item_text.text.toString()
-            mAdapter.notifyDataSetChanged()
             mViewGoalPresenter.editMilestone(milestone)
-            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+            hideKeyboard(view)
             alert.dismiss()
         }
+    }
+
+    override fun onMilestoneUpdated(milestone: Milestone) {
+        mAdapter.updateMilestone(milestone)
     }
 
     override fun onClickDeleteMilestone(milestoneId: Long) {
         mViewGoalPresenter.deleteMilestone(milestoneId)
     }
 
-    override fun onMilestoneAdded() {
-        mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
-    }
-
-    override fun showMilestones(milestones: List<Milestone>) {
-        mAdapter.showNewMilestones(milestones)
+    override fun onMilestoneDeleted(milestoneId: Long) {
+        mAdapter.deleteMilestone(milestoneId)
     }
 
     override fun onExpandMilestone(milestoneId: Long) {
         mViewGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
     }
 
+
+    override fun showWorks(milestoneId: Long, works: List<Work>) {
+        mAdapter.mWorkAdapters[milestoneId]?.showWorks(works)
+    }
+
     override fun onClickAddWork(milestoneId: Long) {
         val view = createInputDialogView()
         val alert = alert { customView = view }.show()
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         view.input_item_text.hint = "Work Description"
         view.add_item_button.setOnClickListener {
             mViewGoalPresenter.addNewWork(milestoneId, view.input_item_text.text.toString())
-            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+            hideKeyboard(view)
             alert.dismiss()
         }
     }
 
-    override fun onWorkAdded(milestoneId: Long) {
-        mViewGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
-    }
-
-    override fun showWork(milestoneId: Long, works: List<Work>) {
-        mAdapter.showWorksInMilestone(milestoneId, works)
-    }
-
-    override fun onClickDeleteWork(workId: Long) {
-        mViewGoalPresenter.deleteWork(workId)
+    override fun onWorkAdded(work: Work) {
+        mAdapter.mWorkAdapters[work.assignedMilestone]?.addWork(work)
     }
 
     override fun onClickEditWork(work: Work) {
         val view = createInputDialogView()
         val alert = alert { customView = view }.show()
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         view.input_item_text.hint = "Work Description"
         view.input_item_text.setText(work.description)
         view.add_item_button.setOnClickListener {
             work.description = view.input_item_text.text.toString()
             mAdapter.notifyDataSetChanged()
-            mViewGoalPresenter.editWork(work)
-            imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+            mViewGoalPresenter.updateWork(work)
+
+            hideKeyboard(view)
             alert.dismiss()
         }
     }
 
+    override fun onWorkUpdated(work: Work) {
+        mAdapter.mWorkAdapters[work.assignedMilestone]?.updateWork(work)
+    }
+
+    override fun onClickDeleteWork(work: Work) {
+        mViewGoalPresenter.deleteWork(work)
+    }
+
+    override fun onWorkDeleted(work: Work) {
+        mAdapter.mWorkAdapters[work.assignedMilestone]?.deleteWork(work)
+    }
+
     override fun onClickToggleWork(work: Work) {
         work.achieved = !work.achieved
-        mViewGoalPresenter.editWork(work)
+        mViewGoalPresenter.updateWork(work)
     }
 }

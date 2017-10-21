@@ -120,37 +120,23 @@ class MilestoneItemAdapter(
         }
     }
 
-
-    fun showNewMilestones(milestones: List<Milestone>) {
-        mMilestones.clear()
-        mMilestones.addAll(milestones)
-        mMilestones.add(Milestone(0, "Input Milestone"))
-
-        onClickExpandMilestone(0)
-        notifyDataSetChanged()
-    }
-
-    fun showWorksInMilestone(milestoneId: Long, works: List<Work>) {
-        mWorkAdapters[milestoneId]!!.showWorks(works)
-    }
-
-    override fun onClickAddMilestone() {
-        mView.onClickAddMilestone()
-    }
-
     override fun onClickExpandMilestone(position: Int) {
         val id = mMilestones[position].id
-        mWorkAdapters.put(id, WorkItemAdapter(mView, id))
         mView.onExpandMilestone(id)
 
+        mWorkAdapters.put(id, WorkItemAdapter(mView, id))
         mExpandedMilestones.add(mMilestones[position])
         notifyItemChanged(position)
     }
 
     override fun onClickCollapseMilestone(position: Int) {
-        mExpandedMilestones.remove(mMilestones[position])
         mWorkAdapters.remove(mMilestones[position].id)
+        mExpandedMilestones.remove(mMilestones[position])
         notifyItemChanged(position)
+    }
+
+    override fun onClickAddMilestone() {
+        mView.onClickAddMilestone()
     }
 
     override fun onClickEditMilestone(position: Int) {
@@ -159,7 +145,33 @@ class MilestoneItemAdapter(
 
     override fun onClickDeleteMilestone(position: Int) {
         mView.onClickDeleteMilestone(mMilestones[position].id)
-        mMilestones.removeAt(position)
-        notifyItemRemoved(position)
     }
+
+    fun showMilestones(milestones: List<Milestone>) {
+        mMilestones.clear()
+        mMilestones.addAll(milestones)
+        mMilestones.add(Milestone(0, "Input Milestone"))
+
+        onClickExpandMilestone(0)
+        notifyDataSetChanged()
+    }
+
+    fun addMilestone(milestone: Milestone){
+        mMilestones.add(mMilestones.lastIndex,milestone)
+        notifyItemInserted(mMilestones.indexOf(milestone))
+    }
+
+    fun updateMilestone(milestone: Milestone){
+        val milestoneToBeUpdated = mMilestones.find { it.id == milestone.id }
+        milestoneToBeUpdated?.description = milestone.description
+        notifyItemChanged(mMilestones.indexOf(milestoneToBeUpdated))
+    }
+
+    fun deleteMilestone(milestoneId: Long){
+        val milestoneToBeDeleted = mMilestones.find { it.id == milestoneId }
+        val index = mMilestones.indexOf(milestoneToBeDeleted)
+        mMilestones.removeAt(index)
+        notifyItemRemoved(index)
+    }
+
 }

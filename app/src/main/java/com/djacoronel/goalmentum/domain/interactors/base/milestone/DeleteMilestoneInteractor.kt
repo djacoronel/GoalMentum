@@ -10,6 +10,6 @@ import com.djacoronel.goalmentum.domain.model.Milestone
 interface DeleteMilestoneInteractor : Interactor {
 
     interface Callback {
-        fun onMilestoneDeleted(milestone: Milestone)
+        fun onMilestoneDeleted(milestoneId: Long)
     }
 }

@@ -6,6 +6,7 @@ import com.djacoronel.goalmentum.domain.interactors.base.goal.AddGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.AddMilestoneInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.AddGoalInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.AddMilestoneInteractorImpl
+import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
@@ -71,7 +72,6 @@ class AddGoalPresenterImpl(
         addMilestoneInteractor.execute()
     }
 
-    override fun onMilestoneAdded() {
-
+    override fun onMilestoneAdded(milestone: Milestone) {
     }
 }

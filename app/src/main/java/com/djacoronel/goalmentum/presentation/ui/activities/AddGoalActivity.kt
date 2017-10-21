@@ -1,6 +1,5 @@
 package com.djacoronel.goalmentum.presentation.ui.activities
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.djacoronel.goalmentum.R
@@ -12,7 +11,6 @@ import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.activity_add_goal.*
 import org.jetbrains.anko.toast
-import java.util.*
 
 
 class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
@@ -50,14 +48,12 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
         day_week_month_picker.wrapSelectorWheel = true
         day_week_month_picker.displayedValues = duration
 
-
-        number_picker.setOnValueChangedListener { picker, oldVal, newVal ->
+        number_picker.setOnValueChangedListener { _, _, newVal ->
             if (newVal == 0)
                 day_week_month_picker.displayedValues = duration
             else
                 day_week_month_picker.displayedValues = durationWithS
         }
-
     }
 
     fun addGoal() {
@@ -70,8 +66,6 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
 
         val numberString = number_picker.displayedValues[numberIndex]
         val durationString = day_week_month_picker.displayedValues[durationIndex]
-
-
 
         return numberString + " " + durationString
     }

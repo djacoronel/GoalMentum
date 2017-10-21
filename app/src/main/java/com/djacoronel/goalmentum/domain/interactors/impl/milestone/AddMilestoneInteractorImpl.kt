@@ -24,6 +24,6 @@ class AddMilestoneInteractorImpl(
         val milestone = Milestone(mAssignedGoal, mDescription)
         mMilestoneRepository.insert(milestone)
 
-        mMainThread.post(Runnable { mCallback.onMilestoneAdded() })
+        mMainThread.post(Runnable { mCallback.onMilestoneAdded(milestone) })
     }
 }

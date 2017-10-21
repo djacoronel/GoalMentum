@@ -23,7 +23,6 @@ class AddWorkInteractorImpl(
     override fun run() {
         val work = Work(mAssignedMilestone, mDescription)
         mWorkRepository.insert(work)
-
-        mMainThread.post(Runnable { mCallback.onWorkAdded(mAssignedMilestone) })
+        mMainThread.post(Runnable { mCallback.onWorkAdded(work) })
     }
 }

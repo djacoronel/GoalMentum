@@ -11,28 +11,36 @@ interface ViewGoalPresenter : BasePresenter {
 
     interface View : BaseView {
 
-        fun onMilestoneAdded()
-
         fun showMilestones(milestones: List<Milestone>)
 
         fun onClickAddMilestone()
 
+        fun onMilestoneAdded(milestone: Milestone)
+
         fun onClickEditMilestone(milestone: Milestone)
 
+        fun onMilestoneUpdated(milestone: Milestone)
+
         fun onClickDeleteMilestone(milestoneId: Long)
+
+        fun onMilestoneDeleted(milestoneId: Long)
 
         fun onExpandMilestone(milestoneId: Long)
 
 
+        fun showWorks(milestoneId: Long, works: List<Work>)
+
         fun onClickAddWork(milestoneId: Long)
 
-        fun onWorkAdded(milestoneId: Long)
-
-        fun showWork(milestoneId: Long, works: List<Work>)
+        fun onWorkAdded(work: Work)
 
         fun onClickEditWork(work: Work)
 
-        fun onClickDeleteWork(workId: Long)
+        fun onWorkUpdated(work: Work)
+
+        fun onClickDeleteWork(work: Work)
+
+        fun onWorkDeleted(work: Work)
 
         fun onClickToggleWork(work: Work)
     }
@@ -49,7 +57,7 @@ interface ViewGoalPresenter : BasePresenter {
 
     fun getAllWorkByAssignedMilestone(milestoneId: Long)
 
-    fun editWork(work: Work)
+    fun updateWork(work: Work)
 
-    fun deleteWork(workId: Long)
+    fun deleteWork(work: Work)
 }

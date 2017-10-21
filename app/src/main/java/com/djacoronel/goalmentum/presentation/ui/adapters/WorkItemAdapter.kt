@@ -94,14 +94,6 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
         }
     }
 
-    fun showWorks(works: List<Work>) {
-        mWorks.clear()
-        mWorks.addAll(works)
-        val inputWorkEntry = Work(0, "Input Work")
-        mWorks.add(inputWorkEntry)
-        notifyDataSetChanged()
-    }
-
     override fun onClickAddWork() {
         mView.onClickAddWork(milestoneId)
     }
@@ -111,13 +103,38 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
     }
 
     override fun onClickDeleteWork(position: Int) {
-        mView.onClickDeleteWork(mWorks[position].id)
-        mWorks.removeAt(position)
-        notifyItemRemoved(position)
+        mView.onClickDeleteWork(mWorks[position])
     }
 
     override fun onClickToggleWork(position: Int) {
         mView.onClickToggleWork(mWorks[position])
         notifyItemChanged(position)
+    }
+
+
+    fun showWorks(works: List<Work>) {
+        mWorks.clear()
+        mWorks.addAll(works)
+        val inputWorkEntry = Work(0, "Input Work")
+        mWorks.add(inputWorkEntry)
+        notifyDataSetChanged()
+    }
+
+    fun addWork(work: Work){
+        mWorks.add(mWorks.lastIndex,work)
+        notifyItemInserted(mWorks.indexOf(work))
+    }
+
+    fun updateWork(work: Work){
+        val workToBeUpdated = mWorks.find { it.id == work.id }
+        workToBeUpdated?.description = work.description
+        notifyItemChanged(mWorks.indexOf(workToBeUpdated))
+    }
+
+    fun deleteWork(work: Work){
+        val workToBeDeleted = mWorks.find { it.id == work.id }
+        val index = mWorks.indexOf(workToBeDeleted)
+        mWorks.removeAt(index)
+        notifyItemRemoved(index)
     }
 }

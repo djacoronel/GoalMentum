@@ -24,7 +24,7 @@ class DeleteMilestoneInteractorImpl(
 
         if (milestone != null) {
             mMilestoneRepository.delete(milestone)
-            mMainThread.post(Runnable { mCallback.onMilestoneDeleted(milestone) })
+            mMainThread.post(Runnable { mCallback.onMilestoneDeleted(milestone.id) })
         }
     }
 }
