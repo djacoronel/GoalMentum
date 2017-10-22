@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.presenters
 
+import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.ui.BaseView
@@ -43,6 +44,11 @@ interface ViewGoalPresenter : BasePresenter {
         fun onWorkDeleted(work: Work)
 
         fun onClickToggleWork(work: Work)
+
+
+        fun onAllMilestonesAchieved()
+
+        fun onGoalAchieved(goal: Goal)
     }
 
     fun addNewMilestone(goalId: Long, description: String)
@@ -62,4 +68,6 @@ interface ViewGoalPresenter : BasePresenter {
     fun deleteWork(work: Work)
 
     fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>)
+
+    fun achieveGoal(goalId: Long)
 }

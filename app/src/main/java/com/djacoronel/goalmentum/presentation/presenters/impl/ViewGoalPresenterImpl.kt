@@ -3,11 +3,15 @@ package com.djacoronel.goalmentum.presentation.presenters.impl
 import android.util.Log
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
+import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndSetAchievedInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.AddWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.DeleteWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.EditWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdAndSetAchievedInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.AddMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.DeleteMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.EditMilestoneInteractorImpl
@@ -16,8 +20,10 @@ import com.djacoronel.goalmentum.domain.interactors.impl.work.AddWorkInteractorI
 import com.djacoronel.goalmentum.domain.interactors.impl.work.DeleteWorkInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.EditWorkInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.GetWorksByAssignedMilestoneInteractorImpl
+import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
+import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
@@ -30,6 +36,7 @@ class ViewGoalPresenterImpl(
         executor: Executor,
         mainThread: MainThread,
         private val mView: ViewGoalPresenter.View,
+        private val mGoalRepository: GoalRepository,
         private val mMilestoneRepository: MilestoneRepository,
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), ViewGoalPresenter,
@@ -40,7 +47,9 @@ class ViewGoalPresenterImpl(
         AddWorkInteractor.Callback,
         EditWorkInteractor.Callback,
         GetAllWorksByAssignedMilestoneInteractor.Callback,
-        DeleteWorkInteractor.Callback {
+        DeleteWorkInteractor.Callback,
+        GetGoalByIdAndSetAchievedInteractor.Callback
+{
 
     override fun resume() {
 
@@ -204,9 +213,26 @@ class ViewGoalPresenterImpl(
         if (isAllWorkAchieved && milestone.achieved == false) {
             milestone.achieved = true
             updateMilestone(milestone)
+
         } else if (!isAllWorkAchieved && milestone.achieved == true) {
             milestone.achieved = false
             updateMilestone(milestone)
         }
+    }
+
+    override fun achieveGoal(goalId: Long){
+        val getGoalByIdAndSetAchievedInteractor = GetGoalByIdAndSetAchievedInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mGoalRepository,
+                goalId
+        )
+
+        getGoalByIdAndSetAchievedInteractor.execute()
+    }
+
+    override fun onGoalAchieved(goal: Goal) {
+        mView.onGoalAchieved(goal)
     }
 }

@@ -22,6 +22,9 @@ import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.EditorInfo
+import com.djacoronel.goalmentum.domain.model.Goal
+import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
+import org.jetbrains.anko.toast
 
 
 class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
@@ -46,6 +49,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
+                GoalRepositoryImpl(),
                 MilestoneRepositoryImpl(),
                 WorkRepositoryImpl()
         )
@@ -207,5 +211,15 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         val works = mAdapter.mWorkAdapters[work.assignedMilestone]?.mWorks
 
         mViewGoalPresenter.toggleMilestoneAchieveStatus(milestone!!, works!!)
+    }
+
+
+    override fun onAllMilestonesAchieved() {
+        mViewGoalPresenter.achieveGoal(goalId)
+    }
+
+    override fun onGoalAchieved(goal: Goal) {
+        toast("Goal Achieved! Hooray!")
+        finish()
     }
 }

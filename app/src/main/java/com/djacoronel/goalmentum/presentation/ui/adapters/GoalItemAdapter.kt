@@ -103,9 +103,11 @@ class GoalItemAdapter(
     }
 
     fun showGoals(goals: List<Goal>) {
-        mGoals.clear()
-        mGoals.addAll(goals)
+        val unAchievedGoals = goals.filter { it.achieved == false }
         val inputGoalEntry = Goal("Input Goal", "Forever")
+
+        mGoals.clear()
+        mGoals.addAll(unAchievedGoals)
         mGoals.add(inputGoalEntry)
         notifyDataSetChanged()
     }
