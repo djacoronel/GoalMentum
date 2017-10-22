@@ -197,14 +197,14 @@ class ViewGoalPresenterImpl(
     }
 
     override fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>) {
-        Log.i(milestone.achieved.toString(),works.toString())
-
         val worksAchieved = works.filter { it.achieved == true }
+        val worksWithoutInputItem = works.filter { it.description != "Input Work" }.size
+        val isAllWorkAchieved = worksAchieved.size == worksWithoutInputItem
 
-        if ( worksAchieved.size == works.size-1 && milestone.achieved == false) {
+        if (isAllWorkAchieved && milestone.achieved == false) {
             milestone.achieved = true
             updateMilestone(milestone)
-        } else if (worksAchieved.size!= works.size-1 && milestone.achieved == true) {
+        } else if (!isAllWorkAchieved && milestone.achieved == true) {
             milestone.achieved = false
             updateMilestone(milestone)
         }
