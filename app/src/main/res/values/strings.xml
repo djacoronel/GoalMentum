@@ -124,4 +124,7 @@
     <string name="input_item_text_placeholder">input item text placeholder</string>
     <string name="milestone_description_placeholder">Milestone Description Placeholder</string>
     <string name="add_target_milestone_work_hint">Add Target Milestone/Work</string>
+  <string name="goal_description_placeholder">Goal Description Placeholder</string>
+    <string name="duration_placeholder">Duration Placeholder</string>
+    <string name="achieved_count_placeholder">0/0</string>
 </resources>

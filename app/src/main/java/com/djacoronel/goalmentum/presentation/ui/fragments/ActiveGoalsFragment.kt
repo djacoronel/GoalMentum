@@ -18,6 +18,8 @@ import com.djacoronel.goalmentum.presentation.ui.activities.AddGoalActivity
 import com.djacoronel.goalmentum.presentation.ui.activities.ViewGoalActivity
 import com.djacoronel.goalmentum.presentation.ui.adapters.GoalItemAdapter
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
+import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
+import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.fragment_active_goals.*
 import kotlinx.android.synthetic.main.fragment_active_goals.view.*
@@ -57,7 +59,9 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
-                GoalRepositoryImpl()
+                GoalRepositoryImpl(),
+                MilestoneRepositoryImpl(),
+                WorkRepositoryImpl()
         )
 
     }

@@ -8,6 +8,8 @@ import com.djacoronel.goalmentum.domain.interactors.impl.goal.DeleteGoalInteract
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetAllGoalsInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
+import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
+import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
 
@@ -19,7 +21,9 @@ class GoalPresenterImpl(
         executor: Executor,
         mainThread: MainThread,
         private val mView: GoalPresenter.View,
-        private val mGoalRepository: GoalRepository
+        private val mGoalRepository: GoalRepository,
+        private val mMilestoneRepository: MilestoneRepository,
+        private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), GoalPresenter, GetAllGoalsInteractor.Callback, DeleteGoalInteractor.Callback {
 
     override fun resume() {
@@ -47,6 +51,8 @@ class GoalPresenterImpl(
                 mExecutor,
                 mMainThread,
                 mGoalRepository,
+                mMilestoneRepository,
+                mWorkRepository,
                 this
         )
         getGoalsInteractor.execute()

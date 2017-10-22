@@ -2,6 +2,7 @@ package com.djacoronel.goalmentum.presentation.ui.adapters
 
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -30,8 +31,17 @@ class GoalItemAdapter(
 
         fun bind(goal: Goal) = with(itemView) {
             goal_card_text.text = goal.description
+
             val durationText = goal.duration + " " + goal.getStringRemainingDays()
             duration_text.text = durationText
+
+            val totalWorks = goal.activeWork + goal.achievedWork
+            val progress = if (totalWorks == 0) 0f
+            else (goal.achievedWork / (totalWorks).toFloat()) * 100
+            circular_progress_bar.setProgressWithAnimation(progress)
+
+            val achievedCount = goal.achievedWork.toString() + "/" + totalWorks
+            achieved_count.text = achievedCount
 
             itemView.setOnClickListener {
                 mListener.onClickViewGoal(adapterPosition)
@@ -112,18 +122,18 @@ class GoalItemAdapter(
         notifyDataSetChanged()
     }
 
-    fun addGoal(goal: Goal){
-        mGoals.add(mGoals.lastIndex,goal)
+    fun addGoal(goal: Goal) {
+        mGoals.add(mGoals.lastIndex, goal)
         notifyItemInserted(mGoals.indexOf(goal))
     }
 
-    fun updateGoal(goal: Goal){
+    fun updateGoal(goal: Goal) {
         val goalToBeUpdated = mGoals.find { it.id == goal.id }
         goalToBeUpdated?.description = goal.description
         notifyItemChanged(mGoals.indexOf(goalToBeUpdated))
     }
 
-    fun deleteGoal(goal: Goal){
+    fun deleteGoal(goal: Goal) {
         val goalToBeDeleted = mGoals.find { it.id == goal.id }
         val index = mGoals.indexOf(goalToBeDeleted)
         mGoals.removeAt(index)

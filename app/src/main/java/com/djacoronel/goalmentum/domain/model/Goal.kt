@@ -15,6 +15,8 @@ class Goal {
     var date: Date? = null
     var duration: String? = null
     var achieved: Boolean = false
+    var activeWork: Int = 0
+    var achievedWork: Int = 0
 
     constructor(description: String, duration: String) {
         id = Date().time
@@ -33,11 +35,11 @@ class Goal {
         this.achieved = achieved
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
 
-        val goal = o as Goal?
+        val goal = other as Goal?
 
         return id == goal!!.id
     }
