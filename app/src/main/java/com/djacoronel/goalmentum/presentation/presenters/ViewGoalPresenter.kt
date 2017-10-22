@@ -49,7 +49,7 @@ interface ViewGoalPresenter : BasePresenter {
 
     fun getAllMilestonesByAssignedGoal(goalId: Long)
 
-    fun editMilestone(milestone: Milestone)
+    fun updateMilestone(milestone: Milestone)
 
     fun deleteMilestone(milestoneId: Long)
 
@@ -60,4 +60,6 @@ interface ViewGoalPresenter : BasePresenter {
     fun updateWork(work: Work)
 
     fun deleteWork(work: Work)
+
+    fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>)
 }

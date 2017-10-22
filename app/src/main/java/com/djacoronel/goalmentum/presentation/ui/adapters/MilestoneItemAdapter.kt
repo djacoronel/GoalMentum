@@ -64,7 +64,7 @@ class MilestoneItemAdapter(
 
     class InputViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind() = with(itemView) {
-            itemView.input_recycler_text.text = "add sub goal"
+            itemView.input_recycler_text.text = "add a target milestone"
             itemView.setOnClickListener {
                 mListener.onClickAddMilestone()
             }
@@ -74,6 +74,11 @@ class MilestoneItemAdapter(
     class CollapsedViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(milestone: Milestone) = with(itemView) {
             collapsed_milestone_card_text.text = milestone.description
+
+            if(milestone.achieved == true)
+                itemView.collapsed_achieved_icon.visibility = View.VISIBLE
+            else
+                itemView.collapsed_achieved_icon.visibility = View.GONE
 
             itemView.setOnClickListener {
                 mListener.onClickExpandMilestone(adapterPosition)
@@ -97,6 +102,11 @@ class MilestoneItemAdapter(
     class ExpandedViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(milestone: Milestone, mAdapter: WorkItemAdapter?) = with(itemView) {
             expanded_milestone_card_text.text = milestone.description
+
+            if(milestone.achieved == true)
+                itemView.expanded_achieved_icon.visibility = View.VISIBLE
+            else
+                itemView.expanded_achieved_icon.visibility = View.GONE
 
             itemView.setOnClickListener {
                 mListener.onClickCollapseMilestone(adapterPosition)
@@ -184,5 +194,4 @@ class MilestoneItemAdapter(
         mMilestones.removeAt(index)
         notifyItemRemoved(index)
     }
-
 }

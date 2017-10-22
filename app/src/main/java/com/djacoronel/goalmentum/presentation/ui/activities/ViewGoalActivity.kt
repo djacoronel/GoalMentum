@@ -66,17 +66,17 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     override fun showError(message: String) {
     }
 
-    fun showKeyboard(){
+    fun showKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
-    fun hideKeyboard(view: View){
+    fun hideKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
     }
 
-    fun createInputDialogView(): View{
+    fun createInputDialogView(): View {
         val view = View.inflate(this, R.layout.input_dialog, null)
         view.input_item_text.requestFocus()
         view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
@@ -94,7 +94,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         runLayoutAnimation(milestone_recycler)
     }
 
-    private fun runLayoutAnimation(recyclerView: RecyclerView){
+    private fun runLayoutAnimation(recyclerView: RecyclerView) {
         val context = recyclerView.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
@@ -128,7 +128,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
         view.add_item_button.setOnClickListener {
             milestone.description = view.input_item_text.text.toString()
-            mViewGoalPresenter.editMilestone(milestone)
+            mViewGoalPresenter.updateMilestone(milestone)
             hideKeyboard(view)
             alert.dismiss()
         }
@@ -202,5 +202,10 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     override fun onClickToggleWork(work: Work) {
         work.achieved = !work.achieved
         mViewGoalPresenter.updateWork(work)
+
+        val milestone = mAdapter.mMilestones.find { it.id == work.assignedMilestone }
+        val works = mAdapter.mWorkAdapters[work.assignedMilestone]?.mWorks
+
+        mViewGoalPresenter.toggleMilestoneAchieveStatus(milestone!!, works!!)
     }
 }

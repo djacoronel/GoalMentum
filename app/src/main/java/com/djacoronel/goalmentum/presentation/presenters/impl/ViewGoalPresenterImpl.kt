@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.presenters.impl
 
+import android.util.Log
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
@@ -39,7 +40,7 @@ class ViewGoalPresenterImpl(
         AddWorkInteractor.Callback,
         EditWorkInteractor.Callback,
         GetAllWorksByAssignedMilestoneInteractor.Callback,
-        DeleteWorkInteractor.Callback{
+        DeleteWorkInteractor.Callback {
 
     override fun resume() {
 
@@ -72,9 +73,11 @@ class ViewGoalPresenterImpl(
         )
         getMilestonesInteractor.execute()
     }
+
     override fun onMilestonesRetrieved(milestones: List<Milestone>) {
         mView.showMilestones(milestones)
     }
+
     override fun noMilestonesFound() {
 
     }
@@ -91,12 +94,13 @@ class ViewGoalPresenterImpl(
         )
         addMilestoneInteractor.execute()
     }
+
     override fun onMilestoneAdded(milestone: Milestone) {
         mView.onMilestoneAdded(milestone)
     }
 
 
-    override fun editMilestone(milestone: Milestone) {
+    override fun updateMilestone(milestone: Milestone) {
         val editMilestoneInteractor = EditMilestoneInteractorImpl(
                 mExecutor,
                 mMainThread,
@@ -106,6 +110,7 @@ class ViewGoalPresenterImpl(
         )
         editMilestoneInteractor.execute()
     }
+
     override fun onMilestoneUpdated(milestone: Milestone) {
         mView.onMilestoneUpdated(milestone)
     }
@@ -121,6 +126,7 @@ class ViewGoalPresenterImpl(
         )
         deleteCostInteractor.execute()
     }
+
     override fun onMilestoneDeleted(milestoneId: Long) {
         mView.onMilestoneDeleted(milestoneId)
     }
@@ -136,6 +142,7 @@ class ViewGoalPresenterImpl(
         )
         getWorksInteractor.execute()
     }
+
     override fun onWorksRetrieved(milestoneId: Long, works: List<Work>) {
         mView.showWorks(milestoneId, works)
     }
@@ -152,6 +159,7 @@ class ViewGoalPresenterImpl(
         )
         addWorkInteractor.execute()
     }
+
     override fun onWorkAdded(work: Work) {
         mView.onWorkAdded(work)
     }
@@ -167,6 +175,7 @@ class ViewGoalPresenterImpl(
         )
         editWorkInteractor.execute()
     }
+
     override fun onWorkUpdated(work: Work) {
         mView.onWorkUpdated(work)
     }
@@ -182,7 +191,22 @@ class ViewGoalPresenterImpl(
         )
         deleteWorkInteractor.execute()
     }
+
     override fun onWorkDeleted(work: Work) {
         mView.onWorkDeleted(work)
+    }
+
+    override fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>) {
+        Log.i(milestone.achieved.toString(),works.toString())
+
+        val worksAchieved = works.filter { it.achieved == true }
+
+        if ( worksAchieved.size == works.size-1 && milestone.achieved == false) {
+            milestone.achieved = true
+            updateMilestone(milestone)
+        } else if (worksAchieved.size!= works.size-1 && milestone.achieved == true) {
+            milestone.achieved = false
+            updateMilestone(milestone)
+        }
     }
 }

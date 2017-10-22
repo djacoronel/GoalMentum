@@ -50,6 +50,7 @@ class Work {
                 ", mAssignedMilestone=" + assignedMilestone +
                 ", mDescription='" + description + '\'' +
                 ", mDate=" + date +
+                ", mAchieved=" + achieved +
                 '}'
     }
 }

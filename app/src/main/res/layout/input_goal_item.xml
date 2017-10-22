@@ -2,28 +2,50 @@
 
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/goal_card"
+  xmlns:card_view="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/goal_card"
+  android:layout_width="match_parent"
+  android:layout_height="125dp"
+  android:layout_marginTop="5dp"
+  android:layout_marginBottom="5dp"
+  android:layout_marginLeft="15dp"
+  android:layout_marginRight="15dp"
+  android:layout_gravity="center"
+  card_view:cardCornerRadius="4dp">
+
+  <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="125dp"
-    android:layout_gravity="center"
-    android:layout_marginBottom="5dp"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginTop="5dp"
-    card_view:cardCornerRadius="4dp">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
+    <TextView
+      android:id="@+id/goal_card_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:text="add new a goal to achieve"
+      android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+      card_view:layout_constraintBottom_toBottomOf="parent"
+      card_view:layout_constraintEnd_toEndOf="parent"
+      card_view:layout_constraintStart_toStartOf="parent"
+      card_view:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/goal_card_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Input Goal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-    </android.support.constraint.ConstraintLayout>
+    <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:layout_marginEnd="8dp"
+      android:contentDescription="@string/add_entry"
+      card_view:layout_constraintBottom_toBottomOf="parent"
+      card_view:layout_constraintEnd_toStartOf="@+id/goal_card_text"
+      card_view:layout_constraintTop_toTopOf="parent"
+      card_view:srcCompat="@drawable/ic_add_black_24dp"
+      android:layout_marginRight="8dp"/>
+  </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

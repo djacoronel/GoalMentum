@@ -53,7 +53,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
 
     class InputViewHolder(itemView: View, private val mListener: WorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind() = with(itemView) {
-            itemView.input_recycler_text.text = "add new task"
+            itemView.input_recycler_text.text = "add something you can do"
             itemView.setOnClickListener {
                 mListener.onClickAddWork()
             }
@@ -107,7 +107,6 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
 
     override fun onClickToggleWork(position: Int) {
         mView.onClickToggleWork(mWorks[position])
-        notifyItemChanged(position)
     }
 
 
