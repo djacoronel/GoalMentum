@@ -63,15 +63,14 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
                 MilestoneRepositoryImpl(),
                 WorkRepositoryImpl()
         )
-
     }
 
     override fun showGoals(goals: List<Goal>) {
         mAdapter.showGoals(goals)
-        runLayoutAnimation(goal_recycler)
+        view?.let { runLayoutAnimation(it.goal_recycler) }
     }
 
-    private fun runLayoutAnimation(recyclerView: RecyclerView){
+    private fun runLayoutAnimation(recyclerView: RecyclerView) {
         val context = recyclerView.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_bottom)
 
