@@ -2,7 +2,6 @@ package com.djacoronel.goalmentum.presentation.ui.adapters
 
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -30,10 +29,10 @@ class GoalItemAdapter(
     class NormalViewHolder(itemView: View, private val mListener: GoalRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(goal: Goal) = with(itemView) {
-            goal_card_text.text = goal.description
+            achieved_goal_card_text.text = goal.description
 
             val durationText = goal.duration + " " + goal.getStringRemainingDays()
-            duration_text.text = durationText
+            achieved_duration_text.text = durationText
 
             val totalWorks = goal.activeWork + goal.achievedWork
             val progress = if (totalWorks == 0) 0f

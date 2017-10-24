@@ -38,9 +38,11 @@ class GetAllGoalsInteractorImpl(
 
             val numberOfActiveWork = works.filter { it.achieved == false }.size
             val numberOfAchievedWork = works.filter { it.achieved == true }.size
+            val numberOfAchievedMilestone = milestones.filter { it.achieved == true }.size
 
             goal.activeWork = numberOfActiveWork
             goal.achievedWork = numberOfAchievedWork
+            goal.achievedMilestone = numberOfAchievedMilestone
         }
 
         mMainThread.post(Runnable { mCallback.onGoalsRetrieved(goals) })

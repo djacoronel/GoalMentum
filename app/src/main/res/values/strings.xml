@@ -127,4 +127,7 @@
   <string name="goal_description_placeholder">Goal Description Placeholder</string>
     <string name="duration_placeholder">Duration Placeholder</string>
     <string name="achieved_count_placeholder">0/0</string>
+  <string name="achievement_badge">Achievement Badge</string>
+    <string name="achieved_milestone_work_placeholder">10M 43W</string>
+    <string name="add_new_a_goal_to_achieve">add new a goal to achieve</string>
 </resources>

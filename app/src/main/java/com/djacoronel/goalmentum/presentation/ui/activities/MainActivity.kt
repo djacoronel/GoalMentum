@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity(){
         when (item.itemId) {
             R.id.active_goals -> currentFragment = ActiveGoalsFragment().newInstance()
             R.id.analyze_goals -> currentFragment = AnalyzeGoalsFragment.newInstance("","")
-            R.id.achieved_goals -> currentFragment = AchievedGoalsFragment.newInstance("","")
+            R.id.achieved_goals -> currentFragment = AchievedGoalsFragment().newInstance()
         }
         setFragment(currentFragment)
         return@OnNavigationItemSelectedListener true

@@ -17,6 +17,7 @@ class Goal {
     var achieved: Boolean = false
     var activeWork: Int = 0
     var achievedWork: Int = 0
+    var achievedMilestone: Int = 0
 
     constructor(description: String, duration: String) {
         id = Date().time
