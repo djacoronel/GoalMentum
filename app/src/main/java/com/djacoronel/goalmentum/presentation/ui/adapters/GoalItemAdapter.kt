@@ -52,18 +52,22 @@ class GoalItemAdapter(
                 mListener.onClickViewGoal(adapterPosition)
             }
             itemView.setOnLongClickListener {
-                val popup = PopupMenu(itemView.context, itemView, Gravity.END)
-                popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.title) {
-                        "Edit" -> mListener.onClickEditGoal(adapterPosition)
-                        "Delete" -> mListener.onClickDeleteGoal(adapterPosition)
-                    }
-                    true
-                }
-                popup.show()
+                createAndShowPopupMenu()
                 true
             }
+        }
+
+        fun createAndShowPopupMenu() {
+            val popup = PopupMenu(itemView.context, itemView, Gravity.END)
+            popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.title) {
+                    "Edit" -> mListener.onClickEditGoal(adapterPosition)
+                    "Delete" -> mListener.onClickDeleteGoal(adapterPosition)
+                }
+                true
+            }
+            popup.show()
         }
 
         fun setProgress() {

@@ -78,16 +78,6 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
         val context = recyclerView.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_bottom)
 
-        controller.animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(arg0: Animation) {}
-            override fun onAnimationRepeat(arg0: Animation) {}
-            override fun onAnimationEnd(arg0: Animation) {
-             /*   for (i in 0..recyclerView.adapter.itemCount-2)
-                    (recyclerView.findViewHolderForAdapterPosition(i)
-                            as GoalItemAdapter.NormalViewHolder).setProgress()*/
-            }
-        })
-
         recyclerView.layoutAnimation = controller
         recyclerView.adapter.notifyDataSetChanged()
         recyclerView.scheduleLayoutAnimation()
