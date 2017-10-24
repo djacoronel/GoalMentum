@@ -19,7 +19,7 @@ interface MilestoneRepository {
 
     fun getMilestonesByAssignedGoal(assignedGoal: Long): List<Milestone>
 
-    fun markAchieved(Milestone: Milestone)
+    fun markAchieved(milestone: Milestone)
 
-    fun delete(Milestone: Milestone)
+    fun delete(milestone: Milestone)
 }

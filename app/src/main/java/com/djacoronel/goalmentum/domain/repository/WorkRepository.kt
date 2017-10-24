@@ -19,7 +19,7 @@ interface WorkRepository {
 
     fun getWorksByAssignedMilestone(assignedMilestone: Long): List<Work>
 
-    fun markAchieved(Work: Work)
+    fun markAchieved(work: Work)
 
-    fun delete(Work: Work)
+    fun delete(work: Work)
 }
