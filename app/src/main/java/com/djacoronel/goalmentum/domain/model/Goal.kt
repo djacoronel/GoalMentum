@@ -15,6 +15,8 @@ class Goal {
     var date: Date? = null
     var duration: String? = null
     var achieved: Boolean = false
+    var momentum: Int = 0
+
     var activeWork: Int = 0
     var achievedWork: Int = 0
     var achievedMilestone: Int = 0
@@ -28,12 +30,13 @@ class Goal {
         this.achieved = false
     }
 
-    constructor(id: Long, description: String, date: Date, duration: String, achieved: Boolean) {
+    constructor(id: Long, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int) {
         this.id = id
         this.description = description
         this.date = date
         this.duration = duration
         this.achieved = achieved
+        this.momentum = momentum
     }
 
     override fun equals(other: Any?): Boolean {
@@ -51,10 +54,12 @@ class Goal {
 
     override fun toString(): String {
         return "Goal{" +
-                "mId=" + id +
-                ", mDescription='" + description + '\'' +
-                ", mDate=" + date +
-                ", mDuration=" + duration +
+                "id=" + id +
+                ", description='" + description + "'" +
+                ", date=" + date +
+                ", duration=" + duration +
+                ", achieved=" + achieved +
+                ", momentum=" + momentum +
                 '}'
     }
 

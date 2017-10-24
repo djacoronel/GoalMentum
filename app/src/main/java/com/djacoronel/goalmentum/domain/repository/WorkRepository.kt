@@ -11,9 +11,9 @@ interface WorkRepository {
 
     val allAchievedWorks: List<Work>
 
-    fun insert(Work: Work)
+    fun insert(work: Work)
 
-    fun update(Work: Work)
+    fun update(work: Work)
 
     fun getWorkById(id: Long): Work?
 

@@ -3,7 +3,9 @@ package com.djacoronel.goalmentum.presentation.presenters.impl
 import android.util.Log
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
+import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndSetAchievedInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndUpdateMomentumInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.AddWorkInteractor
@@ -11,6 +13,7 @@ import com.djacoronel.goalmentum.domain.interactors.base.work.DeleteWorkInteract
 import com.djacoronel.goalmentum.domain.interactors.base.work.EditWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdAndSetAchievedInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdAndUpdateMomentumImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.AddMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.DeleteMilestoneInteractorImpl
@@ -48,6 +51,7 @@ class ViewGoalPresenterImpl(
         EditWorkInteractor.Callback,
         GetAllWorksByAssignedMilestoneInteractor.Callback,
         DeleteWorkInteractor.Callback,
+        GetGoalByIdAndUpdateMomentumInteractor.Callback,
         GetGoalByIdAndSetAchievedInteractor.Callback
 {
 
@@ -218,6 +222,22 @@ class ViewGoalPresenterImpl(
             milestone.achieved = false
             updateMilestone(milestone)
         }
+    }
+
+    override fun updateGoalMomentum(goalId: Long, momentum: Int) {
+        val getGoalByIdAndUpdateMomentumInteractor = GetGoalByIdAndUpdateMomentumImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mGoalRepository,
+                goalId,
+                momentum
+        )
+        Log.i(goalId.toString(), momentum.toString())
+        getGoalByIdAndUpdateMomentumInteractor.execute()
+    }
+
+    override fun onGoalMomentumUpdated(goal: Goal) {
     }
 
     override fun achieveGoal(goalId: Long){

@@ -6,7 +6,6 @@ import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
-import java.util.*
 
 
 /**
@@ -18,10 +17,7 @@ class EditGoalInteractorImpl(
         mainThread: MainThread,
         private val mCallback: EditGoalInteractor.Callback,
         private val mGoalRepository: GoalRepository,
-        private val mUpdatedGoal: Goal,
-        private val mDescription: String,
-        private val mDate: Date,
-        private val mDuration: String
+        private val mUpdatedGoal: Goal
 ) : AbstractInteractor(threadExecutor, mainThread), EditGoalInteractor {
 
     override fun run() {
@@ -29,13 +25,10 @@ class EditGoalInteractorImpl(
         var goalToEdit = mGoalRepository.getGoalById(goalId)
 
         if (goalToEdit == null) {
-            goalToEdit = Goal(mDescription, mDuration)
+            goalToEdit = mUpdatedGoal
             mGoalRepository.insert(goalToEdit)
         } else {
-            goalToEdit.description = mDescription
-            goalToEdit.date = mDate
-            goalToEdit.duration = mDuration
-
+            goalToEdit = mUpdatedGoal
             mGoalRepository.update(goalToEdit)
         }
 

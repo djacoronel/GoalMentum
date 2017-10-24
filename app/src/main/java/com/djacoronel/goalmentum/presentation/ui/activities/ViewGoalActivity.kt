@@ -211,6 +211,8 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         val works = mAdapter.mWorkAdapters[work.assignedMilestone]?.mWorks
 
         mViewGoalPresenter.toggleMilestoneAchieveStatus(milestone!!, works!!)
+        val momentum = if (work.achieved == true) 10 else -10
+        mViewGoalPresenter.updateGoalMomentum(goalId,momentum)
     }
 
 

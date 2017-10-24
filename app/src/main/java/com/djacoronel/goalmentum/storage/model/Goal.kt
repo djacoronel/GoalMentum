@@ -29,14 +29,18 @@ class Goal : BaseModel {
     @Column(getterName = "getAchieved")
     var achieved: Boolean = false
 
-    constructor() {}
+    @Column
+    var momentum: Int = 0
 
-    constructor(description: String, date: Date, duration: String) {
-        this.id = Date().time
+    constructor()
+
+    constructor(id: Long, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int) {
+        this.id = id
         this.description = description
         this.date = date
         this.duration = duration
-        this.achieved = false
+        this.achieved = achieved
+        this.momentum = momentum
     }
 
     override fun toString(): String {
@@ -45,6 +49,8 @@ class Goal : BaseModel {
                 ", description='" + description + '\'' +
                 ", date=" + date +
                 ", duration=" + duration +
+                ", achieved=" + achieved +
+                ", momentum=" + momentum +
                 '}'
     }
 }

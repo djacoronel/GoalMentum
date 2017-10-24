@@ -69,5 +69,7 @@ interface ViewGoalPresenter : BasePresenter {
 
     fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>)
 
+    fun updateGoalMomentum(goalId: Long, momentum: Int)
+
     fun achieveGoal(goalId: Long)
 }

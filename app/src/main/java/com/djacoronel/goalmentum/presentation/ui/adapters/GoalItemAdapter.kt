@@ -16,9 +16,8 @@ import kotlinx.android.synthetic.main.goal_item.view.*
 /**
  * Created by djacoronel on 10/7/17.
  */
-class GoalItemAdapter(
-        val mView: GoalPresenter.View
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), GoalRecyclerClickListener {
+class GoalItemAdapter(val mView: GoalPresenter.View)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>(), GoalRecyclerClickListener {
 
     val mGoals = mutableListOf<Goal>()
 
@@ -26,7 +25,9 @@ class GoalItemAdapter(
         NORMAL_CARD, INPUT_CARD
     }
 
-    class NormalViewHolder(itemView: View, private val mListener: GoalRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
+    class NormalViewHolder(itemView: View, private val mListener: GoalRecyclerClickListener)
+        : RecyclerView.ViewHolder(itemView) {
+
         lateinit var goal: Goal
 
         fun bind(goal: Goal) = with(itemView) {
@@ -74,6 +75,7 @@ class GoalItemAdapter(
             val totalWorks = goal.activeWork + goal.achievedWork
             val progress = if (totalWorks == 0) 0f else (goal.achievedWork / (totalWorks).toFloat()) * 100
             itemView.circular_progress_bar.setProgressWithAnimation(progress)
+            itemView.circle_progress.progress = goal.momentum
         }
     }
 

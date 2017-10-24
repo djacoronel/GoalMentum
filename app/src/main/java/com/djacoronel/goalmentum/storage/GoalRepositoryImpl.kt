@@ -10,7 +10,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 /**
  * Created by djacoronel on 10/6/17.
  */
-class GoalRepositoryImpl() : GoalRepository {
+class GoalRepositoryImpl : GoalRepository {
 
     override val allGoals: List<Goal>
         get() {
