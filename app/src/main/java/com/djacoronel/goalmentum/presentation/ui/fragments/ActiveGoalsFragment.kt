@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.ui.fragments
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -23,6 +24,9 @@ import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.fragment_active_goals.*
 import kotlinx.android.synthetic.main.fragment_active_goals.view.*
+import android.widget.Toast
+import android.R.attr.animation
+import android.view.animation.Animation
 
 
 /**
@@ -73,6 +77,16 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
     private fun runLayoutAnimation(recyclerView: RecyclerView) {
         val context = recyclerView.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_bottom)
+
+        controller.animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(arg0: Animation) {}
+            override fun onAnimationRepeat(arg0: Animation) {}
+            override fun onAnimationEnd(arg0: Animation) {
+             /*   for (i in 0..recyclerView.adapter.itemCount-2)
+                    (recyclerView.findViewHolderForAdapterPosition(i)
+                            as GoalItemAdapter.NormalViewHolder).setProgress()*/
+            }
+        })
 
         recyclerView.layoutAnimation = controller
         recyclerView.adapter.notifyDataSetChanged()

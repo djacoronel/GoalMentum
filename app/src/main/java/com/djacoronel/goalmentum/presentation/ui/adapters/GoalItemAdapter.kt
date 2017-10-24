@@ -27,26 +27,32 @@ class GoalItemAdapter(
     }
 
     class NormalViewHolder(itemView: View, private val mListener: GoalRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
+        lateinit var goal: Goal
 
         fun bind(goal: Goal) = with(itemView) {
-            achieved_goal_card_text.text = goal.description
+            this@NormalViewHolder.goal = goal
+            setTexts()
+            setClickListeners()
+            setProgress()
+        }
+
+        fun setTexts() {
+            itemView.achieved_goal_card_text.text = goal.description
 
             val durationText = goal.duration + " " + goal.getStringRemainingDays()
-            achieved_duration_text.text = durationText
+            itemView.achieved_duration_text.text = durationText
 
             val totalWorks = goal.activeWork + goal.achievedWork
-            val progress = if (totalWorks == 0) 0f
-            else (goal.achievedWork / (totalWorks).toFloat()) * 100
-            circular_progress_bar.setProgressWithAnimation(progress)
-
             val achievedCount = goal.achievedWork.toString() + "/" + totalWorks
-            achieved_count.text = achievedCount
+            itemView.achieved_count.text = achievedCount
+        }
 
+        fun setClickListeners() {
             itemView.setOnClickListener {
                 mListener.onClickViewGoal(adapterPosition)
             }
             itemView.setOnLongClickListener {
-                val popup = PopupMenu(context, this, Gravity.END)
+                val popup = PopupMenu(itemView.context, itemView, Gravity.END)
                 popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
                     when (item.title) {
@@ -58,6 +64,12 @@ class GoalItemAdapter(
                 popup.show()
                 true
             }
+        }
+
+        fun setProgress() {
+            val totalWorks = goal.activeWork + goal.achievedWork
+            val progress = if (totalWorks == 0) 0f else (goal.achievedWork / (totalWorks).toFloat()) * 100
+            itemView.circular_progress_bar.setProgressWithAnimation(progress)
         }
     }
 
