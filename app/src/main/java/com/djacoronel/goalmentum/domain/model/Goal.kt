@@ -72,13 +72,8 @@ class Goal {
         val currentDate = Date()
         val elapsedDays = getDifferenceDays(momentumDateUpdated!!, currentDate)
 
-        if (elapsedDays.toInt() == 1) {
-            if (achievedWorkToday < 3)
-                momentum += -10 * (3 - achievedWorkToday)
-            if (momentum < 0)
-                momentum = 0
-            momentumDateUpdated = currentDate
-        }
+        momentum += -10 * elapsedDays.toInt()
+        if (momentum < 0) momentum = 0
 
         return momentum
     }

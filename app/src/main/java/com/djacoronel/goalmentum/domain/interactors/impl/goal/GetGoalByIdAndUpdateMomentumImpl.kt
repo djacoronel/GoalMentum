@@ -4,9 +4,9 @@ import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndSetAchievedInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndUpdateMomentumInteractor
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
+import com.djacoronel.goalmentum.util.DateUtils
 
 /**
  * Created by djacoronel on 10/6/17.
@@ -27,8 +27,11 @@ class GetGoalByIdAndUpdateMomentumImpl(
         goalToUpdate?.let {
             if ((it.momentum == 100 && mMomentum < 0)
                     || (it.momentum == 0 && mMomentum > 0)
-                    || (it.momentum != 0 && it.momentum != 100))
+                    || (it.momentum != 0 && it.momentum != 100)) {
+                it.momentum = it.getUpdatedMomentum()
                 it.momentum += mMomentum
+                it.momentumDateUpdated = DateUtils.today
+            }
 
             mGoalRepository.update(goalToUpdate)
             mMainThread.post(Runnable { mCallback.onGoalMomentumUpdated(it) })
