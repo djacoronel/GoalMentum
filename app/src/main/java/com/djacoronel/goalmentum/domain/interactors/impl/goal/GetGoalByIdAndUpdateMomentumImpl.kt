@@ -25,13 +25,10 @@ class GetGoalByIdAndUpdateMomentumImpl(
         val goalToUpdate = mGoalRepository.getGoalById(mAchievedGoalId)
 
         goalToUpdate?.let {
-            if ((it.momentum == 100 && mMomentum < 0)
-                    || (it.momentum == 0 && mMomentum > 0)
-                    || (it.momentum != 0 && it.momentum != 100)) {
-                it.momentum = it.getUpdatedMomentum()
-                it.momentum += mMomentum
-                it.momentumDateUpdated = DateUtils.today
-            }
+
+            it.applyDailyMomentumDeductions()
+            it.updateMomentum(mMomentum)
+            it.momentumDateUpdated = DateUtils.today
 
             mGoalRepository.update(goalToUpdate)
             mMainThread.post(Runnable { mCallback.onGoalMomentumUpdated(it) })

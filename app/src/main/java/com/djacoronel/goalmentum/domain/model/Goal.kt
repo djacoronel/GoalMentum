@@ -68,14 +68,22 @@ class Goal {
                 '}'
     }
 
-    fun getUpdatedMomentum(): Int {
+    fun updateMomentum(momentumAdjustment: Int){
+        momentum += momentumAdjustment
+        adjustMomentumToLimits()
+    }
+
+    fun applyDailyMomentumDeductions(){
         val currentDate = Date()
         val elapsedDays = getDifferenceDays(momentumDateUpdated!!, currentDate)
 
         momentum += -10 * elapsedDays.toInt()
-        if (momentum < 0) momentum = 0
+        adjustMomentumToLimits()
+    }
 
-        return momentum
+    private fun adjustMomentumToLimits(){
+        if (momentum < 0) momentum = 0
+        else if (momentum > 100) momentum = 100
     }
 
     fun getStringRemainingDays(): String {
