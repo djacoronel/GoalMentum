@@ -9,6 +9,7 @@ import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
+import com.djacoronel.goalmentum.util.DateUtils
 import java.util.*
 
 
@@ -28,20 +29,22 @@ class GetAllGoalsInteractorImpl(
     override fun run() {
         val goals = mGoalRepository.allGoals
 
-        for (goal in goals){
+        for (goal in goals) {
             val works = mutableListOf<Work>()
             val milestones = mMilestoneRepository.getMilestonesByAssignedGoal(goal.id)
 
-            for (milestone in milestones){
+            for (milestone in milestones) {
                 works.addAll(mWorkRepository.getWorksByAssignedMilestone(milestone.id))
             }
 
             val numberOfActiveWork = works.filter { it.achieved == false }.size
             val numberOfAchievedWork = works.filter { it.achieved == true }.size
+            val numberOfAchievedWorkToday = works.filter { it.achieved == true && it.dateAchieved == DateUtils.today }.size
             val numberOfAchievedMilestone = milestones.filter { it.achieved == true }.size
 
             goal.activeWork = numberOfActiveWork
             goal.achievedWork = numberOfAchievedWork
+            goal.achievedWorkToday = numberOfAchievedWorkToday
             goal.achievedMilestone = numberOfAchievedMilestone
         }
 

@@ -12,10 +12,11 @@ object GoalStorageModelConverter {
         return Goal(
                 goal.id,
                 goal.description!!,
-                goal.date!!,
+                goal.dateCreated!!,
                 goal.duration!!,
                 goal.achieved,
-                goal.momentum
+                goal.momentum,
+                goal.momentumDateUpdated!!
         )
     }
 
@@ -26,7 +27,8 @@ object GoalStorageModelConverter {
                 goal.date!!,
                 goal.duration!!,
                 goal.achieved,
-                goal.momentum
+                goal.momentum,
+                goal.momentumDateUpdated!!
         )
     }
 

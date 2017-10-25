@@ -25,17 +25,17 @@ object DateUtils {
         }
 
     /**
-     * Converts a date to the textual representation of dates used by people.
+     * Converts a dateCreated to the textual representation of dates used by people.
      *
      * @param date
-     * @return If the date is of today, then this method will return 'Today's'. If its yesterday then 'Yesterday' is returned.
-     * Otherwise it returns the date in the form of dd.mm
+     * @return If the dateCreated is of today, then this method will return 'Today's'. If its yesterday then 'Yesterday' is returned.
+     * Otherwise it returns the dateCreated in the form of dd.mm
      */
     fun dateToText(context: Context, date: Date): String {
         var date = date
         val textDate: String
 
-        // clear hours, minutes and smaller time units from the date
+        // clear hours, minutes and smaller time units from the dateCreated
         date = truncateHours(date)
 
         val c = Calendar.getInstance()
@@ -72,7 +72,7 @@ object DateUtils {
         c.set(Calendar.SECOND, 0)
         c.set(Calendar.MILLISECOND, 0)
 
-        // setup the date
+        // setup the dateCreated
         c.set(Calendar.YEAR, year)
         c.set(Calendar.MONTH, monthOfYear)
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth)

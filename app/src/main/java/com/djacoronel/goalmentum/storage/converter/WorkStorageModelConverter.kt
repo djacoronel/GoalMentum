@@ -8,29 +8,24 @@ import com.djacoronel.goalmentum.storage.model.Work
 object WorkStorageModelConverter {
 
     fun convertToStorageModel(work: com.djacoronel.goalmentum.domain.model.Work): Work {
-        val result = Work()
-        result.id = work.id
-        result.assignedMilestone = work.assignedMilestone
-        result.description = work.description
-        result.date  = work.date
-        result.achieved = work.achieved
-
-        return result
+        return Work(
+                work.id,
+                work.assignedMilestone,
+                work.description!!,
+                work.date!!,
+                work.achieved,
+                work.dateAchieved!!
+        )
     }
 
     fun convertToDomainModel(work: Work): com.djacoronel.goalmentum.domain.model.Work {
-        val id = work.id
-        val assignedMilestone = work.assignedMilestone
-        val description = work.description
-        val date = work.date
-        val achieved = work.achieved
-
         return com.djacoronel.goalmentum.domain.model.Work(
-                id,
-                assignedMilestone,
-                description!!,
-                date!!,
-                achieved
+                work.id,
+                work.assignedMilestone,
+                work.description!!,
+                work.date!!,
+                work.achieved,
+                work.dateAchieved!!
         )
     }
 

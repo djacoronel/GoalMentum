@@ -43,7 +43,7 @@ class Milestone : BaseModel {
                 "id=" + id +
                 ", assignedGoal=" + assignedGoal +
                 ", description='" + description + '\'' +
-                ", date=" + date +
+                ", dateCreated=" + date +
                 '}'
     }
 }

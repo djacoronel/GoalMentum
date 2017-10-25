@@ -28,14 +28,18 @@ class Work : BaseModel {
     @Column(getterName = "getAchieved")
     var achieved: Boolean = false
 
-    constructor() {}
+    @Column
+    var dateAchieved: Date? = null
 
-    constructor(assignedMilestone: Long, description: String, date: Date) {
-        this.id = Date().time
+    constructor()
+
+    constructor(id:Long, assignedMilestone: Long, description: String, date: Date, achieved: Boolean, dateAchieved: Date) {
+        this.id = id
         this.assignedMilestone = assignedMilestone
         this.description = description
         this.date = date
-        this.achieved = false
+        this.achieved = achieved
+        this.dateAchieved = dateAchieved
     }
 
     override fun toString(): String {
@@ -43,7 +47,7 @@ class Work : BaseModel {
                 "id=" + id +
                 ", assignedMilestone=" + assignedMilestone +
                 ", description='" + description + '\'' +
-                ", date=" + date +
+                ", dateCreated=" + date +
                 '}'
     }
 }

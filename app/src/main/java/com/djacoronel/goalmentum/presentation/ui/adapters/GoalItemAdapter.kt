@@ -75,7 +75,7 @@ class GoalItemAdapter(val mView: GoalPresenter.View)
             val totalWorks = goal.activeWork + goal.achievedWork
             val progress = if (totalWorks == 0) 0f else (goal.achievedWork / (totalWorks).toFloat()) * 100
             itemView.circular_progress_bar.setProgressWithAnimation(progress)
-            itemView.circle_progress.progress = goal.momentum
+            itemView.circle_progress.progress = goal.getUpdatedMomentum()
         }
     }
 

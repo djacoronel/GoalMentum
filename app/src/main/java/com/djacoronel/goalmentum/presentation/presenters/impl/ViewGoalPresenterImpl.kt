@@ -233,7 +233,7 @@ class ViewGoalPresenterImpl(
                 goalId,
                 momentum
         )
-        Log.i(goalId.toString(), momentum.toString())
+
         getGoalByIdAndUpdateMomentumInteractor.execute()
     }
 

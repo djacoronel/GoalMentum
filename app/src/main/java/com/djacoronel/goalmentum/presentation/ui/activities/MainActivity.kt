@@ -11,31 +11,32 @@ import com.djacoronel.goalmentum.presentation.ui.fragments.AnalyzeGoalsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         var currentFragment = Fragment()
         when (item.itemId) {
             R.id.active_goals -> currentFragment = ActiveGoalsFragment().newInstance()
-            R.id.analyze_goals -> currentFragment = AnalyzeGoalsFragment.newInstance("","")
+            R.id.analyze_goals -> currentFragment = AnalyzeGoalsFragment.newInstance("", "")
             R.id.achieved_goals -> currentFragment = AchievedGoalsFragment().newInstance()
         }
         setFragment(currentFragment)
         return@OnNavigationItemSelectedListener true
     }
 
+    private fun setFragment(fragment: Fragment) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame, fragment)
+        fragmentTransaction.commit()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemReselectedListener { }
 
         val currentFragment = ActiveGoalsFragment().newInstance()
         setFragment(currentFragment)
-    }
-
-    private fun setFragment(fragment: Fragment){
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame, fragment)
-        fragmentTransaction.commit()
     }
 }

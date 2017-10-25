@@ -12,31 +12,36 @@ class Goal {
     var id: Long = 0
         private set
     var description: String? = null
-    var date: Date? = null
+    var dateCreated: Date? = null
     var duration: String? = null
     var achieved: Boolean = false
     var momentum: Int = 0
+    var momentumDateUpdated: Date? = null
 
     var activeWork: Int = 0
     var achievedWork: Int = 0
+    var achievedWorkToday: Int = 0
     var achievedMilestone: Int = 0
 
     constructor(description: String, duration: String) {
-        id = Date().time
-
+        val currentDate = DateUtils.today
+        this.id = Date().time
         this.description = description
-        this.date = DateUtils.today
+        this.dateCreated = currentDate
         this.duration = duration
         this.achieved = false
+        this.momentum = 0
+        this.momentumDateUpdated = currentDate
     }
 
-    constructor(id: Long, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int) {
+    constructor(id: Long, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int, momentumDateUpdated: Date) {
         this.id = id
         this.description = description
-        this.date = date
+        this.dateCreated = date
         this.duration = duration
         this.achieved = achieved
         this.momentum = momentum
+        this.momentumDateUpdated = momentumDateUpdated
     }
 
     override fun equals(other: Any?): Boolean {
@@ -56,26 +61,41 @@ class Goal {
         return "Goal{" +
                 "id=" + id +
                 ", description='" + description + "'" +
-                ", date=" + date +
+                ", dateCreated=" + dateCreated +
                 ", duration=" + duration +
                 ", achieved=" + achieved +
                 ", momentum=" + momentum +
                 '}'
     }
 
-    fun getStringRemainingDays(): String{
+    fun getUpdatedMomentum(): Int {
+        val currentDate = Date()
+        val elapsedDays = getDifferenceDays(momentumDateUpdated!!, currentDate)
+
+        if (elapsedDays.toInt() == 1) {
+            if (achievedWorkToday < 3)
+                momentum += -10 * (3 - achievedWorkToday)
+            if (momentum < 0)
+                momentum = 0
+            momentumDateUpdated = currentDate
+        }
+
+        return momentum
+    }
+
+    fun getStringRemainingDays(): String {
         val remainingDays = getRemainingDays()
         return when {
             remainingDays.toInt() == 0 -> "(DUE!)"
-            remainingDays.toInt() == 1 -> "(" + getRemainingDays() + " day remaining)"
-            else -> "(" + getRemainingDays() + " days remaining)"
+            remainingDays.toInt() == 1 -> "($remainingDays day remaining)"
+            else -> "($remainingDays days remaining)"
         }
     }
 
-    private fun getRemainingDays(): Long{
+    private fun getRemainingDays(): Long {
         val currentDate = Date()
-        val totalDays = getDifferenceDays(date!!, getEndDate())
-        val elapsedDays = getDifferenceDays(date!!,currentDate)
+        val totalDays = getDifferenceDays(dateCreated!!, getEndDate())
+        val elapsedDays = getDifferenceDays(dateCreated!!, currentDate)
         return totalDays - elapsedDays
     }
 
@@ -84,16 +104,16 @@ class Goal {
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
     }
 
-    private fun getEndDate(): Date{
+    private fun getEndDate(): Date {
         val cal = Calendar.getInstance()
-        val numberOfUnits = duration!!.substringBefore(" ","0").toInt()
-        cal.time = date
+        val numberOfUnits = duration!!.substringBefore(" ", "0").toInt()
+        cal.time = dateCreated
 
-        when{
-            "day" in duration!! -> cal.add(Calendar.DATE,numberOfUnits)
-            "week" in duration!! -> cal.add(Calendar.DATE,7 * numberOfUnits)
-            "month" in duration!! -> cal.add(Calendar.MONTH,numberOfUnits)
-            "year" in duration!! -> cal.add(Calendar.YEAR,numberOfUnits)
+        when {
+            "day" in duration!! -> cal.add(Calendar.DATE, numberOfUnits)
+            "week" in duration!! -> cal.add(Calendar.DATE, 7 * numberOfUnits)
+            "month" in duration!! -> cal.add(Calendar.MONTH, numberOfUnits)
+            "year" in duration!! -> cal.add(Calendar.YEAR, numberOfUnits)
         }
 
         return cal.time
