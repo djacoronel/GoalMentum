@@ -163,12 +163,11 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun onClickToggleWork(work: Work) {
         mViewGoalPresenter.toggleWork(work)
-
-        val momentum = if (work.achieved == true) 10 else -10
-        mViewGoalPresenter.updateGoalMomentum(goalId, momentum)
     }
 
     override fun onWorkToggled(work: Work) {
+        val momentum = if (work.achieved == true) 10 else -10
+        mViewGoalPresenter.updateGoalMomentum(goalId, momentum)
         mViewGoalPresenter.toggleMilestoneAchieveStatus(work.assignedMilestone)
         mAdapter.updateWork(work)
     }
