@@ -44,7 +44,7 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
         add_item_button.setOnClickListener {
             onClickAddWork(customEditText.text.toString())
         }
-        customEditText.requestFocus()
+
         expanded_milestone_card_text.setOnClickListener { finish() }
         collapse_button.setOnClickListener { finish() }
 
@@ -65,11 +65,6 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
             expanded_achieved_icon.visibility = View.GONE
     }
 
-    fun showKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-    }
-
     override fun showProgress() {
     }
 
@@ -82,6 +77,8 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
 
     override fun showWorks(milestoneId: Long, works: List<Work>) {
         mAdapter.showWorks(works)
+        if(works.isEmpty())
+            input_item_text.requestFocus()
     }
 
     override fun onClickAddWork(workDescription: String) {
