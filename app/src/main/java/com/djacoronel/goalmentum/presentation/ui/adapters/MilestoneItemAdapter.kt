@@ -7,13 +7,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.MilestoneRecyclerClickListener
-import kotlinx.android.synthetic.main.expanded_milestone_item.view.*
+import kotlinx.android.synthetic.main.milestone_item.view.*
 
 /**
  * Created by djacoronel on 10/9/17.
@@ -25,7 +24,7 @@ class MilestoneItemAdapter(
     val mWorkAdapters = hashMapOf<Long, WorkItemAdapter>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(parent.inflate(R.layout.expanded_milestone_item), this)
+        return ViewHolder(parent.inflate(R.layout.milestone_item), this)
     }
 
     private fun ViewGroup.inflate(layoutRes: Int): View {
@@ -66,17 +65,6 @@ class MilestoneItemAdapter(
 
             itemView.work_recycler.layoutManager = LinearLayoutManager(context)
             itemView.work_recycler.adapter = mAdapter
-            itemView.work_recycler.isNestedScrollingEnabled = false
-            runLayoutAnimation(itemView.work_recycler)
-        }
-
-        private fun runLayoutAnimation(recyclerView: RecyclerView) {
-            val context = recyclerView.context
-            val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
-
-            recyclerView.layoutAnimation = controller
-            recyclerView.adapter.notifyDataSetChanged()
-            recyclerView.scheduleLayoutAnimation()
         }
     }
 
@@ -101,13 +89,19 @@ class MilestoneItemAdapter(
         mMilestones.addAll(milestones)
 
         for (milestoneId in displayedWorks.keys) {
-            mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, displayedWorks[milestoneId]!!))
+            val works = displayedWorks[milestoneId]!!
+            if (works.size < 3)
+                mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, works))
+            else
+                mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, works.subList(0,3)))
+
         }
         notifyDataSetChanged()
     }
 
     fun addMilestone(milestone: Milestone) {
-        mMilestones.add(mMilestones.lastIndex, milestone)
+        mMilestones.add(milestone)
+        mWorkAdapters.put(milestone.id, WorkItemAdapter(mView, milestone.id, listOf()))
         notifyItemInserted(mMilestones.indexOf(milestone))
     }
 

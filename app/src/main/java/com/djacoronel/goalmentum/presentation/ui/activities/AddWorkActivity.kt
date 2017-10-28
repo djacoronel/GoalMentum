@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
+import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.AddWorkPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.AddWorkPresenterImpl
@@ -28,6 +30,7 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
         setContentView(R.layout.activity_add_work)
 
         milestoneId = intent.getLongExtra("extra_milestone_id_key", -1)
+
         mAddWorkPresenter = AddWorkPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
@@ -36,29 +39,34 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
                 WorkRepositoryImpl()
         )
 
+        val customEditText = input_item_text
 
-        val customEditText = input_item_text as CustomEditText
-        customEditText.requestFocus()
         add_item_button.setOnClickListener {
             onClickAddWork(customEditText.text.toString())
         }
+
+        collapse_button.setOnClickListener { finish() }
 
         mAdapter = SimpleWorkItemAdapter(this, milestoneId)
         work_recycler.layoutManager = LinearLayoutManager(this)
         work_recycler.adapter = mAdapter
 
+        mAddWorkPresenter.getMilestoneById(milestoneId)
         mAddWorkPresenter.getAllWorkByAssignedMilestone(milestoneId)
-        showKeyboard()
+    }
+
+    override fun onMilestoneRetrieved(milestone: Milestone) {
+        expanded_milestone_card_text.text = milestone.description
+
+        if (milestone.achieved == true)
+            expanded_achieved_icon.visibility = View.VISIBLE
+        else
+            expanded_achieved_icon.visibility = View.GONE
     }
 
     fun showKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
     }
 
     override fun showProgress() {
@@ -82,5 +90,4 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
     override fun onWorkAdded(work: Work) {
         mAdapter.addWork(work)
     }
-
 }

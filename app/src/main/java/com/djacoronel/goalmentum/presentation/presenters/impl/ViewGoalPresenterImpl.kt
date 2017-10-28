@@ -56,7 +56,6 @@ class ViewGoalPresenterImpl(
 {
 
     override fun resume() {
-
     }
 
     override fun pause() {

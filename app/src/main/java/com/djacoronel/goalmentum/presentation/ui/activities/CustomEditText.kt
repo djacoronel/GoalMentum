@@ -15,7 +15,7 @@ class CustomEditText(internal var context: Context, attrs: AttributeSet) : andro
             val mgr = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             mgr.hideSoftInputFromWindow(this.windowToken, 0)
             // TODO: Hide your view as you do it in your activity
-            (context as AddWorkActivity).finish()
+            //(context as AddWorkActivity).finish()
         }
         return false
     }

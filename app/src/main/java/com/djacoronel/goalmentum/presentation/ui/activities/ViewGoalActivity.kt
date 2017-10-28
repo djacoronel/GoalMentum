@@ -56,6 +56,8 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
                 WorkRepositoryImpl()
         )
 
+        fab.setOnClickListener { onClickAddMilestone() }
+
         mAdapter = MilestoneItemAdapter(this)
         milestone_recycler.layoutManager = LinearLayoutManager(this)
         milestone_recycler.adapter = mAdapter
@@ -183,5 +185,10 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     override fun onGoalAchieved(goal: Goal) {
         toast("Goal Achieved! Hooray!")
         finish()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 }
