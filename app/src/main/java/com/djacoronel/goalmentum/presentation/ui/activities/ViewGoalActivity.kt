@@ -125,6 +125,8 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun onMilestoneAdded(milestone: Milestone) {
         mAdapter.addMilestone(milestone)
+        app_bar.setExpanded(false,true)
+        milestone_recycler.smoothScrollToPosition(mAdapter.itemCount)
     }
 
     override fun onClickEditMilestone(milestone: Milestone) {

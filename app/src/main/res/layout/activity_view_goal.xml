@@ -18,6 +18,7 @@
 
     <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
       android:layout_width="match_parent"
+      android:id="@+id/collapsing_toolbar"
       android:layout_height="match_parent"
       app:layout_scrollFlags="scroll|exitUntilCollapsed"
       app:maxLines="3">

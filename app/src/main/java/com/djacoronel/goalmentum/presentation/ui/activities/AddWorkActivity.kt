@@ -44,7 +44,8 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
         add_item_button.setOnClickListener {
             onClickAddWork(customEditText.text.toString())
         }
-
+        customEditText.requestFocus()
+        expanded_milestone_card_text.setOnClickListener { finish() }
         collapse_button.setOnClickListener { finish() }
 
         mAdapter = SimpleWorkItemAdapter(this, milestoneId)
