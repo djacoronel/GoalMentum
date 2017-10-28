@@ -107,7 +107,11 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long, 
 
     fun updateWork(work: Work){
         val workToBeUpdated = mWorks.find { it.id == work.id }
-        workToBeUpdated?.description = work.description
+        workToBeUpdated?.let {
+            it.description = work.description
+            it.achieved = work.achieved
+            it.dateAchieved = work.dateAchieved
+        }
         notifyItemChanged(mWorks.indexOf(workToBeUpdated))
     }
 }

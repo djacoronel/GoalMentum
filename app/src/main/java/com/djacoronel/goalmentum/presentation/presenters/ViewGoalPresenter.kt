@@ -28,10 +28,9 @@ interface ViewGoalPresenter : BasePresenter {
 
         fun onExpandMilestone(milestoneId: Long)
 
-
-        fun onWorkUpdated(work: Work)
-
         fun onClickToggleWork(work: Work)
+
+        fun onWorkToggled(work: Work)
 
 
         fun onAllMilestonesAchieved()
@@ -47,17 +46,11 @@ interface ViewGoalPresenter : BasePresenter {
 
     fun deleteMilestone(milestoneId: Long)
 
-    fun addNewWork(milestoneId: Long, description: String)
-
-    fun getAllWorkByAssignedMilestone(milestoneId: Long)
-
-    fun updateWork(work: Work)
-
-    fun deleteWork(work: Work)
-
-    fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>)
+    fun toggleMilestoneAchieveStatus(milestoneId: Long)
 
     fun updateGoalMomentum(goalId: Long, momentum: Int)
 
     fun achieveGoal(goalId: Long)
+
+    fun toggleWork(work: Work)
 }

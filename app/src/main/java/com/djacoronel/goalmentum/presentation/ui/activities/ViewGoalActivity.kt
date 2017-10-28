@@ -25,7 +25,6 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.EditorInfo
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
-import com.djacoronel.goalmentum.util.DateUtils
 import org.jetbrains.anko.toast
 
 
@@ -162,23 +161,17 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         startActivity(intent)
     }
 
-    override fun onWorkUpdated(work: Work) {
-    }
-
     override fun onClickToggleWork(work: Work) {
-        work.achieved = !work.achieved
-        if (work.achieved == true)
-            work.dateAchieved = DateUtils.today
-        mViewGoalPresenter.updateWork(work)
-
-        val milestone = mAdapter.mMilestones.find { it.id == work.assignedMilestone }
-        val works = mAdapter.mWorkAdapters[work.assignedMilestone]?.mWorks
-        mViewGoalPresenter.toggleMilestoneAchieveStatus(milestone!!, works!!)
+        mViewGoalPresenter.toggleWork(work)
 
         val momentum = if (work.achieved == true) 10 else -10
         mViewGoalPresenter.updateGoalMomentum(goalId, momentum)
     }
 
+    override fun onWorkToggled(work: Work) {
+        mViewGoalPresenter.toggleMilestoneAchieveStatus(work.assignedMilestone)
+        mAdapter.updateWork(work)
+    }
 
     override fun onAllMilestonesAchieved() {
         mViewGoalPresenter.achieveGoal(goalId)

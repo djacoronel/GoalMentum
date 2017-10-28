@@ -1,28 +1,15 @@
 package com.djacoronel.goalmentum.presentation.presenters.impl
 
-import android.util.Log
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
-import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndSetAchievedInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndUpdateMomentumInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
-import com.djacoronel.goalmentum.domain.interactors.base.work.AddWorkInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.work.DeleteWorkInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.work.EditWorkInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.work.ToggleWorkAchieveStatusInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdAndSetAchievedInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdAndUpdateMomentumImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.AddMilestoneInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.DeleteMilestoneInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.EditMilestoneInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.GetAllMilestonesByAssignedGoalInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.work.AddWorkInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.work.DeleteWorkInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.work.EditWorkInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.work.GetWorksByAssignedMilestoneInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.milestone.*
+import com.djacoronel.goalmentum.domain.interactors.impl.work.ToggleWorkAchieveStatusInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
@@ -47,12 +34,10 @@ class ViewGoalPresenterImpl(
         EditMilestoneInteractor.Callback,
         GetAllMilestonesByAssignedGoalInteractor.Callback,
         DeleteMilestoneInteractor.Callback,
-        AddWorkInteractor.Callback,
-        EditWorkInteractor.Callback,
-        GetAllWorksByAssignedMilestoneInteractor.Callback,
-        DeleteWorkInteractor.Callback,
         GetGoalByIdAndUpdateMomentumInteractor.Callback,
-        GetGoalByIdAndSetAchievedInteractor.Callback
+        GetGoalByIdAndSetAchievedInteractor.Callback,
+        ToggleMilestoneAchieveStatusInteractor.Callback,
+        ToggleWorkAchieveStatusInteractor.Callback
 {
 
     override fun resume() {
@@ -92,7 +77,6 @@ class ViewGoalPresenterImpl(
     }
 
     override fun noMilestonesFound() {
-
     }
 
 
@@ -144,81 +128,16 @@ class ViewGoalPresenterImpl(
         mView.onMilestoneDeleted(milestoneId)
     }
 
-
-    override fun getAllWorkByAssignedMilestone(milestoneId: Long) {
-        val getWorksInteractor = GetWorksByAssignedMilestoneInteractorImpl(
+    override fun toggleMilestoneAchieveStatus(milestoneId: Long) {
+        val toggleMilestoneAchieveStatusInteractor = ToggleMilestoneAchieveStatusInteractorImpl(
                 mExecutor,
                 mMainThread,
-                mWorkRepository,
                 this,
+                mMilestoneRepository,
+                mWorkRepository,
                 milestoneId
         )
-        getWorksInteractor.execute()
-    }
-
-    override fun onWorksRetrieved(milestoneId: Long, works: List<Work>) {
-    }
-
-
-    override fun addNewWork(milestoneId: Long, description: String) {
-        val addWorkInteractor = AddWorkInteractorImpl(
-                mExecutor,
-                mMainThread,
-                this,
-                mWorkRepository,
-                milestoneId,
-                description
-        )
-        addWorkInteractor.execute()
-    }
-
-    override fun onWorkAdded(work: Work) {
-    }
-
-
-    override fun updateWork(work: Work) {
-        val editWorkInteractor = EditWorkInteractorImpl(
-                mExecutor,
-                mMainThread,
-                this,
-                mWorkRepository,
-                work
-        )
-        editWorkInteractor.execute()
-    }
-
-    override fun onWorkUpdated(work: Work) {
-        mView.onWorkUpdated(work)
-    }
-
-
-    override fun deleteWork(work: Work) {
-        val deleteWorkInteractor = DeleteWorkInteractorImpl(
-                mExecutor,
-                mMainThread,
-                work,
-                this,
-                mWorkRepository
-        )
-        deleteWorkInteractor.execute()
-    }
-
-    override fun onWorkDeleted(work: Work) {
-    }
-
-    override fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>) {
-        val worksAchieved = works.filter { it.achieved == true }
-        val worksWithoutInputItem = works.filter { it.description != "Input Work" }.size
-        val isAllWorkAchieved = worksAchieved.size == worksWithoutInputItem
-
-        if (isAllWorkAchieved && milestone.achieved == false) {
-            milestone.achieved = true
-            updateMilestone(milestone)
-
-        } else if (!isAllWorkAchieved && milestone.achieved == true) {
-            milestone.achieved = false
-            updateMilestone(milestone)
-        }
+        toggleMilestoneAchieveStatusInteractor.execute()
     }
 
     override fun updateGoalMomentum(goalId: Long, momentum: Int) {
@@ -230,14 +149,17 @@ class ViewGoalPresenterImpl(
                 goalId,
                 momentum
         )
-
         getGoalByIdAndUpdateMomentumInteractor.execute()
+    }
+
+    override fun onMilestoneAchieveStatusUpdated(milestone: Milestone) {
+        mView.onMilestoneUpdated(milestone)
     }
 
     override fun onGoalMomentumUpdated(goal: Goal) {
     }
 
-    override fun achieveGoal(goalId: Long){
+    override fun achieveGoal(goalId: Long) {
         val getGoalByIdAndSetAchievedInteractor = GetGoalByIdAndSetAchievedInteractorImpl(
                 mExecutor,
                 mMainThread,
@@ -251,5 +173,20 @@ class ViewGoalPresenterImpl(
 
     override fun onGoalAchieved(goal: Goal) {
         mView.onGoalAchieved(goal)
+    }
+
+    override fun toggleWork(work: Work) {
+        val toggleWorkAchieveStatusInteractor = ToggleWorkAchieveStatusInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mWorkRepository,
+                work
+        )
+        toggleWorkAchieveStatusInteractor.execute()
+    }
+
+    override fun onWorkAchieveStatusToggled(work: Work) {
+        mView.onWorkToggled(work)
     }
 }

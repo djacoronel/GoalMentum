@@ -93,7 +93,7 @@ class MilestoneItemAdapter(
             if (works.size < 3)
                 mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, works))
             else
-                mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, works.subList(0,3)))
+                mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, works.subList(0, 3)))
 
         }
         notifyDataSetChanged()
@@ -107,10 +107,14 @@ class MilestoneItemAdapter(
 
     fun updateMilestone(milestone: Milestone) {
         val milestoneToBeUpdated = mMilestones.find { it.id == milestone.id }
-        milestoneToBeUpdated?.description = milestone.description
-        notifyItemChanged(mMilestones.indexOf(milestoneToBeUpdated))
-
-        checkGoalAchieveStatus()
+        milestoneToBeUpdated?.let {
+            if(it.description != milestone.description || it.achieved != milestone.achieved){
+                it.description = milestone.description
+                it.achieved = milestone.achieved
+                notifyItemChanged(mMilestones.indexOf(milestoneToBeUpdated))
+                checkGoalAchieveStatus()
+            }
+        }
     }
 
     fun checkGoalAchieveStatus() {
@@ -128,5 +132,9 @@ class MilestoneItemAdapter(
         val index = mMilestones.indexOf(milestoneToBeDeleted)
         mMilestones.removeAt(index)
         notifyItemRemoved(index)
+    }
+
+    fun updateWork(work: Work) {
+        mWorkAdapters[work.assignedMilestone]?.updateWork(work)
     }
 }
