@@ -15,9 +15,8 @@ import kotlinx.android.synthetic.main.input_recyler_item.view.*
 /**
  * Created by djacoronel on 10/10/17.
  */
-class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long, val mWorks: List<Work>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         WorkRecyclerClickListener {
-    val mWorks = mutableListOf<Work>()
 
     private enum class ViewType {
         NORMAL_CARD, INPUT_CARD
@@ -44,7 +43,7 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == mWorks.lastIndex)
+        return if (false)
             ViewType.INPUT_CARD.ordinal
         else
             ViewType.NORMAL_CARD.ordinal
@@ -94,45 +93,21 @@ class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long) 
     }
 
     override fun onClickAddWork() {
-        mView.onClickAddWork(milestoneId)
     }
 
     override fun onClickEditWork(position: Int) {
-        mView.onClickEditWork(mWorks[position])
     }
 
     override fun onClickDeleteWork(position: Int) {
-        mView.onClickDeleteWork(mWorks[position])
     }
 
     override fun onClickToggleWork(position: Int) {
         mView.onClickToggleWork(mWorks[position])
     }
 
-
-    fun showWorks(works: List<Work>) {
-        mWorks.clear()
-        mWorks.addAll(works)
-        val inputWorkEntry = Work(0, "Input Work")
-        mWorks.add(inputWorkEntry)
-        notifyDataSetChanged()
-    }
-
-    fun addWork(work: Work){
-        mWorks.add(mWorks.lastIndex,work)
-        notifyItemInserted(mWorks.indexOf(work))
-    }
-
     fun updateWork(work: Work){
         val workToBeUpdated = mWorks.find { it.id == work.id }
         workToBeUpdated?.description = work.description
         notifyItemChanged(mWorks.indexOf(workToBeUpdated))
-    }
-
-    fun deleteWork(work: Work){
-        val workToBeDeleted = mWorks.find { it.id == work.id }
-        val index = mWorks.indexOf(workToBeDeleted)
-        mWorks.removeAt(index)
-        notifyItemRemoved(index)
     }
 }

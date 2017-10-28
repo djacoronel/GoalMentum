@@ -1,6 +1,7 @@
 package com.djacoronel.goalmentum.presentation.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -94,8 +95,8 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         return view
     }
 
-    override fun showMilestones(milestones: List<Milestone>) {
-        mAdapter.showMilestones(milestones)
+    override fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>) {
+        mAdapter.showMilestones(milestones,displayedWorks)
         runLayoutAnimation(milestone_recycler)
     }
 
@@ -152,56 +153,12 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onExpandMilestone(milestoneId: Long) {
-        mViewGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
-    }
-
-
-    override fun showWorks(milestoneId: Long, works: List<Work>) {
-        mAdapter.mWorkAdapters[milestoneId]?.showWorks(works)
-    }
-
-    override fun onClickAddWork(milestoneId: Long) {
-        val view = createInputDialogView()
-        val alert = alert { customView = view }.show()
-
-        view.input_item_text.hint = "Work Description"
-        view.add_item_button.setOnClickListener {
-            mViewGoalPresenter.addNewWork(milestoneId, view.input_item_text.text.toString())
-            hideKeyboard(view)
-            alert.dismiss()
-        }
-    }
-
-    override fun onWorkAdded(work: Work) {
-        mAdapter.mWorkAdapters[work.assignedMilestone]?.addWork(work)
-    }
-
-    override fun onClickEditWork(work: Work) {
-        val view = createInputDialogView()
-        val alert = alert { customView = view }.show()
-
-        view.input_item_text.hint = "Work Description"
-        view.input_item_text.setText(work.description)
-        view.add_item_button.setOnClickListener {
-            work.description = view.input_item_text.text.toString()
-            mAdapter.notifyDataSetChanged()
-            mViewGoalPresenter.updateWork(work)
-
-            hideKeyboard(view)
-            alert.dismiss()
-        }
+        val intent = Intent(this, AddWorkActivity::class.java)
+        intent.putExtra("extra_milestone_id_key", milestoneId)
+        startActivity(intent)
     }
 
     override fun onWorkUpdated(work: Work) {
-        mAdapter.mWorkAdapters[work.assignedMilestone]?.updateWork(work)
-    }
-
-    override fun onClickDeleteWork(work: Work) {
-        mViewGoalPresenter.deleteWork(work)
-    }
-
-    override fun onWorkDeleted(work: Work) {
-        mAdapter.mWorkAdapters[work.assignedMilestone]?.deleteWork(work)
     }
 
     override fun onClickToggleWork(work: Work) {

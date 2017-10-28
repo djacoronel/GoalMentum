@@ -6,7 +6,9 @@ import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.GetAllMilestonesByAssignedGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.GetAllMilestonesInteractor
 import com.djacoronel.goalmentum.domain.model.Milestone
+import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
+import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import java.util.*
 
 /**
@@ -18,19 +20,18 @@ class GetAllMilestonesByAssignedGoalInteractorImpl(
         mainThread: MainThread,
         private val mGoalId: Long,
         private val mMilestoneRepository: MilestoneRepository,
+        private val mWorkRepository: WorkRepository,
         private val mCallback: GetAllMilestonesByAssignedGoalInteractor.Callback
 ) : AbstractInteractor(threadExecutor, mainThread), GetAllMilestonesInteractor {
-
-    private val mMilestoneComparator = Comparator<Milestone> { lhs, rhs ->
-        if (lhs.date!!.before(rhs.date))
-            return@Comparator 1
-
-        if (rhs.date!!.before(lhs.date)) -1 else 0
-    }
-
     override fun run() {
         val milestones = mMilestoneRepository.getMilestonesByAssignedGoal(mGoalId)
-        //Collections.sort(milestones, mMilestoneComparator)
-        mMainThread.post(Runnable { mCallback.onMilestonesRetrieved(milestones) })
+        val displayedWorks = hashMapOf<Long, List<Work>>()
+
+        for (milestone in milestones){
+            val works = mWorkRepository.getWorksByAssignedMilestone(milestone.id)
+            displayedWorks.put(milestone.id, works)
+        }
+
+        mMainThread.post(Runnable { mCallback.onMilestonesRetrieved(milestones, displayedWorks) })
     }
 }

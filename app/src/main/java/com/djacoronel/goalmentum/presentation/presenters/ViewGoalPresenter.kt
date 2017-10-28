@@ -12,7 +12,7 @@ interface ViewGoalPresenter : BasePresenter {
 
     interface View : BaseView {
 
-        fun showMilestones(milestones: List<Milestone>)
+        fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>)
 
         fun onClickAddMilestone()
 
@@ -29,19 +29,7 @@ interface ViewGoalPresenter : BasePresenter {
         fun onExpandMilestone(milestoneId: Long)
 
 
-        fun showWorks(milestoneId: Long, works: List<Work>)
-
-        fun onClickAddWork(milestoneId: Long)
-
-        fun onWorkAdded(work: Work)
-
-        fun onClickEditWork(work: Work)
-
         fun onWorkUpdated(work: Work)
-
-        fun onClickDeleteWork(work: Work)
-
-        fun onWorkDeleted(work: Work)
 
         fun onClickToggleWork(work: Work)
 

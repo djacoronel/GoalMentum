@@ -82,13 +82,14 @@ class ViewGoalPresenterImpl(
                 mMainThread,
                 goalId,
                 mMilestoneRepository,
+                mWorkRepository,
                 this
         )
         getMilestonesInteractor.execute()
     }
 
-    override fun onMilestonesRetrieved(milestones: List<Milestone>) {
-        mView.showMilestones(milestones)
+    override fun onMilestonesRetrieved(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>) {
+        mView.showMilestones(milestones, displayedWorks)
     }
 
     override fun noMilestonesFound() {
@@ -157,7 +158,6 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onWorksRetrieved(milestoneId: Long, works: List<Work>) {
-        mView.showWorks(milestoneId, works)
     }
 
 
@@ -174,7 +174,6 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onWorkAdded(work: Work) {
-        mView.onWorkAdded(work)
     }
 
 
@@ -206,7 +205,6 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onWorkDeleted(work: Work) {
-        mView.onWorkDeleted(work)
     }
 
     override fun toggleMilestoneAchieveStatus(milestone: Milestone, works: List<Work>) {

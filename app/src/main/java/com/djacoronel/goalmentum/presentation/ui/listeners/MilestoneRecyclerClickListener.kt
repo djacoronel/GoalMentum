@@ -6,7 +6,6 @@ package com.djacoronel.goalmentum.presentation.ui.listeners
 interface MilestoneRecyclerClickListener {
 
     fun onClickExpandMilestone(position: Int)
-    fun onClickCollapseMilestone(position: Int)
     fun onClickAddMilestone()
     fun onClickEditMilestone(position: Int)
     fun onClickDeleteMilestone(position: Int)
