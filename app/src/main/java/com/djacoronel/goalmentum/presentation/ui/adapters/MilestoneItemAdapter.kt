@@ -21,7 +21,7 @@ class MilestoneItemAdapter(
         val mView: ViewGoalPresenter.View
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), MilestoneRecyclerClickListener {
     val mMilestones = mutableListOf<Milestone>()
-    val mWorkAdapters = hashMapOf<Long, WorkItemAdapter>()
+    val mWorkAdapters = hashMapOf<Long, CollapsedWorkItemAdapter>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(parent.inflate(R.layout.milestone_item), this)
@@ -38,7 +38,7 @@ class MilestoneItemAdapter(
     override fun getItemCount() = mMilestones.size
 
     class ViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
-        fun bind(milestone: Milestone, mAdapter: WorkItemAdapter) = with(itemView) {
+        fun bind(milestone: Milestone, mAdapter: CollapsedWorkItemAdapter) = with(itemView) {
             expanded_milestone_card_text.text = milestone.description
 
             if (milestone.achieved == true)
@@ -91,9 +91,9 @@ class MilestoneItemAdapter(
         for (milestoneId in displayedWorks.keys) {
             val works = displayedWorks[milestoneId]!!
             if (works.size < 3)
-                mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, works))
+                mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, milestoneId, works))
             else
-                mWorkAdapters.put(milestoneId, WorkItemAdapter(mView, milestoneId, works.subList(0, 3)))
+                mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, milestoneId, works.subList(0, 3)))
 
         }
         notifyDataSetChanged()
@@ -101,7 +101,7 @@ class MilestoneItemAdapter(
 
     fun addMilestone(milestone: Milestone) {
         mMilestones.add(milestone)
-        mWorkAdapters.put(milestone.id, WorkItemAdapter(mView, milestone.id, listOf()))
+        mWorkAdapters.put(milestone.id, CollapsedWorkItemAdapter(mView, milestone.id, listOf()))
         notifyItemInserted(mMilestones.indexOf(milestone))
     }
 

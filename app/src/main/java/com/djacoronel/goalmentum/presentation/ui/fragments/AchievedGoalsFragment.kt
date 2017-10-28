@@ -115,15 +115,6 @@ class AchievedGoalsFragment : Fragment(), GoalPresenter.View {
 
     override fun onResume() {
         super.onResume()
-        mGoalPresenter.resume()
-    }
-
-    override fun showProgress() {
-    }
-
-    override fun hideProgress() {
-    }
-
-    override fun showError(message: String) {
+        mGoalPresenter.getAllGoals()
     }
 }

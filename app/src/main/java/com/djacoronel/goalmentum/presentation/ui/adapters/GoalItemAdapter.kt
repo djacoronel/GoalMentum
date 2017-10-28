@@ -140,11 +140,6 @@ class GoalItemAdapter(val mView: GoalPresenter.View)
         notifyDataSetChanged()
     }
 
-    fun addGoal(goal: Goal) {
-        mGoals.add(mGoals.lastIndex, goal)
-        notifyItemInserted(mGoals.indexOf(goal))
-    }
-
     fun updateGoal(goal: Goal) {
         val goalToBeUpdated = mGoals.find { it.id == goal.id }
         goalToBeUpdated?.description = goal.description

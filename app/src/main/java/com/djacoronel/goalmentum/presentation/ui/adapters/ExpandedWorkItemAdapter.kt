@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.work_item.view.*
 /**
  * Created by djacoronel on 10/10/17.
  */
-class SimpleWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         SimpleWorkRecyclerClickListener {
     val mWorks = mutableListOf<Work>()
 

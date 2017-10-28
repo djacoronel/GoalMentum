@@ -1,18 +1,16 @@
 package com.djacoronel.goalmentum.presentation.ui.activities
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.AddWorkPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.AddWorkPresenterImpl
-import com.djacoronel.goalmentum.presentation.ui.adapters.SimpleWorkItemAdapter
+import com.djacoronel.goalmentum.presentation.ui.adapters.ExpandedWorkItemAdapter
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
@@ -21,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_add_work.*
 
 class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
 
-    lateinit var mAdapter: SimpleWorkItemAdapter
+    lateinit var mAdapter: ExpandedWorkItemAdapter
     lateinit var mAddWorkPresenter: AddWorkPresenter
     var milestoneId: Long = 0
 
@@ -48,7 +46,7 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
         expanded_milestone_card_text.setOnClickListener { finish() }
         collapse_button.setOnClickListener { finish() }
 
-        mAdapter = SimpleWorkItemAdapter(this, milestoneId)
+        mAdapter = ExpandedWorkItemAdapter(this, milestoneId)
         work_recycler.layoutManager = LinearLayoutManager(this)
         work_recycler.adapter = mAdapter
 

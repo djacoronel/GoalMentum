@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.input_recyler_item.view.*
 /**
  * Created by djacoronel on 10/10/17.
  */
-class WorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long, val mWorks: List<Work>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+class CollapsedWorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long, val mWorks: List<Work>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         WorkRecyclerClickListener {
 
     private enum class ViewType {
