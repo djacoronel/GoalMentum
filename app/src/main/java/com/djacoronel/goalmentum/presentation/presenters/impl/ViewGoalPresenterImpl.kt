@@ -37,28 +37,7 @@ class ViewGoalPresenterImpl(
         GetGoalByIdAndUpdateMomentumInteractor.Callback,
         GetGoalByIdAndSetAchievedInteractor.Callback,
         ToggleMilestoneAchieveStatusInteractor.Callback,
-        ToggleWorkAchieveStatusInteractor.Callback
-{
-
-    override fun resume() {
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun stop() {
-
-    }
-
-    override fun destroy() {
-
-    }
-
-    override fun onError(message: String) {
-
-    }
-
+        ToggleWorkAchieveStatusInteractor.Callback {
 
     override fun getAllMilestonesByAssignedGoal(goalId: Long) {
         val getMilestonesInteractor = GetAllMilestonesByAssignedGoalInteractorImpl(
@@ -128,6 +107,23 @@ class ViewGoalPresenterImpl(
         mView.onMilestoneDeleted(milestoneId)
     }
 
+
+    override fun toggleWork(work: Work) {
+        val toggleWorkAchieveStatusInteractor = ToggleWorkAchieveStatusInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mWorkRepository,
+                work
+        )
+        toggleWorkAchieveStatusInteractor.execute()
+    }
+
+    override fun onWorkAchieveStatusToggled(work: Work) {
+        mView.onWorkToggled(work)
+    }
+
+
     override fun toggleMilestoneAchieveStatus(milestoneId: Long) {
         val toggleMilestoneAchieveStatusInteractor = ToggleMilestoneAchieveStatusInteractorImpl(
                 mExecutor,
@@ -139,6 +135,11 @@ class ViewGoalPresenterImpl(
         )
         toggleMilestoneAchieveStatusInteractor.execute()
     }
+
+    override fun onMilestoneAchieveStatusUpdated(milestone: Milestone) {
+        mView.onMilestoneUpdated(milestone)
+    }
+
 
     override fun updateGoalMomentum(goalId: Long, momentum: Int) {
         val getGoalByIdAndUpdateMomentumInteractor = GetGoalByIdAndUpdateMomentumImpl(
@@ -152,12 +153,9 @@ class ViewGoalPresenterImpl(
         getGoalByIdAndUpdateMomentumInteractor.execute()
     }
 
-    override fun onMilestoneAchieveStatusUpdated(milestone: Milestone) {
-        mView.onMilestoneUpdated(milestone)
-    }
-
     override fun onGoalMomentumUpdated(goal: Goal) {
     }
+
 
     override fun achieveGoal(goalId: Long) {
         val getGoalByIdAndSetAchievedInteractor = GetGoalByIdAndSetAchievedInteractorImpl(
@@ -173,20 +171,5 @@ class ViewGoalPresenterImpl(
 
     override fun onGoalAchieved(goal: Goal) {
         mView.onGoalAchieved(goal)
-    }
-
-    override fun toggleWork(work: Work) {
-        val toggleWorkAchieveStatusInteractor = ToggleWorkAchieveStatusInteractorImpl(
-                mExecutor,
-                mMainThread,
-                this,
-                mWorkRepository,
-                work
-        )
-        toggleWorkAchieveStatusInteractor.execute()
-    }
-
-    override fun onWorkAchieveStatusToggled(work: Work) {
-        mView.onWorkToggled(work)
     }
 }

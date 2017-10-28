@@ -65,15 +65,6 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
             expanded_achieved_icon.visibility = View.GONE
     }
 
-    override fun showProgress() {
-    }
-
-    override fun hideProgress() {
-    }
-
-    override fun showError(message: String) {
-    }
-
 
     override fun showWorks(milestoneId: Long, works: List<Work>) {
         mAdapter.showWorks(works)

@@ -1,15 +1,12 @@
 package com.djacoronel.goalmentum.presentation.presenters
 
-import com.djacoronel.goalmentum.presentation.ui.BaseView
-
-
 
 /**
  * Created by djacoronel on 10/9/17.
  */
-interface AddGoalPresenter : BasePresenter {
+interface AddGoalPresenter {
 
-    interface View : BaseView {
+    interface View {
         fun onGoalAdded(goalId: Long)
     }
 

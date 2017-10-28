@@ -64,15 +64,6 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 
-    override fun showProgress() {
-    }
-
-    override fun hideProgress() {
-    }
-
-    override fun showError(message: String) {
-    }
-
     fun showKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)

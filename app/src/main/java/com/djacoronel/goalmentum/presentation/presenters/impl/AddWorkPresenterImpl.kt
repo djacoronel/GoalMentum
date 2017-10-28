@@ -32,21 +32,6 @@ class AddWorkPresenterImpl(
         AddWorkInteractor.Callback,
         GetMilestoneByIdInteractor.Callback
 {
-    override fun resume() {
-    }
-
-    override fun pause() {
-    }
-
-    override fun stop() {
-    }
-
-    override fun destroy() {
-    }
-
-    override fun onError(message: String) {
-    }
-
 
     override fun addNewWork(milestoneId: Long, description: String) {
         val addWorkInteractor = AddWorkInteractorImpl(

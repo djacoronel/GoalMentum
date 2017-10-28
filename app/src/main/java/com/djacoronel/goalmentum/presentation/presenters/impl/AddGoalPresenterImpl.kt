@@ -24,27 +24,6 @@ class AddGoalPresenterImpl(
         private val mMilestoneRepository: MilestoneRepository
 ) : AbstractPresenter(executor, mainThread), AddGoalPresenter, AddGoalInteractor.Callback, AddMilestoneInteractor.Callback {
 
-    override fun resume() {
-
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun stop() {
-
-    }
-
-    override fun destroy() {
-
-    }
-
-    override fun onError(message: String) {
-
-    }
-
-
     override fun addNewGoal(description: String, duration: String) {
         val addGoalInteractor = AddGoalInteractorImpl(
                 mExecutor,

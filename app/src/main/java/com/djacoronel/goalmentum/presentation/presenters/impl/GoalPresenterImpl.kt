@@ -26,26 +26,6 @@ class GoalPresenterImpl(
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), GoalPresenter, GetAllGoalsInteractor.Callback, DeleteGoalInteractor.Callback {
 
-    override fun resume() {
-        getAllGoals()
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun stop() {
-
-    }
-
-    override fun destroy() {
-
-    }
-
-    override fun onError(message: String) {
-
-    }
-
     override fun getAllGoals() {
         val getGoalsInteractor = GetAllGoalsInteractorImpl(
                 mExecutor,

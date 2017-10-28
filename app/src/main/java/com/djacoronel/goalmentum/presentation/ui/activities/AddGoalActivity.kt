@@ -75,13 +75,4 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
         toast("New goal saved!")
         finish()
     }
-
-    override fun showProgress() {
-    }
-
-    override fun hideProgress() {
-    }
-
-    override fun showError(message: String) {
-    }
 }

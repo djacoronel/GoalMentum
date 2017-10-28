@@ -1,14 +1,13 @@
 package com.djacoronel.goalmentum.presentation.presenters
 
 import com.djacoronel.goalmentum.domain.model.Goal
-import com.djacoronel.goalmentum.presentation.ui.BaseView
 
 /**
  * Created by djacoronel on 10/7/17.
  */
-interface GoalPresenter : BasePresenter {
+interface GoalPresenter {
 
-    interface View : BaseView {
+    interface View {
 
         fun showGoals(goals: List<Goal>)
 

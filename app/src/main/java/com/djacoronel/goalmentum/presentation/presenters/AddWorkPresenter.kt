@@ -2,14 +2,13 @@ package com.djacoronel.goalmentum.presentation.presenters
 
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
-import com.djacoronel.goalmentum.presentation.ui.BaseView
 
 /**
  * Created by djacoronel on 10/9/17.
  */
-interface AddWorkPresenter : BasePresenter {
+interface AddWorkPresenter {
 
-    interface View : BaseView {
+    interface View {
 
         fun onMilestoneRetrieved(milestone: Milestone)
 
