@@ -64,7 +64,7 @@ class AchievedGoalsFragment : Fragment(), GoalPresenter.View {
     }
 
     override fun showGoals(goals: List<Goal>) {
-        mAdapter.showGoals(goals)
+        mAdapter.showGoals(goals.reversed())
         view?.let { runLayoutAnimation(it.goal_recycler) }
     }
 
