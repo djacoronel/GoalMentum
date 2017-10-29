@@ -88,7 +88,9 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>) {
-        mAdapter.showMilestones(milestones,displayedWorks)
+        mAdapter.showMilestones(milestones, displayedWorks)
+        if (milestones.all { it.achieved == true })
+            mViewGoalPresenter.achieveGoal(goalId)
         runLayoutAnimation(milestone_recycler)
     }
 
@@ -115,7 +117,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun onMilestoneAdded(milestone: Milestone) {
         mAdapter.addMilestone(milestone)
-        app_bar.setExpanded(false,true)
+        app_bar.setExpanded(false, true)
         milestone_recycler.smoothScrollToPosition(mAdapter.itemCount)
     }
 
@@ -157,15 +159,17 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onWorkToggled(work: Work) {
+        mAdapter.updateWork(work)
+
         val momentum = if (work.achieved == true) 10 else -10
         mViewGoalPresenter.updateGoalMomentum(goalId, momentum)
         mViewGoalPresenter.toggleMilestoneAchieveStatus(work.assignedMilestone)
-        mAdapter.updateWork(work)
     }
 
     override fun onMilestoneAchieved(milestone: Milestone) {
-        mViewGoalPresenter.achieveGoal(goalId)
         mAdapter.updateMilestone(milestone)
+
+        mViewGoalPresenter.achieveGoal(goalId)
     }
 
     override fun onGoalAchieved(goal: Goal) {

@@ -107,11 +107,9 @@ class MilestoneItemAdapter(
     fun updateMilestone(milestone: Milestone) {
         val milestoneToBeUpdated = mMilestones.find { it.id == milestone.id }
         milestoneToBeUpdated?.let {
-            if (it.description != milestone.description || it.achieved != milestone.achieved) {
-                it.description = milestone.description
-                it.achieved = milestone.achieved
-                notifyItemChanged(mMilestones.indexOf(milestoneToBeUpdated))
-            }
+            it.description = milestone.description
+            it.achieved = milestone.achieved
+            notifyItemChanged(mMilestones.indexOf(it))
         }
     }
 
