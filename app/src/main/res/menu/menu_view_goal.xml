@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.djacoronel.goalmentum.presentation.ui.activities.ViewGoalActivity">
+    tools:context="com.djacoronel.goalmentum.presentation.ui.activities.GoalActivity">
     <item
         android:title="Edit" />
     <item

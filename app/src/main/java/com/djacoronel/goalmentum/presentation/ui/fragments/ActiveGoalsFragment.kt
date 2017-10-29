@@ -15,7 +15,7 @@ import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.GoalPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.activities.AddGoalActivity
-import com.djacoronel.goalmentum.presentation.ui.activities.ViewGoalActivity
+import com.djacoronel.goalmentum.presentation.ui.activities.GoalActivity
 import com.djacoronel.goalmentum.presentation.ui.adapters.GoalItemAdapter
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
@@ -79,7 +79,7 @@ class ActiveGoalsFragment : Fragment(), GoalPresenter.View {
     }
 
     override fun onClickViewGoal(goal: Goal) {
-        val intent = Intent(context, ViewGoalActivity::class.java)
+        val intent = Intent(context, GoalActivity::class.java)
         intent.putExtra(EXTRA_GOAL_ID, goal.id)
         intent.putExtra(EXTRA_GOAL_DESC, goal.description)
         startActivity(intent)

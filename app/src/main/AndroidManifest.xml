@@ -24,8 +24,8 @@
       android:name=".presentation.ui.activities.AddGoalActivity"/>
     <activity
       android:label="@string/title_activity_view_goal"
-      android:name=".presentation.ui.activities.ViewGoalActivity"/>
-    <activity android:name=".presentation.ui.activities.AddWorkActivity">
+      android:name=".presentation.ui.activities.GoalActivity"/>
+    <activity android:name=".presentation.ui.activities.MilestoneActivity">
     </activity>
   </application>
 

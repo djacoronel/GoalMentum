@@ -28,7 +28,7 @@ import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import org.jetbrains.anko.toast
 
 
-class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
+class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     private lateinit var mViewGoalPresenter: ViewGoalPresenter
     private lateinit var mAdapter: MilestoneItemAdapter
@@ -149,7 +149,7 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onExpandMilestone(milestoneId: Long) {
-        val intent = Intent(this, AddWorkActivity::class.java)
+        val intent = Intent(this, MilestoneActivity::class.java)
         intent.putExtra("extra_milestone_id_key", milestoneId)
         startActivity(intent)
     }

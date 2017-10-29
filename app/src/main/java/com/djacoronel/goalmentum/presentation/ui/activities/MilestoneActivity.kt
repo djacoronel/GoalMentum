@@ -17,7 +17,7 @@ import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.activity_add_work.*
 
 
-class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
+class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
 
     lateinit var mAdapter: ExpandedWorkItemAdapter
     lateinit var mAddWorkPresenter: AddWorkPresenter

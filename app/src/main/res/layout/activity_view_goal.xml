@@ -7,7 +7,7 @@
   android:descendantFocusability="beforeDescendants"
   android:fitsSystemWindows="true"
   android:focusableInTouchMode="true"
-  tools:context="com.djacoronel.goalmentum.presentation.ui.activities.ViewGoalActivity">
+  tools:context="com.djacoronel.goalmentum.presentation.ui.activities.GoalActivity">
 
   <android.support.design.widget.AppBarLayout
     android:id="@+id/app_bar"
