@@ -80,8 +80,8 @@ class ViewGoalPresenterImpl(
         val editMilestoneInteractor = EditMilestoneInteractorImpl(
                 mExecutor,
                 mMainThread,
-                this,
                 mMilestoneRepository,
+                this,
                 milestone
         )
         editMilestoneInteractor.execute()
@@ -96,9 +96,9 @@ class ViewGoalPresenterImpl(
         val deleteCostInteractor = DeleteMilestoneInteractorImpl(
                 mExecutor,
                 mMainThread,
-                milestoneId,
+                mMilestoneRepository,
                 this,
-                mMilestoneRepository
+                milestoneId
         )
         deleteCostInteractor.execute()
     }
