@@ -17,7 +17,13 @@ interface AddWorkPresenter {
         fun onClickAddWork(workDescription: String)
 
         fun onWorkAdded(work: Work)
+
+        fun onClickToggleWork(work: Work)
+
+        fun onWorkToggled(work: Work)
     }
+
+    fun toggleWork(work: Work)
 
     fun getMilestoneById(milestoneId: Long)
 

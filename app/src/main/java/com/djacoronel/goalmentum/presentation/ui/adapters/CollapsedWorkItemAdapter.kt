@@ -3,13 +3,15 @@ package com.djacoronel.goalmentum.presentation.ui.adapters
 import android.graphics.Paint
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.WorkRecyclerClickListener
 import kotlinx.android.synthetic.main.work_item.view.*
-import android.view.*
-import kotlinx.android.synthetic.main.input_recyler_item.view.*
 
 
 /**
@@ -18,45 +20,19 @@ import kotlinx.android.synthetic.main.input_recyler_item.view.*
 class CollapsedWorkItemAdapter(val mView: ViewGoalPresenter.View, val milestoneId: Long, val mWorks: List<Work>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         WorkRecyclerClickListener {
 
-    private enum class ViewType {
-        NORMAL_CARD, INPUT_CARD
-    }
-
     override fun getItemCount() = mWorks.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == ViewType.INPUT_CARD.ordinal)
-            InputViewHolder(parent.inflate(R.layout.input_recyler_item), this)
-        else
-            NormalViewHolder(parent.inflate(R.layout.work_item), this)
+        return NormalViewHolder(parent.inflate(R.layout.work_item), this)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        when (holder) {
-            is InputViewHolder -> holder.bind()
-            is NormalViewHolder -> holder.bind(mWorks[position])
-        }
+        (holder as NormalViewHolder).bind(mWorks[position])
+
     }
 
     private fun ViewGroup.inflate(layoutRes: Int): View {
         return LayoutInflater.from(context).inflate(layoutRes, this, false)
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (false)
-            ViewType.INPUT_CARD.ordinal
-        else
-            ViewType.NORMAL_CARD.ordinal
-    }
-
-
-    class InputViewHolder(itemView: View, private val mListener: WorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
-        fun bind() = with(itemView) {
-            itemView.input_recycler_text.text = "add something you can do"
-            itemView.setOnClickListener {
-                mListener.onClickAddWork()
-            }
-        }
     }
 
     class NormalViewHolder(itemView: View, private val mListener: WorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {

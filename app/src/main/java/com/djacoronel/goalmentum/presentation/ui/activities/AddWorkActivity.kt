@@ -44,7 +44,7 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
         }
 
         expanded_milestone_card_text.setOnClickListener { finish() }
-        collapse_button.setOnClickListener { finish() }
+        expand_button.setOnClickListener { finish() }
 
         mAdapter = ExpandedWorkItemAdapter(this, milestoneId)
         work_recycler.layoutManager = LinearLayoutManager(this)
@@ -76,5 +76,14 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
 
     override fun onWorkAdded(work: Work) {
         mAdapter.addWork(work)
+    }
+
+    override fun onClickToggleWork(work: Work) {
+        mAddWorkPresenter.toggleWork(work)
+    }
+
+    override fun onWorkToggled(work: Work) {
+        mAdapter.updateWork(work)
+        mAddWorkPresenter.getMilestoneById(milestoneId)
     }
 }

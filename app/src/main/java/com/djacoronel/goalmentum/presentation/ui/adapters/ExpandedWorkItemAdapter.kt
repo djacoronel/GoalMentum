@@ -63,6 +63,7 @@ class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId:
     }
 
     override fun onClickToggleWork(position: Int) {
+        mView.onClickToggleWork(mWorks[position])
     }
 
 
@@ -79,7 +80,11 @@ class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId:
 
     fun updateWork(work: Work) {
         val workToBeUpdated = mWorks.find { it.id == work.id }
-        workToBeUpdated?.description = work.description
+        workToBeUpdated?.let {
+            it.description = work.description
+            it.achieved = work.achieved
+            it.dateAchieved = work.dateAchieved
+        }
         notifyItemChanged(mWorks.indexOf(workToBeUpdated))
     }
 

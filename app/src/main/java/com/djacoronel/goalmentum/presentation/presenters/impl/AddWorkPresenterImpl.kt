@@ -5,8 +5,10 @@ import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.GetMilestoneByIdInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.AddWorkInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.work.ToggleWorkAchieveStatusInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.work.AddWorkInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.GetWorksByAssignedMilestoneInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.work.ToggleWorkAchieveStatusInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
@@ -30,7 +32,8 @@ class AddWorkPresenterImpl(
 ) : AbstractPresenter(executor, mainThread), AddWorkPresenter,
         GetAllWorksByAssignedMilestoneInteractor.Callback,
         AddWorkInteractor.Callback,
-        GetMilestoneByIdInteractor.Callback
+        GetMilestoneByIdInteractor.Callback,
+        ToggleWorkAchieveStatusInteractor.Callback
 {
 
     override fun addNewWork(milestoneId: Long, description: String) {
@@ -70,6 +73,7 @@ class AddWorkPresenterImpl(
                 mMainThread,
                 milestoneId,
                 mMilestoneRepository,
+                mWorkRepository,
                 this
         )
 
@@ -82,5 +86,20 @@ class AddWorkPresenterImpl(
 
     override fun noMilestoneFound() {
 
+    }
+
+    override fun toggleWork(work: Work) {
+        val toggleWorkAchieveStatusInteractor = ToggleWorkAchieveStatusInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mWorkRepository,
+                work
+        )
+        toggleWorkAchieveStatusInteractor.execute()
+    }
+
+    override fun onWorkAchieveStatusToggled(work: Work) {
+        mView.onWorkToggled(work)
     }
 }

@@ -27,7 +27,7 @@ class ToggleMilestoneAchieveStatusInteractorImpl(
         milestoneToEdit?.let {
             val works = workRepository.getWorksByAssignedMilestone(milestoneToEdit.id)
             val worksAchieved = works.filter { it.achieved == true }
-            val isAllWorkAchieved = worksAchieved.size == works.size
+            val isAllWorkAchieved = worksAchieved.size == works.size && works.isNotEmpty()
 
 
             if (isAllWorkAchieved && milestoneToEdit.achieved == false) {

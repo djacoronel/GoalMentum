@@ -39,18 +39,17 @@ class MilestoneItemAdapter(
 
     class ViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(milestone: Milestone, mAdapter: CollapsedWorkItemAdapter) = with(itemView) {
-            expanded_milestone_card_text.text = milestone.description
-
             if (milestone.achieved == true)
-                itemView.expanded_achieved_icon.visibility = View.VISIBLE
+                expanded_achieved_icon.visibility = View.VISIBLE
             else
-                itemView.expanded_achieved_icon.visibility = View.GONE
+                expanded_achieved_icon.visibility = View.GONE
 
-            itemView.setOnClickListener {
-                mListener.onClickExpandMilestone(adapterPosition)
-            }
-            itemView.setOnLongClickListener {
-                val popup = PopupMenu(context, this, Gravity.END)
+            expand_button.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
+
+            expanded_milestone_card_text.text = milestone.description
+            expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
+            expanded_milestone_card_text.setOnLongClickListener {
+                val popup = PopupMenu(context, expanded_milestone_card_text, Gravity.END)
                 popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
                     when (item.title) {
@@ -63,8 +62,8 @@ class MilestoneItemAdapter(
                 true
             }
 
-            itemView.work_recycler.layoutManager = LinearLayoutManager(context)
-            itemView.work_recycler.adapter = mAdapter
+            work_recycler.layoutManager = LinearLayoutManager(context)
+            work_recycler.adapter = mAdapter
         }
     }
 
@@ -108,7 +107,7 @@ class MilestoneItemAdapter(
     fun updateMilestone(milestone: Milestone) {
         val milestoneToBeUpdated = mMilestones.find { it.id == milestone.id }
         milestoneToBeUpdated?.let {
-            if(it.description != milestone.description || it.achieved != milestone.achieved){
+            if (it.description != milestone.description || it.achieved != milestone.achieved) {
                 it.description = milestone.description
                 it.achieved = milestone.achieved
                 notifyItemChanged(mMilestones.indexOf(milestoneToBeUpdated))
