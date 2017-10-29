@@ -1,24 +1,22 @@
 package com.djacoronel.goalmentum.presentation.ui.adapters
 
 import android.graphics.Paint
-import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
-import com.djacoronel.goalmentum.presentation.ui.listeners.WorkRecyclerClickListener
+import com.djacoronel.goalmentum.presentation.ui.listeners.CollapsedWorkRecyclerClickListener
 import kotlinx.android.synthetic.main.work_item.view.*
-
 
 /**
  * Created by djacoronel on 10/10/17.
  */
+
 class CollapsedWorkItemAdapter(val mView: ViewGoalPresenter.View, val mWorks: List<Work>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-        WorkRecyclerClickListener {
+        CollapsedWorkRecyclerClickListener {
 
     override fun getItemCount() = mWorks.size
 
@@ -35,13 +33,9 @@ class CollapsedWorkItemAdapter(val mView: ViewGoalPresenter.View, val mWorks: Li
         return LayoutInflater.from(context).inflate(layoutRes, this, false)
     }
 
-    class ViewHolder(itemView: View, private val mListener: WorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val mListener: CollapsedWorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(work: Work) = with(itemView) {
             work_card_text.text = work.description
-            setOnLongClickListener {
-                createAndShowPopupMenu()
-                true
-            }
 
             finish_button.setOnClickListener { mListener.onClickToggleWork(adapterPosition) }
 
@@ -53,28 +47,6 @@ class CollapsedWorkItemAdapter(val mView: ViewGoalPresenter.View, val mWorks: Li
                 work_card_text.paintFlags = 0
             }
         }
-
-        fun createAndShowPopupMenu() {
-            val popup = PopupMenu(itemView.context, itemView.work_card, Gravity.END)
-            popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
-            popup.setOnMenuItemClickListener { item ->
-                when (item.title) {
-                    "Edit" -> mListener.onClickEditWork(adapterPosition)
-                    "Delete" -> mListener.onClickDeleteWork(adapterPosition)
-                }
-                true
-            }
-            popup.show()
-        }
-    }
-
-    override fun onClickAddWork() {
-    }
-
-    override fun onClickEditWork(position: Int) {
-    }
-
-    override fun onClickDeleteWork(position: Int) {
     }
 
     override fun onClickToggleWork(position: Int) {

@@ -14,13 +14,17 @@ import com.djacoronel.goalmentum.domain.repository.WorkRepository
 class DeleteWorkInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val work: Work,
+        private val mWorkRepository: WorkRepository,
         private val mCallback: DeleteWorkInteractor.Callback,
-        private val mWorkRepository: WorkRepository
+        private val workId: Long
 ) : AbstractInteractor(threadExecutor, mainThread), DeleteWorkInteractor {
 
     override fun run() {
-        mWorkRepository.delete(work)
-        mMainThread.post(Runnable { mCallback.onWorkDeleted(work) })
+        val work = mWorkRepository.getWorkById(workId)
+
+        work?.let {
+            mWorkRepository.delete(it)
+            mMainThread.post(Runnable { mCallback.onWorkDeleted(it.id) })
+        }
     }
 }

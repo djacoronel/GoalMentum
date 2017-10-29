@@ -16,8 +16,8 @@ import java.util.*
 class EditMilestoneInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mCallback: EditMilestoneInteractor.Callback,
         private val mMilestoneRepository: MilestoneRepository,
+        private val mCallback: EditMilestoneInteractor.Callback,
         private val mUpdatedMilestone: Milestone
 ) : AbstractInteractor(threadExecutor, mainThread), EditMilestoneInteractor {
 

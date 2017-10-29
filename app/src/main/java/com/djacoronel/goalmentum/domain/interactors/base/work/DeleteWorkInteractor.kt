@@ -10,6 +10,6 @@ import com.djacoronel.goalmentum.domain.model.Work
 interface DeleteWorkInteractor : Interactor {
 
     interface Callback {
-        fun onWorkDeleted(work: Work)
+        fun onWorkDeleted(workId: Long)
     }
 }

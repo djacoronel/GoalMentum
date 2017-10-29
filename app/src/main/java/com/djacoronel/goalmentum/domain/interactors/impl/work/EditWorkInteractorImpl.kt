@@ -15,8 +15,8 @@ import java.util.*
 class EditWorkInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mCallback: EditWorkInteractor.Callback,
         private val mWorkRepository: WorkRepository,
+        private val mCallback: EditWorkInteractor.Callback,
         private val mUpdatedWork: Work
 ) : AbstractInteractor(threadExecutor, mainThread), EditWorkInteractor {
 

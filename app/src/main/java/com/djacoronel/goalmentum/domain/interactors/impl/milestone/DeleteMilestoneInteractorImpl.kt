@@ -13,18 +13,18 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 class DeleteMilestoneInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mMilestoneId: Long,
+        private val mMilestoneRepository: MilestoneRepository,
         private val mCallback: DeleteMilestoneInteractor.Callback,
-        private val mMilestoneRepository: MilestoneRepository
+        private val mMilestoneId: Long
 ) : AbstractInteractor(threadExecutor, mainThread), DeleteMilestoneInteractor {
 
     override fun run() {
 
         val milestone = mMilestoneRepository.getMilestoneById(mMilestoneId)
 
-        if (milestone != null) {
-            mMilestoneRepository.delete(milestone)
-            mMainThread.post(Runnable { mCallback.onMilestoneDeleted(milestone.id) })
+        milestone?.let {
+            mMilestoneRepository.delete(it)
+            mMainThread.post(Runnable { mCallback.onMilestoneDeleted(it.id) })
         }
     }
 }

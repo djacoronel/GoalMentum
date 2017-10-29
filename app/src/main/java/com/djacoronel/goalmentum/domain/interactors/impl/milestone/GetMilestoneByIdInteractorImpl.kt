@@ -14,10 +14,10 @@ import com.djacoronel.goalmentum.domain.repository.WorkRepository
 class GetMilestoneByIdInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val milestoneId: Long,
         private val milestoneRepository: MilestoneRepository,
         private val workRepository: WorkRepository,
-        private val callback: GetMilestoneByIdInteractor.Callback
+        private val callback: GetMilestoneByIdInteractor.Callback,
+        private val milestoneId: Long
 ) : AbstractInteractor(threadExecutor, mainThread), GetMilestoneByIdInteractor {
 
     override fun run() {
@@ -36,7 +36,6 @@ class GetMilestoneByIdInteractorImpl(
             } else if (!isAllWorkAchieved && milestone.achieved == true) {
                 milestone.achieved = false
                 milestoneRepository.update(milestone)
-
             }
 
             mMainThread.post(Runnable { callback.onMilestoneRetrieved(milestone) })

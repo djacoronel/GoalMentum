@@ -27,6 +27,10 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_work)
 
+        init()
+    }
+
+    private fun init(){
         milestoneId = intent.getLongExtra("extra_milestone_id_key", -1)
 
         mAddWorkPresenter = AddWorkPresenterImpl(
@@ -37,12 +41,7 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
                 WorkRepositoryImpl()
         )
 
-        val customEditText = input_item_text
-
-        add_item_button.setOnClickListener {
-            onClickAddWork(customEditText.text.toString())
-        }
-
+        add_item_button.setOnClickListener { onClickAddWork(input_item_text.text.toString()) }
         expanded_milestone_card_text.setOnClickListener { finish() }
         expand_button.setOnClickListener { finish() }
 
@@ -56,13 +55,9 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
 
     override fun onMilestoneRetrieved(milestone: Milestone) {
         expanded_milestone_card_text.text = milestone.description
-
-        if (milestone.achieved == true)
-            expanded_achieved_icon.visibility = View.VISIBLE
-        else
-            expanded_achieved_icon.visibility = View.GONE
+        if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
+        else expanded_achieved_icon.visibility = View.GONE
     }
-
 
     override fun showWorks(milestoneId: Long, works: List<Work>) {
         mAdapter.showWorks(works)
@@ -76,6 +71,22 @@ class AddWorkActivity : AppCompatActivity(), AddWorkPresenter.View {
 
     override fun onWorkAdded(work: Work) {
         mAdapter.addWork(work)
+    }
+
+    override fun onClickEditWork(work: Work) {
+        mAddWorkPresenter.updateWork(work)
+    }
+
+    override fun onWorkUpdated(work: Work) {
+        mAdapter.updateWork(work)
+    }
+
+    override fun onClickDeleteWork(workId: Long) {
+        mAddWorkPresenter.deleteWork(workId)
+    }
+
+    override fun onWorkDeleted(workId: Long) {
+        mAdapter.deleteWork(workId)
     }
 
     override fun onClickToggleWork(work: Work) {

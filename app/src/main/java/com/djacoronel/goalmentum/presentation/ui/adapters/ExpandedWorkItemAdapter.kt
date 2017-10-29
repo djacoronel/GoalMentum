@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.AddWorkPresenter
-import com.djacoronel.goalmentum.presentation.ui.listeners.SimpleWorkRecyclerClickListener
-import kotlinx.android.synthetic.main.activity_add_work.view.*
+import com.djacoronel.goalmentum.presentation.ui.listeners.ExpandedWorkRecyclerClickListener
 import kotlinx.android.synthetic.main.work_item.view.*
 
 /**
  * Created by djacoronel on 10/10/17.
  */
 class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-        SimpleWorkRecyclerClickListener {
+        ExpandedWorkRecyclerClickListener {
     val mWorks = mutableListOf<Work>()
 
     override fun getItemCount() = mWorks.size
@@ -33,7 +32,7 @@ class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId:
         return LayoutInflater.from(context).inflate(layoutRes, this, false)
     }
 
-    class NormalViewHolder(itemView: View, private val mListener: SimpleWorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
+    class NormalViewHolder(itemView: View, private val mListener: ExpandedWorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(work: Work) = with(itemView) {
             itemView.work_card_text.text = work.description
 
@@ -53,13 +52,12 @@ class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId:
         }
     }
 
-    override fun onClickAddWork(workDescription: String) {
-    }
-
     override fun onClickEditWork(position: Int) {
+        mView.onClickEditWork(mWorks[position])
     }
 
     override fun onClickDeleteWork(position: Int) {
+        mView.onClickDeleteWork(mWorks[position].id)
     }
 
     override fun onClickToggleWork(position: Int) {
@@ -88,8 +86,8 @@ class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId:
         notifyItemChanged(mWorks.indexOf(workToBeUpdated))
     }
 
-    fun deleteWork(work: Work) {
-        val workToBeDeleted = mWorks.find { it.id == work.id }
+    fun deleteWork(workId: Long) {
+        val workToBeDeleted = mWorks.find { it.id == workId }
         val index = mWorks.indexOf(workToBeDeleted)
         mWorks.removeAt(index)
         notifyItemRemoved(index)

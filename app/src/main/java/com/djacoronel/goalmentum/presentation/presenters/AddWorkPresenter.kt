@@ -18,16 +18,28 @@ interface AddWorkPresenter {
 
         fun onWorkAdded(work: Work)
 
+        fun onClickEditWork(work: Work)
+
+        fun onWorkUpdated(work: Work)
+
+        fun onClickDeleteWork(workId: Long)
+
+        fun onWorkDeleted(workId: Long)
+
         fun onClickToggleWork(work: Work)
 
         fun onWorkToggled(work: Work)
     }
 
-    fun toggleWork(work: Work)
-
     fun getMilestoneById(milestoneId: Long)
+
+    fun getAllWorkByAssignedMilestone(milestoneId: Long)
 
     fun addNewWork(milestoneId: Long, description: String)
 
-    fun getAllWorkByAssignedMilestone(milestoneId: Long)
+    fun updateWork(work: Work)
+
+    fun deleteWork(workId: Long)
+
+    fun toggleWork(work: Work)
 }
