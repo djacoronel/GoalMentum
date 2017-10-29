@@ -49,21 +49,25 @@ class MilestoneItemAdapter(
             expanded_milestone_card_text.text = milestone.description
             expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expanded_milestone_card_text.setOnLongClickListener {
-                val popup = PopupMenu(context, expanded_milestone_card_text, Gravity.END)
-                popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.title) {
-                        "Edit" -> mListener.onClickEditMilestone(adapterPosition)
-                        "Delete" -> mListener.onClickDeleteMilestone(adapterPosition)
-                    }
-                    true
-                }
-                popup.show()
+                createAndShowPopupMenu()
                 true
             }
 
             work_recycler.layoutManager = LinearLayoutManager(context)
             work_recycler.adapter = mAdapter
+        }
+
+        fun createAndShowPopupMenu() {
+            val popup = PopupMenu(itemView.context, itemView.expanded_milestone_card_text, Gravity.END)
+            popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.title) {
+                    "Edit" -> mListener.onClickEditMilestone(adapterPosition)
+                    "Delete" -> mListener.onClickDeleteMilestone(adapterPosition)
+                }
+                true
+            }
+            popup.show()
         }
     }
 
@@ -89,18 +93,15 @@ class MilestoneItemAdapter(
 
         for (milestoneId in displayedWorks.keys) {
             val works = displayedWorks[milestoneId]!!
-            if (works.size < 3)
-                mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, milestoneId, works))
-            else
-                mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, milestoneId, works.subList(0, 3)))
-
+            if (works.size < 3) mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, works))
+            else mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, works.subList(0, 3)))
         }
         notifyDataSetChanged()
     }
 
     fun addMilestone(milestone: Milestone) {
         mMilestones.add(milestone)
-        mWorkAdapters.put(milestone.id, CollapsedWorkItemAdapter(mView, milestone.id, listOf()))
+        mWorkAdapters.put(milestone.id, CollapsedWorkItemAdapter(mView, listOf()))
         notifyItemInserted(mMilestones.indexOf(milestone))
     }
 
