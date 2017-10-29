@@ -111,18 +111,7 @@ class MilestoneItemAdapter(
                 it.description = milestone.description
                 it.achieved = milestone.achieved
                 notifyItemChanged(mMilestones.indexOf(milestoneToBeUpdated))
-                checkGoalAchieveStatus()
             }
-        }
-    }
-
-    fun checkGoalAchieveStatus() {
-        val milestonesAchieved = mMilestones.filter { it.achieved == true }
-        val milestonesWithoutInputItem = mMilestones.filter { it.description != "Input Milestone" }.size
-        val isAllMilestoneAchieved = milestonesAchieved.size == milestonesWithoutInputItem
-
-        if (isAllMilestoneAchieved) {
-            mView.onAllMilestonesAchieved()
         }
     }
 

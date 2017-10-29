@@ -31,8 +31,7 @@ interface ViewGoalPresenter {
 
         fun onWorkToggled(work: Work)
 
-
-        fun onAllMilestonesAchieved()
+        fun onMilestoneAchieved(milestone: Milestone)
 
         fun onGoalAchieved(goal: Goal)
     }

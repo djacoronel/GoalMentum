@@ -5,9 +5,8 @@ import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndSetAchievedInteractor
-import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
-import java.util.*
+import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 
 /**
  * Created by djacoronel on 10/6/17.
@@ -16,18 +15,26 @@ import java.util.*
 class GetGoalByIdAndSetAchievedInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mCallback: GetGoalByIdAndSetAchievedInteractor.Callback,
-        private val mGoalRepository: GoalRepository,
-        private val mAchievedGoalId: Long
+        private val callback: GetGoalByIdAndSetAchievedInteractor.Callback,
+        private val goalRepository: GoalRepository,
+        private val milestoneRepository: MilestoneRepository,
+        private val goalId: Long
 ) : AbstractInteractor(threadExecutor, mainThread), EditGoalInteractor {
 
     override fun run() {
-        val goalToAchieve = mGoalRepository.getGoalById(mAchievedGoalId)
+        val mMilestones = milestoneRepository.getMilestonesByAssignedGoal(goalId)
 
-        goalToAchieve?.let {
-            it.achieved = true
-            mGoalRepository.update(goalToAchieve)
-            mMainThread.post(Runnable { mCallback.onGoalAchieved(it) })
+        val milestonesAchieved = mMilestones.filter { it.achieved == true }
+        val isAllMilestoneAchieved = milestonesAchieved.size == mMilestones.size && mMilestones.isNotEmpty()
+
+        if (isAllMilestoneAchieved) {
+            val goalToAchieve = goalRepository.getGoalById(goalId)
+
+            goalToAchieve?.let {
+                it.achieved = true
+                goalRepository.update(goalToAchieve)
+                mMainThread.post(Runnable { callback.onGoalAchieved(it) })
+            }
         }
     }
 }

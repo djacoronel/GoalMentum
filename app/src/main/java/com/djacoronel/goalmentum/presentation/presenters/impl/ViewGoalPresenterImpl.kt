@@ -137,7 +137,7 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onMilestoneAchieveStatusUpdated(milestone: Milestone) {
-        mView.onMilestoneUpdated(milestone)
+        mView.onMilestoneAchieved(milestone)
     }
 
 
@@ -163,6 +163,7 @@ class ViewGoalPresenterImpl(
                 mMainThread,
                 this,
                 mGoalRepository,
+                mMilestoneRepository,
                 goalId
         )
 

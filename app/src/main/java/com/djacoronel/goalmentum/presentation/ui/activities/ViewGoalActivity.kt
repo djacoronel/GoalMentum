@@ -163,8 +163,9 @@ class ViewGoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         mAdapter.updateWork(work)
     }
 
-    override fun onAllMilestonesAchieved() {
+    override fun onMilestoneAchieved(milestone: Milestone) {
         mViewGoalPresenter.achieveGoal(goalId)
+        mAdapter.updateMilestone(milestone)
     }
 
     override fun onGoalAchieved(goal: Goal) {
