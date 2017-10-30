@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
-import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
+import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.MilestoneRecyclerClickListener
 import kotlinx.android.synthetic.main.milestone_item.view.*
 
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.milestone_item.view.*
  * Created by djacoronel on 10/9/17.
  */
 class MilestoneItemAdapter(
-        val mView: ViewGoalPresenter.View
+        val mView: GoalPresenter.View
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), MilestoneRecyclerClickListener {
     val mMilestones = mutableListOf<Milestone>()
     val mWorkAdapters = hashMapOf<Long, CollapsedWorkItemAdapter>()

@@ -12,8 +12,8 @@ import android.view.animation.AnimationUtils
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Goal
-import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
-import com.djacoronel.goalmentum.presentation.presenters.impl.GoalPresenterImpl
+import com.djacoronel.goalmentum.presentation.presenters.MainPresenter
+import com.djacoronel.goalmentum.presentation.presenters.impl.MainPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.activities.GoalActivity
 import com.djacoronel.goalmentum.presentation.ui.adapters.AchievedGoalItemAdapter
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
@@ -26,9 +26,9 @@ import kotlinx.android.synthetic.main.fragment_active_goals.view.*
 /**
  * Created by djacoronel on 10/7/17.
  */
-class AchievedGoalsFragment : Fragment(), GoalPresenter.View {
+class AchievedGoalsFragment : Fragment(), MainPresenter.View {
 
-    private lateinit var mGoalPresenter: GoalPresenter
+    private lateinit var mMainPresenter: MainPresenter
     private lateinit var mAdapter: AchievedGoalItemAdapter
 
     fun newInstance(): AchievedGoalsFragment {
@@ -53,7 +53,7 @@ class AchievedGoalsFragment : Fragment(), GoalPresenter.View {
         view.goal_recycler.adapter = mAdapter
 
         // instantiate the presenter
-        mGoalPresenter = GoalPresenterImpl(
+        mMainPresenter = MainPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
@@ -112,6 +112,6 @@ class AchievedGoalsFragment : Fragment(), GoalPresenter.View {
 
     override fun onResume() {
         super.onResume()
-        mGoalPresenter.getAllGoals()
+        mMainPresenter.getAllGoals()
     }
 }

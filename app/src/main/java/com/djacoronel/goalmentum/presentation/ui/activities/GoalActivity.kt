@@ -18,8 +18,8 @@ import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
-import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
-import com.djacoronel.goalmentum.presentation.presenters.impl.ViewGoalPresenterImpl
+import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
+import com.djacoronel.goalmentum.presentation.presenters.impl.GoalPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.adapters.MilestoneItemAdapter
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
@@ -34,9 +34,9 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.toast
 
 
-class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
+class GoalActivity : AppCompatActivity(), GoalPresenter.View {
 
-    private lateinit var mViewGoalPresenter: ViewGoalPresenter
+    private lateinit var mGoalPresenter: GoalPresenter
     private lateinit var mAdapter: MilestoneItemAdapter
     private var goalId: Long = 0
 
@@ -52,7 +52,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         goalId = intent.getLongExtra("extra_goal_id_key", -1)
         title = intent.getStringExtra("extra_goal_desc_key")
 
-        mViewGoalPresenter = ViewGoalPresenterImpl(
+        mGoalPresenter = GoalPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
@@ -61,8 +61,8 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
                 WorkRepositoryImpl()
         )
 
-        mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
-        mViewGoalPresenter.getGoalById(goalId)
+        mGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
+        mGoalPresenter.getGoalById(goalId)
 
         fab.setOnClickListener { onClickAddMilestone() }
 
@@ -114,11 +114,12 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onGoalRetrieved(goal: Goal) {
+        setGoalProgress(goal)
+
         if (goal.achieved == true) {
             toast("Goal achieved! Hooray!")
             finish()
-        } else
-            setGoalProgress(goal)
+        }
     }
 
     fun setGoalProgress(goal: Goal) {
@@ -173,7 +174,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
         view.input_item_text.hint = "Milestone Description"
         view.add_item_button.setOnClickListener {
-            mViewGoalPresenter.addNewMilestone(goalId, view.input_item_text.text.toString())
+            mGoalPresenter.addNewMilestone(goalId, view.input_item_text.text.toString())
             hideKeyboard(view)
             alert.dismiss()
         }
@@ -194,7 +195,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
         view.add_item_button.setOnClickListener {
             milestone.description = view.input_item_text.text.toString()
-            mViewGoalPresenter.updateMilestone(milestone)
+            mGoalPresenter.updateMilestone(milestone)
             hideKeyboard(view)
             alert.dismiss()
         }
@@ -205,7 +206,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onClickDeleteMilestone(milestoneId: Long) {
-        mViewGoalPresenter.deleteMilestone(milestoneId)
+        mGoalPresenter.deleteMilestone(milestoneId)
     }
 
     override fun onMilestoneDeleted(milestoneId: Long) {
@@ -219,14 +220,14 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onClickToggleWork(work: Work) {
-        mViewGoalPresenter.toggleWork(work)
+        mGoalPresenter.toggleWork(work)
     }
 
     override fun onWorkToggled(work: Work) {
         mAdapter.updateWork(work)
 
-        mViewGoalPresenter.getMilestoneById(work.assignedMilestone)
-        mViewGoalPresenter.getGoalById(goalId)
+        mGoalPresenter.getMilestoneById(work.assignedMilestone)
+        mGoalPresenter.getGoalById(goalId)
     }
 
     override fun onMilestoneRetrieved(milestone: Milestone) {
@@ -235,7 +236,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun onResume() {
         super.onResume()
-        mViewGoalPresenter.getGoalById(goalId)
-        mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
+        mGoalPresenter.getGoalById(goalId)
+        mGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 }

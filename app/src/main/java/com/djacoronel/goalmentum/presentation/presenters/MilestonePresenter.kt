@@ -6,7 +6,7 @@ import com.djacoronel.goalmentum.domain.model.Work
 /**
  * Created by djacoronel on 10/9/17.
  */
-interface AddWorkPresenter {
+interface MilestonePresenter {
 
     interface View {
 

@@ -1,32 +1,52 @@
 package com.djacoronel.goalmentum.presentation.presenters
 
 import com.djacoronel.goalmentum.domain.model.Goal
+import com.djacoronel.goalmentum.domain.model.Milestone
+import com.djacoronel.goalmentum.domain.model.Work
 
 /**
- * Created by djacoronel on 10/7/17.
+ * Created by djacoronel on 10/9/17.
  */
 interface GoalPresenter {
 
     interface View {
 
-        fun showGoals(goals: List<Goal>)
+        fun onGoalRetrieved(goal: Goal)
 
-        fun onClickViewGoal(goal: Goal)
+        fun onMilestoneRetrieved(milestone: Milestone)
 
-        fun onClickAddGoal()
+        fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>)
 
-        fun onGoalAdded(goal: Goal)
+        fun onClickAddMilestone()
 
-        fun onClickEditGoal(goal: Goal)
+        fun onMilestoneAdded(milestone: Milestone)
 
-        fun onGoalUpdated(goal: Goal)
+        fun onClickEditMilestone(milestone: Milestone)
 
-        fun onClickDeleteGoal(goal: Goal)
+        fun onMilestoneUpdated(milestone: Milestone)
 
-        fun onGoalDeleted(goal: Goal)
+        fun onClickDeleteMilestone(milestoneId: Long)
+
+        fun onMilestoneDeleted(milestoneId: Long)
+
+        fun onExpandMilestone(milestoneId: Long)
+
+        fun onClickToggleWork(work: Work)
+
+        fun onWorkToggled(work: Work)
     }
 
-    fun getAllGoals()
+    fun getGoalById(goalId: Long)
 
-    fun deleteGoal(goal: Goal)
+    fun getMilestoneById(milestoneId: Long)
+
+    fun addNewMilestone(goalId: Long, description: String)
+
+    fun getAllMilestonesByAssignedGoal(goalId: Long)
+
+    fun updateMilestone(milestone: Milestone)
+
+    fun deleteMilestone(milestoneId: Long)
+
+    fun toggleWork(work: Work)
 }

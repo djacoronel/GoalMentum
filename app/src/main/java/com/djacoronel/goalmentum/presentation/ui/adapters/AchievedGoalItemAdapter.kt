@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Goal
-import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
+import com.djacoronel.goalmentum.presentation.presenters.MainPresenter
 import kotlinx.android.synthetic.main.achieved_goal_item.view.*
 
 /**
  * Created by djacoronel on 10/7/17.
  */
 class AchievedGoalItemAdapter(
-        val mView: GoalPresenter.View
+        val mView: MainPresenter.View
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val mGoals = mutableListOf<Goal>()

@@ -1,7 +1,10 @@
 package com.djacoronel.goalmentum.presentation.ui.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.presentation.presenters.AddGoalPresenter
@@ -29,8 +32,19 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
                 MilestoneRepositoryImpl()
         )
 
-        fab.setOnClickListener { addGoal() }
+        showKeyboard()
         setupDurationPicker()
+        setupFab()
+    }
+
+    fun showKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0)
     }
 
     fun setupDurationPicker() {
@@ -56,8 +70,10 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
         }
     }
 
-    fun addGoal() {
-        mPresenter.addNewGoal(goal_desc_input.text.toString(), getDuration())
+    fun setupFab() {
+        fab.setOnClickListener {
+            mPresenter.addNewGoal(goal_desc_input.text.toString(), getDuration())
+        }
     }
 
     fun getDuration(): String {
@@ -72,7 +88,8 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
 
     override fun onGoalAdded(goalId: Long) {
         mPresenter.addNewGeneralMilestone(goalId)
-        toast("New goal saved!")
+        hideKeyboard()
         finish()
+        toast("New goal saved!")
     }
 }

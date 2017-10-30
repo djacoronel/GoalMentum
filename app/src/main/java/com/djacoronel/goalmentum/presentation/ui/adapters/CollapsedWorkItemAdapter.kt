@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Work
-import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
+import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.CollapsedWorkRecyclerClickListener
 import kotlinx.android.synthetic.main.work_item.view.*
 
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.work_item.view.*
  * Created by djacoronel on 10/10/17.
  */
 
-class CollapsedWorkItemAdapter(val mView: ViewGoalPresenter.View, val mWorks: List<Work>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+class CollapsedWorkItemAdapter(val mView: GoalPresenter.View, val mWorks: List<Work>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         CollapsedWorkRecyclerClickListener {
 
     override fun getItemCount() = mWorks.size

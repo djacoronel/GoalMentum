@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Goal
-import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
+import com.djacoronel.goalmentum.presentation.presenters.MainPresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.GoalRecyclerClickListener
 import kotlinx.android.synthetic.main.goal_item.view.*
 
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.goal_item.view.*
 /**
  * Created by djacoronel on 10/7/17.
  */
-class GoalItemAdapter(val mView: GoalPresenter.View)
+class GoalItemAdapter(val mView: MainPresenter.View)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(), GoalRecyclerClickListener {
 
     val mGoals = mutableListOf<Goal>()

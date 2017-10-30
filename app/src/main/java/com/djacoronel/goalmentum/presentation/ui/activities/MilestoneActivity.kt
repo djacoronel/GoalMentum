@@ -11,8 +11,8 @@ import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
-import com.djacoronel.goalmentum.presentation.presenters.AddWorkPresenter
-import com.djacoronel.goalmentum.presentation.presenters.impl.AddWorkPresenterImpl
+import com.djacoronel.goalmentum.presentation.presenters.MilestonePresenter
+import com.djacoronel.goalmentum.presentation.presenters.impl.MilestonePresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.adapters.ExpandedWorkItemAdapter
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
@@ -23,10 +23,10 @@ import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
 
 
-class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
+class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     lateinit var mAdapter: ExpandedWorkItemAdapter
-    lateinit var mAddWorkPresenter: AddWorkPresenter
+    lateinit var mMilestonePresenter: MilestonePresenter
     var milestoneId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,7 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
     private fun init(){
         milestoneId = intent.getLongExtra("extra_milestone_id_key", -1)
 
-        mAddWorkPresenter = AddWorkPresenterImpl(
+        mMilestonePresenter = MilestonePresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
@@ -56,8 +56,8 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
         work_recycler.layoutManager = LinearLayoutManager(this)
         work_recycler.adapter = mAdapter
 
-        mAddWorkPresenter.getMilestoneById(milestoneId)
-        mAddWorkPresenter.getAllWorkByAssignedMilestone(milestoneId)
+        mMilestonePresenter.getMilestoneById(milestoneId)
+        mMilestonePresenter.getAllWorkByAssignedMilestone(milestoneId)
     }
 
     fun showKeyboard() {
@@ -96,7 +96,7 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
     }
 
     override fun onClickAddWork(workDescription: String) {
-        mAddWorkPresenter.addNewWork(milestoneId, workDescription)
+        mMilestonePresenter.addNewWork(milestoneId, workDescription)
     }
 
     override fun onWorkAdded(work: Work) {
@@ -112,7 +112,7 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
 
         view.add_item_button.setOnClickListener {
             work.description = view.input_item_text.text.toString()
-            mAddWorkPresenter.updateWork(work)
+            mMilestonePresenter.updateWork(work)
             hideKeyboard(view)
             alert.dismiss()
         }
@@ -123,7 +123,7 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
     }
 
     override fun onClickDeleteWork(workId: Long) {
-        mAddWorkPresenter.deleteWork(workId)
+        mMilestonePresenter.deleteWork(workId)
     }
 
     override fun onWorkDeleted(workId: Long) {
@@ -131,11 +131,11 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
     }
 
     override fun onClickToggleWork(work: Work) {
-        mAddWorkPresenter.toggleWork(work)
+        mMilestonePresenter.toggleWork(work)
     }
 
     override fun onWorkToggled(work: Work) {
         mAdapter.updateWork(work)
-        mAddWorkPresenter.getMilestoneById(milestoneId)
+        mMilestonePresenter.getMilestoneById(milestoneId)
     }
 }

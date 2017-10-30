@@ -1,4 +1,4 @@
-package com.djacoronel.goalmentum.presentation.ui.activities
+package com.djacoronel.goalmentum.util
 
 import android.content.Context
 import android.util.AttributeSet

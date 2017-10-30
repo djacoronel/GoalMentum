@@ -9,14 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.model.Work
-import com.djacoronel.goalmentum.presentation.presenters.AddWorkPresenter
+import com.djacoronel.goalmentum.presentation.presenters.MilestonePresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.ExpandedWorkRecyclerClickListener
 import kotlinx.android.synthetic.main.work_item.view.*
 
 /**
  * Created by djacoronel on 10/10/17.
  */
-class ExpandedWorkItemAdapter(val mView: AddWorkPresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         ExpandedWorkRecyclerClickListener {
     val mWorks = mutableListOf<Work>()
 
