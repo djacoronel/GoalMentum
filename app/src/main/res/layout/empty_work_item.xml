@@ -7,6 +7,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_gravity="center"
+  app:cardElevation="0dp"
   app:cardCornerRadius="0dp">
 
   <android.support.constraint.ConstraintLayout
@@ -25,7 +26,7 @@
       android:ellipsize="end"
       android:gravity="center_vertical"
       android:maxLines="1"
-      android:text="add a task to this milestone"
+      android:text="add something you can do"
       android:textAppearance="@style/TextAppearance.AppCompat.Medium"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +44,8 @@
       app:layout_constraintEnd_toStartOf="@+id/placeholder_item_text"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.0"
-      app:srcCompat="@drawable/ic_add_black_24dp"/>
+      app:srcCompat="@drawable/ic_add_black_24dp"
+      android:layout_marginRight="8dp"/>
 
   </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

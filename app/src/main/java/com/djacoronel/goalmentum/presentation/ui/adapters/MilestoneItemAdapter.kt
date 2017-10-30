@@ -39,19 +39,23 @@ class MilestoneItemAdapter(
 
     class ViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(milestone: Milestone, mAdapter: CollapsedWorkItemAdapter) = with(itemView) {
-            if (milestone.achieved == true)
-                expanded_achieved_icon.visibility = View.VISIBLE
-            else
-                expanded_achieved_icon.visibility = View.GONE
 
+            if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
+            else expanded_achieved_icon.visibility = View.GONE
+
+            placeholder.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expand_button.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
-
-            expanded_milestone_card_text.text = milestone.description
             expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
+            expanded_milestone_card_text.text = milestone.description
             expanded_milestone_card_text.setOnLongClickListener {
                 createAndShowPopupMenu()
                 true
             }
+
+            if (mAdapter.mWorks.isEmpty())
+                placeholder.visibility = View.VISIBLE
+            else
+                placeholder.visibility = View.GONE
 
             work_recycler.layoutManager = LinearLayoutManager(context)
             work_recycler.adapter = mAdapter

@@ -18,7 +18,7 @@ import com.djacoronel.goalmentum.presentation.ui.adapters.MilestoneItemAdapter
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
-import kotlinx.android.synthetic.main.activity_view_goal.*
+import kotlinx.android.synthetic.main.activity_goal.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
 import android.view.inputmethod.InputMethodManager
@@ -26,6 +26,15 @@ import android.view.inputmethod.EditorInfo
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import org.jetbrains.anko.toast
+import android.view.ViewGroup
+import android.view.LayoutInflater
+import android.support.v4.view.PagerAdapter
+import kotlinx.android.synthetic.main.achieved_bar.*
+import kotlinx.android.synthetic.main.momentum_bar.*
+import android.view.animation.Transformation
+import android.widget.ProgressBar
+import android.view.animation.Animation
+import com.djacoronel.goalmentum.util.ProgressBarAnimation
 
 
 class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
@@ -36,7 +45,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_goal)
+        setContentView(R.layout.activity_goal)
         setSupportActionBar(toolbar)
 
         init()
@@ -62,6 +71,27 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         milestone_recycler.adapter = mAdapter
 
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
+        mViewGoalPresenter.getGoalById(goalId)
+
+
+        viewpager.adapter = object : PagerAdapter() {
+            internal var layouts = intArrayOf(R.layout.momentum_bar, R.layout.achieved_bar)
+
+            override fun instantiateItem(container: ViewGroup, position: Int): Any {
+                val inflater = LayoutInflater.from(this@GoalActivity)
+                val layout = inflater.inflate(layouts[position], container, false) as ViewGroup
+                container.addView(layout)
+                return layout
+            }
+
+            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+                container.removeView(`object` as View)
+            }
+
+            override fun getCount(): Int = layouts.size
+
+            override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`
+        }
     }
 
     fun showKeyboard() {
@@ -85,6 +115,42 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
         showKeyboard()
         return view
+    }
+
+    override fun onGoalRetrieved(goal: Goal) {
+        setGoalProgress(goal)
+    }
+
+    fun setGoalProgress(goal: Goal){
+        setMomentumProgress(goal.momentum)
+        setAchievedProgress(goal.activeWork, goal.achievedWork)
+    }
+
+    fun setMomentumProgress(momentum: Int) {
+        progress_text_momentum?.let{
+            val progressTextMomentum = "Momentum $momentum%"
+            it.text = progressTextMomentum
+        }
+
+        progress_bar_momentum?.let {
+            val momentumProgressAnimation = ProgressBarAnimation(it, 2000)
+            momentumProgressAnimation.setProgress(momentum)
+        }
+    }
+
+    fun setAchievedProgress(activeWork: Int, achievedWork: Int){
+        val totalWorks = activeWork + achievedWork
+        val progress = if (totalWorks == 0) 0 else ((achievedWork / totalWorks.toFloat()) * 100).toInt()
+
+        progress_text_achieved?.let {
+            val progressTextAchieved = "Achieved $achievedWork/$totalWorks"
+            it.text = progressTextAchieved
+        }
+
+        progress_bar_achieved?.let{
+            val achievedProgressAnimation = ProgressBarAnimation(progress_bar_achieved, 2000)
+            achievedProgressAnimation.setProgress(progress)
+        }
     }
 
     override fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>) {
@@ -172,6 +238,10 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         mViewGoalPresenter.achieveGoal(goalId)
     }
 
+    override fun onGoalMomentumUpdated(goal: Goal) {
+        mViewGoalPresenter.getGoalById(goal.id)
+    }
+
     override fun onGoalAchieved(goal: Goal) {
         toast("Goal Achieved! Hooray!")
         finish()
@@ -179,6 +249,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun onResume() {
         super.onResume()
+        mViewGoalPresenter.getGoalById(goalId)
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
     }
 }

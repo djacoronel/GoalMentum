@@ -46,7 +46,7 @@ class AddGoalPresenterImpl(
                 this,
                 mMilestoneRepository,
                 goalId,
-                "General"
+                "General Tasks"
         )
         addMilestoneInteractor.execute()
     }

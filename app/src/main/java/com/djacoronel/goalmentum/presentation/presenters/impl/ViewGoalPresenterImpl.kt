@@ -4,10 +4,12 @@ import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndSetAchievedInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdAndUpdateMomentumInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.ToggleWorkAchieveStatusInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdAndSetAchievedInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdAndUpdateMomentumImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.impl.work.ToggleWorkAchieveStatusInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Goal
@@ -30,6 +32,7 @@ class ViewGoalPresenterImpl(
         private val mMilestoneRepository: MilestoneRepository,
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), ViewGoalPresenter,
+        GetGoalByIdInteractor.Callback,
         AddMilestoneInteractor.Callback,
         EditMilestoneInteractor.Callback,
         GetAllMilestonesByAssignedGoalInteractor.Callback,
@@ -38,6 +41,26 @@ class ViewGoalPresenterImpl(
         GetGoalByIdAndSetAchievedInteractor.Callback,
         ToggleMilestoneAchieveStatusInteractor.Callback,
         ToggleWorkAchieveStatusInteractor.Callback {
+
+    override fun getGoalById(goalId: Long) {
+        val getGoalByIdInteractor = GetGoalByIdInteractorImpl(
+                mExecutor,
+                mMainThread,
+                mGoalRepository,
+                mMilestoneRepository,
+                mWorkRepository,
+                this,
+                goalId
+        )
+        getGoalByIdInteractor.execute()
+    }
+
+    override fun onGoalRetrieved(goal: Goal) {
+        mView.onGoalRetrieved(goal)
+    }
+
+    override fun noGoalFound() {
+    }
 
     override fun getAllMilestonesByAssignedGoal(goalId: Long) {
         val getMilestonesInteractor = GetAllMilestonesByAssignedGoalInteractorImpl(
@@ -154,6 +177,7 @@ class ViewGoalPresenterImpl(
     }
 
     override fun onGoalMomentumUpdated(goal: Goal) {
+        mView.onGoalMomentumUpdated(goal)
     }
 
 

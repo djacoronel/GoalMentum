@@ -17,7 +17,7 @@ import com.djacoronel.goalmentum.presentation.ui.adapters.ExpandedWorkItemAdapte
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
-import kotlinx.android.synthetic.main.activity_add_work.*
+import kotlinx.android.synthetic.main.activity_milestone.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
 
@@ -30,7 +30,7 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_work)
+        setContentView(R.layout.activity_milestone)
 
         init()
     }

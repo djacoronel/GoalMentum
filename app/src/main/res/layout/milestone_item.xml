@@ -71,9 +71,11 @@
     card_view:layout_constraintTop_toBottomOf="@id/expanded_milestone_card_text">
 
     <include
-      layout="empty_work_item"
+      android:id="@+id/placeholder"
+      layout="@layout/empty_work_item"
       android:layout_height="wrap_content"
-      android:layout_width="wrap_content"/>
+      android:layout_width="wrap_content"
+      android:visibility="gone"/>
 
     <android.support.v7.widget.RecyclerView
       android:id="@+id/work_recycler"

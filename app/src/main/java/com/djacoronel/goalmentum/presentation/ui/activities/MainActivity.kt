@@ -14,17 +14,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        var currentFragment = Fragment()
-        when (item.itemId) {
-            R.id.active_goals -> currentFragment = ActiveGoalsFragment().newInstance()
-            R.id.analyze_goals -> currentFragment = AnalyzeGoalsFragment.newInstance("", "")
-            R.id.achieved_goals -> currentFragment = AchievedGoalsFragment().newInstance()
-        }
-        setFragment(currentFragment)
+        setFragment(item.itemId)
         return@OnNavigationItemSelectedListener true
     }
 
-    private fun setFragment(fragment: Fragment) {
+    private fun setFragment(itemId: Int) {
+        var fragment = Fragment()
+        when (itemId) {
+            R.id.active_goals -> fragment = ActiveGoalsFragment().newInstance()
+            R.id.analyze_goals -> fragment = AnalyzeGoalsFragment.newInstance("", "")
+            R.id.achieved_goals -> fragment = AchievedGoalsFragment().newInstance()
+        }
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame, fragment)
         fragmentTransaction.commit()
@@ -36,7 +36,11 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigation.setOnNavigationItemReselectedListener { }
 
-        val currentFragment = ActiveGoalsFragment().newInstance()
-        setFragment(currentFragment)
+        setFragment(R.id.active_goals)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setFragment(navigation.selectedItemId)
     }
 }
