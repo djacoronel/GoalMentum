@@ -101,6 +101,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     override fun onWorkAdded(work: Work) {
         mAdapter.addWork(work)
+        mMilestonePresenter.getMilestoneById(milestoneId)
     }
 
     override fun onClickEditWork(work: Work) {
@@ -128,6 +129,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     override fun onWorkDeleted(workId: Long) {
         mAdapter.deleteWork(workId)
+        mMilestonePresenter.getMilestoneById(milestoneId)
     }
 
     override fun onClickToggleWork(work: Work) {

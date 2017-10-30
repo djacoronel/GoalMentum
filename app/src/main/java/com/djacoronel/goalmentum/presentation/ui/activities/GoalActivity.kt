@@ -70,7 +70,7 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         setupProgressBarsViewPager()
     }
 
-    fun setupMilestoneRecycler(){
+    fun setupMilestoneRecycler() {
         mAdapter = MilestoneItemAdapter(this)
         milestone_recycler.layoutManager = LinearLayoutManager(this)
         milestone_recycler.adapter = mAdapter
@@ -232,6 +232,14 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
 
     override fun onMilestoneRetrieved(milestone: Milestone) {
         mAdapter.updateMilestone(milestone)
+    }
+
+    override fun onDisplayedWorksAchieved(milestoneId: Long) {
+        mGoalPresenter.getAllWorkByAssignedMilestone(milestoneId)
+    }
+
+    override fun onNewDisplayedWorksRetrieved(milestoneId: Long, works: List<Work>) {
+        mAdapter.updateWorkAdapter(milestoneId, works)
     }
 
     override fun onResume() {

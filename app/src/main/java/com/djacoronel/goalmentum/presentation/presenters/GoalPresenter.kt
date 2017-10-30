@@ -34,6 +34,10 @@ interface GoalPresenter {
         fun onClickToggleWork(work: Work)
 
         fun onWorkToggled(work: Work)
+
+        fun onDisplayedWorksAchieved(milestoneId: Long)
+
+        fun onNewDisplayedWorksRetrieved(milestoneId: Long, works: List<Work>)
     }
 
     fun getGoalById(goalId: Long)
@@ -47,6 +51,8 @@ interface GoalPresenter {
     fun updateMilestone(milestone: Milestone)
 
     fun deleteMilestone(milestoneId: Long)
+
+    fun getAllWorkByAssignedMilestone(milestoneId: Long)
 
     fun toggleWork(work: Work)
 }

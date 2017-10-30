@@ -96,9 +96,7 @@ class MilestoneItemAdapter(
         mMilestones.addAll(milestones)
 
         for (milestoneId in displayedWorks.keys) {
-            val works = displayedWorks[milestoneId]!!
-            if (works.size < 3) mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, works))
-            else mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, works.subList(0, 3)))
+            mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, displayedWorks[milestoneId]!!))
         }
         notifyDataSetChanged()
     }
@@ -123,6 +121,14 @@ class MilestoneItemAdapter(
         val index = mMilestones.indexOf(milestoneToBeDeleted)
         mMilestones.removeAt(index)
         notifyItemRemoved(index)
+    }
+
+    fun updateWorkAdapter(milestoneId: Long, works: List<Work>) {
+        mWorkAdapters[milestoneId] = CollapsedWorkItemAdapter(mView, works)
+        val milestoneToUpdate = mMilestones.find { it.id == milestoneId }
+        milestoneToUpdate.let {
+            notifyItemChanged(mMilestones.indexOf(it))
+        }
     }
 
     fun updateWork(work: Work) {

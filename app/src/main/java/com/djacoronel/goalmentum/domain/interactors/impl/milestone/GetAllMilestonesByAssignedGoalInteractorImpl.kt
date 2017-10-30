@@ -37,10 +37,12 @@ class GetAllMilestonesByAssignedGoalInteractorImpl(
             } else if (!isAllWorkAchieved && milestone.achieved == true) {
                 milestone.achieved = false
                 milestoneRepository.update(milestone)
-
             }
 
-            worksPerMilestone.put(milestone.id, works)
+            val activeWorks = works.filter { it.achieved == false }
+            val displayedWorks = if(activeWorks.size<3) activeWorks else activeWorks.subList(0,3)
+
+            worksPerMilestone.put(milestone.id, displayedWorks)
         }
 
         mMainThread.post(Runnable { mCallback.onMilestonesRetrieved(milestones, worksPerMilestone) })

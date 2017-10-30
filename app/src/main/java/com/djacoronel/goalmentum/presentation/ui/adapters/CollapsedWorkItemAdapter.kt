@@ -61,5 +61,8 @@ class CollapsedWorkItemAdapter(val mView: GoalPresenter.View, val mWorks: List<W
             it.dateAchieved = work.dateAchieved
         }
         notifyItemChanged(mWorks.indexOf(workToBeUpdated))
+
+        if (mWorks.all { it.achieved==true })
+            mView.onDisplayedWorksAchieved(work.assignedMilestone)
     }
 }

@@ -91,6 +91,9 @@ class ToggleWorkAchieveStatusInteractorImpl(
             if (isAllMilestoneAchieved) {
                 it.achieved = true
                 goalRepository.update(goalToAchieve)
+            } else {
+                it.achieved = false
+                goalRepository.update(goalToAchieve)
             }
         }
     }
