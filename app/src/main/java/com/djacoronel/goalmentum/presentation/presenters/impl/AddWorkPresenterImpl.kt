@@ -23,6 +23,7 @@ class AddWorkPresenterImpl(
         executor: Executor,
         mainThread: MainThread,
         private val mView: AddWorkPresenter.View,
+        private val mGoalRepository: GoalRepository,
         private val mMilestoneRepository: MilestoneRepository,
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), AddWorkPresenter,
@@ -124,6 +125,8 @@ class AddWorkPresenterImpl(
                 mExecutor,
                 mMainThread,
                 this,
+                mGoalRepository,
+                mMilestoneRepository,
                 mWorkRepository,
                 work
         )

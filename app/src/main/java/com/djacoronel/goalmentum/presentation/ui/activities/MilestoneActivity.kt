@@ -14,6 +14,7 @@ import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.AddWorkPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.AddWorkPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.adapters.ExpandedWorkItemAdapter
+import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
@@ -42,6 +43,7 @@ class MilestoneActivity : AppCompatActivity(), AddWorkPresenter.View {
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
                 this,
+                GoalRepositoryImpl(),
                 MilestoneRepositoryImpl(),
                 WorkRepositoryImpl()
         )

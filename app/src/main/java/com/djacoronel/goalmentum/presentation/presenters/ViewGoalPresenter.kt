@@ -13,6 +13,8 @@ interface ViewGoalPresenter {
 
         fun onGoalRetrieved(goal: Goal)
 
+        fun onMilestoneRetrieved(milestone: Milestone)
+
         fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>)
 
         fun onClickAddMilestone()
@@ -32,15 +34,11 @@ interface ViewGoalPresenter {
         fun onClickToggleWork(work: Work)
 
         fun onWorkToggled(work: Work)
-
-        fun onMilestoneAchieved(milestone: Milestone)
-
-        fun onGoalMomentumUpdated(goal: Goal)
-
-        fun onGoalAchieved(goal: Goal)
     }
 
     fun getGoalById(goalId: Long)
+
+    fun getMilestoneById(milestoneId: Long)
 
     fun addNewMilestone(goalId: Long, description: String)
 
@@ -49,12 +47,6 @@ interface ViewGoalPresenter {
     fun updateMilestone(milestone: Milestone)
 
     fun deleteMilestone(milestoneId: Long)
-
-    fun toggleMilestoneAchieveStatus(milestoneId: Long)
-
-    fun updateGoalMomentum(goalId: Long, momentum: Int)
-
-    fun achieveGoal(goalId: Long)
 
     fun toggleWork(work: Work)
 }

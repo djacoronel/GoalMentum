@@ -118,16 +118,20 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     }
 
     override fun onGoalRetrieved(goal: Goal) {
-        setGoalProgress(goal)
+        if (goal.achieved == true) {
+            toast("Goal achieved! Hooray!")
+            finish()
+        } else
+            setGoalProgress(goal)
     }
 
-    fun setGoalProgress(goal: Goal){
+    fun setGoalProgress(goal: Goal) {
         setMomentumProgress(goal.momentum)
         setAchievedProgress(goal.activeWork, goal.achievedWork)
     }
 
     fun setMomentumProgress(momentum: Int) {
-        progress_text_momentum?.let{
+        progress_text_momentum?.let {
             val progressTextMomentum = "Momentum $momentum%"
             it.text = progressTextMomentum
         }
@@ -138,7 +142,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
         }
     }
 
-    fun setAchievedProgress(activeWork: Int, achievedWork: Int){
+    fun setAchievedProgress(activeWork: Int, achievedWork: Int) {
         val totalWorks = activeWork + achievedWork
         val progress = if (totalWorks == 0) 0 else ((achievedWork / totalWorks.toFloat()) * 100).toInt()
 
@@ -147,7 +151,7 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
             it.text = progressTextAchieved
         }
 
-        progress_bar_achieved?.let{
+        progress_bar_achieved?.let {
             val achievedProgressAnimation = ProgressBarAnimation(progress_bar_achieved, 2000)
             achievedProgressAnimation.setProgress(progress)
         }
@@ -155,8 +159,6 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
 
     override fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>) {
         mAdapter.showMilestones(milestones, displayedWorks)
-        if (milestones.all { it.achieved == true })
-            mViewGoalPresenter.achieveGoal(goalId)
         runLayoutAnimation(milestone_recycler)
     }
 
@@ -227,24 +229,12 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
     override fun onWorkToggled(work: Work) {
         mAdapter.updateWork(work)
 
-        val momentum = if (work.achieved == true) 10 else -10
-        mViewGoalPresenter.updateGoalMomentum(goalId, momentum)
-        mViewGoalPresenter.toggleMilestoneAchieveStatus(work.assignedMilestone)
+        mViewGoalPresenter.getMilestoneById(work.assignedMilestone)
+        mViewGoalPresenter.getGoalById(goalId)
     }
 
-    override fun onMilestoneAchieved(milestone: Milestone) {
+    override fun onMilestoneRetrieved(milestone: Milestone) {
         mAdapter.updateMilestone(milestone)
-
-        mViewGoalPresenter.achieveGoal(goalId)
-    }
-
-    override fun onGoalMomentumUpdated(goal: Goal) {
-        mViewGoalPresenter.getGoalById(goal.id)
-    }
-
-    override fun onGoalAchieved(goal: Goal) {
-        toast("Goal Achieved! Hooray!")
-        finish()
     }
 
     override fun onResume() {
