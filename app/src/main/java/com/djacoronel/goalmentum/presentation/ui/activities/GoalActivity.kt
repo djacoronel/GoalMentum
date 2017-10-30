@@ -3,38 +3,35 @@ package com.djacoronel.goalmentum.presentation.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
+import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.ViewGoalPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.ViewGoalPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.adapters.MilestoneItemAdapter
+import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
+import com.djacoronel.goalmentum.util.ProgressBarAnimation
+import kotlinx.android.synthetic.main.achieved_bar.*
 import kotlinx.android.synthetic.main.activity_goal.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
-import org.jetbrains.anko.alert
-import android.view.inputmethod.InputMethodManager
-import android.view.inputmethod.EditorInfo
-import com.djacoronel.goalmentum.domain.model.Goal
-import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
-import org.jetbrains.anko.toast
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import android.support.v4.view.PagerAdapter
-import kotlinx.android.synthetic.main.achieved_bar.*
 import kotlinx.android.synthetic.main.momentum_bar.*
-import android.view.animation.Transformation
-import android.widget.ProgressBar
-import android.view.animation.Animation
-import com.djacoronel.goalmentum.util.ProgressBarAnimation
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.toast
 
 
 class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
@@ -64,33 +61,32 @@ class GoalActivity : AppCompatActivity(), ViewGoalPresenter.View {
                 WorkRepositoryImpl()
         )
 
-        fab.setOnClickListener { onClickAddMilestone() }
-
-        mAdapter = MilestoneItemAdapter(this)
-        milestone_recycler.layoutManager = LinearLayoutManager(this)
-        milestone_recycler.adapter = mAdapter
-
         mViewGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
         mViewGoalPresenter.getGoalById(goalId)
 
+        fab.setOnClickListener { onClickAddMilestone() }
 
+        setupMilestoneRecycler()
+        setupProgressBarsViewPager()
+    }
+
+    fun setupMilestoneRecycler(){
+        mAdapter = MilestoneItemAdapter(this)
+        milestone_recycler.layoutManager = LinearLayoutManager(this)
+        milestone_recycler.adapter = mAdapter
+    }
+
+    fun setupProgressBarsViewPager() {
         viewpager.adapter = object : PagerAdapter() {
             internal var layouts = intArrayOf(R.layout.momentum_bar, R.layout.achieved_bar)
-
+            override fun getCount(): Int = layouts.size
+            override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 val inflater = LayoutInflater.from(this@GoalActivity)
                 val layout = inflater.inflate(layouts[position], container, false) as ViewGroup
                 container.addView(layout)
                 return layout
             }
-
-            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-                container.removeView(`object` as View)
-            }
-
-            override fun getCount(): Int = layouts.size
-
-            override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`
         }
     }
 
