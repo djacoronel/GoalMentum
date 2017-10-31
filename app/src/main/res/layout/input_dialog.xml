@@ -31,12 +31,12 @@
       android:singleLine="true"
       android:textAppearance="@style/TextAppearance.AppCompat.Medium"
       card_view:layout_constraintBottom_toBottomOf="parent"
-      card_view:layout_constraintEnd_toStartOf="@+id/add_item_button"
+      card_view:layout_constraintEnd_toStartOf="@+id/add_task_button"
       card_view:layout_constraintStart_toStartOf="parent"
       card_view:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
-      android:id="@+id/add_item_button"
+      android:id="@+id/add_task_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"

@@ -105,7 +105,7 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         view.input_item_text.requestFocus()
         view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE)
-                view.add_item_button.performClick()
+                view.add_task_button.performClick()
             false
         }
 
@@ -173,7 +173,7 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         val alert = alert { customView = view }.show()
 
         view.input_item_text.hint = "Milestone Description"
-        view.add_item_button.setOnClickListener {
+        view.add_task_button.setOnClickListener {
             mGoalPresenter.addNewMilestone(goalId, view.input_item_text.text.toString())
             hideKeyboard(view)
             alert.dismiss()
@@ -193,7 +193,7 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         view.input_item_text.hint = "Milestone Description"
         view.input_item_text.setText(milestone.description)
 
-        view.add_item_button.setOnClickListener {
+        view.add_task_button.setOnClickListener {
             milestone.description = view.input_item_text.text.toString()
             mGoalPresenter.updateMilestone(milestone)
             hideKeyboard(view)

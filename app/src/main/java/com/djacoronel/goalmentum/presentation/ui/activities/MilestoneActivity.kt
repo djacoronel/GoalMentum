@@ -48,7 +48,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
                 WorkRepositoryImpl()
         )
 
-        add_item_button.setOnClickListener { onClickAddWork(input_item_text.text.toString()) }
+        add_task_button.setOnClickListener { onClickAddWork(input_item_text.text.toString()) }
         expanded_milestone_card_text.setOnClickListener { finish() }
         expand_button.setOnClickListener { finish() }
 
@@ -75,7 +75,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         view.input_item_text.requestFocus()
         view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE)
-                view.add_item_button.performClick()
+                view.add_task_button.performClick()
             false
         }
 
@@ -101,6 +101,8 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     override fun onWorkAdded(work: Work) {
         mAdapter.addWork(work)
+        work_recycler.smoothScrollToPosition(mAdapter.itemCount)
+        input_item_text.text.clear()
         mMilestonePresenter.getMilestoneById(milestoneId)
     }
 
@@ -111,7 +113,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         view.input_item_text.hint = "Work Description"
         view.input_item_text.setText(work.description)
 
-        view.add_item_button.setOnClickListener {
+        view.add_task_button.setOnClickListener {
             work.description = view.input_item_text.text.toString()
             mMilestonePresenter.updateWork(work)
             hideKeyboard(view)
