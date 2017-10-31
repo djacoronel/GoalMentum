@@ -24,6 +24,8 @@ import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.card_bar_graph.view.*
 import kotlinx.android.synthetic.main.card_line_graph.view.*
 import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
@@ -77,17 +79,45 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         return view
     }
 
-    override fun onWeeklyLineGraphRetrieved(lineSet: LineSet) {
-        with(lineSet) {
+    override fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>) {
+        val currentWeekSet = LineSet()
+        val lastWeekSet = LineSet()
+
+        for (points in dataPoints) {
+            currentWeekSet.addPoint(points)
+            lastWeekSet.addPoint(points)
+        }
+
+        val today = Calendar.getInstance()
+        val todayIndex = today.get(Calendar.DAY_OF_WEEK) - 1
+
+        with(currentWeekSet) {
+            beginAt(0)
+            endAt(todayIndex)
             setDotsRadius(10f)
-            setDotsColor(colorAccent)
             setFill(colorPrimaryDark)
             color = colorAccent
         }
 
+        with(lastWeekSet) {
+            beginAt(todayIndex - 1)
+            endAt(7)
+            setDotsRadius(10f)
+            setFill(colorPrimaryDark)
+            color = Color.LTGRAY
+            setDashed(floatArrayOf(10f, 10f))
+        }
+
+        val entries = currentWeekSet.entries
+        for (i in 0..entries.lastIndex) {
+            if (i < todayIndex) entries[i].color = colorAccent
+            else entries[i].color = Color.LTGRAY
+        }
+
         view?.let {
             with(it.line_chart) {
-                addData(lineSet)
+                addData(currentWeekSet)
+                addData(lastWeekSet)
                 setLabelsColor(Color.WHITE)
                 setFontSize(30)
                 show(Animation(400))

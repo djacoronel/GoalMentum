@@ -1,12 +1,12 @@
 package com.djacoronel.goalmentum.domain.interactors.base
 
-import com.db.chart.model.LineSet
+import com.db.chart.model.Point
 
 /**
  * Created by djacoronel on 10/31/17.
  */
 interface GetWeeklyLineGraphInteractor : Interactor {
     interface Callback{
-        fun onWeeklyLineGraphRetrieved(lineSet: LineSet)
+        fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>)
     }
 }

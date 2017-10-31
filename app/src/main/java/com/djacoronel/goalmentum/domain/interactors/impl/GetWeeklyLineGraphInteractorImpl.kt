@@ -2,6 +2,7 @@ package com.djacoronel.goalmentum.domain.interactors.impl
 
 import android.util.Log
 import com.db.chart.model.LineSet
+import com.db.chart.model.Point
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
@@ -23,17 +24,15 @@ class GetWeeklyLineGraphInteractorImpl(
     override fun run() {
         val works = workRepository.allWorks
         val dateFormat = SimpleDateFormat("EEE", Locale.US)
-        val lineSet = LineSet()
+        val dataPoints = mutableListOf<Point>()
         val week = getWeek()
 
         for (day in week) {
-            val achievedWork = works.filter {
-                it.dateAchieved == day
-            }
-            lineSet.addPoint(dateFormat.format(day), achievedWork.size.toFloat())
+            val achievedWork = works.filter { it.dateAchieved == day }
+            dataPoints.add(Point(dateFormat.format(day), achievedWork.size.toFloat()))
         }
 
-        mMainThread.post(Runnable { mCallback.onWeeklyLineGraphRetrieved(lineSet) })
+        mMainThread.post(Runnable { mCallback.onWeeklyLineGraphRetrieved(dataPoints) })
     }
 
     fun getWeek(): List<Date> {
@@ -53,8 +52,8 @@ class GetWeeklyLineGraphInteractorImpl(
 
         for (i in 0..6) {
             week.add(calendar.time)
-            if(calendar.time == today.time)
-                calendar.add(Calendar.DATE,-7)
+            if (calendar.time == today.time)
+                calendar.add(Calendar.DATE, -7)
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 

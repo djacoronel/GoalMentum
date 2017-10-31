@@ -1,6 +1,6 @@
 package com.djacoronel.goalmentum.presentation.presenters.impl
 
-import com.db.chart.model.LineSet
+import com.db.chart.model.Point
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.GetWeeklyLineGraphInteractor
@@ -10,7 +10,6 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.AnalyzeGoalsPresenter
-import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
 
 /**
  * Created by djacoronel on 10/31/17.
@@ -36,8 +35,8 @@ class AnalyzeGoalPresenterImpl(
         getWeeklyLineGraphInteractor.execute()
     }
 
-    override fun onWeeklyLineGraphRetrieved(lineSet: LineSet) {
-        view.onWeeklyLineGraphRetrieved(lineSet)
+    override fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>) {
+        view.onWeeklyLineGraphRetrieved(dataPoints)
     }
 
     override fun getWeeklyBarGraph() {
