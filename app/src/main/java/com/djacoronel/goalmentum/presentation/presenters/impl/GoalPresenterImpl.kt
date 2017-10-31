@@ -7,10 +7,7 @@ import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.ToggleWorkAchieveStatusInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.AddMilestoneInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.DeleteMilestoneInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.EditMilestoneInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.milestone.GetAllMilestonesByAssignedGoalInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.impl.work.GetWorksByAssignedMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.ToggleWorkAchieveStatusInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Goal
@@ -21,11 +18,11 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.GoalPresenter
-import com.djacoronel.milestonementum.domain.interactors.impl.milestone.GetMilestoneByIdInteractorImpl
 
 /**
  * Created by djacoronel on 10/9/17.
  */
+
 class GoalPresenterImpl(
         executor: Executor,
         mainThread: MainThread,
@@ -88,10 +85,10 @@ class GoalPresenterImpl(
         val getMilestonesInteractor = GetAllMilestonesByAssignedGoalInteractorImpl(
                 mExecutor,
                 mMainThread,
-                goalId,
                 mMilestoneRepository,
                 mWorkRepository,
-                this
+                this,
+                goalId
         )
         getMilestonesInteractor.execute()
     }
@@ -166,7 +163,7 @@ class GoalPresenterImpl(
 
     override fun onWorksRetrieved(milestoneId: Long, works: List<Work>) {
         val activeWorks = works.filter { it.achieved == false }
-        val newDisplayedWorks = if(activeWorks.size<3) activeWorks else activeWorks.subList(0,3)
+        val newDisplayedWorks = if (activeWorks.size < 3) activeWorks else activeWorks.subList(0, 3)
         mView.onNewDisplayedWorksRetrieved(milestoneId, newDisplayedWorks)
     }
 

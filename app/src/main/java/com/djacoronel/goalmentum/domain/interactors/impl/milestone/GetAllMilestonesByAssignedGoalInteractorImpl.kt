@@ -16,20 +16,22 @@ import com.djacoronel.goalmentum.domain.repository.WorkRepository
 class GetAllMilestonesByAssignedGoalInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mGoalId: Long,
         private val milestoneRepository: MilestoneRepository,
         private val workRepository: WorkRepository,
-        private val mCallback: GetAllMilestonesByAssignedGoalInteractor.Callback
+        private val mCallback: GetAllMilestonesByAssignedGoalInteractor.Callback,
+        private val mGoalId: Long
 ) : AbstractInteractor(threadExecutor, mainThread), GetAllMilestonesInteractor {
     override fun run() {
         val milestones = milestoneRepository.getMilestonesByAssignedGoal(mGoalId)
         val worksPerMilestone = hashMapOf<Long, List<Work>>()
 
-        for (milestone in milestones){
-
+        for (milestone in milestones) {
             val works = workRepository.getWorksByAssignedMilestone(milestone.id)
             val worksAchieved = works.filter { it.achieved == true }
             val isAllWorkAchieved = worksAchieved.size == works.size && works.isNotEmpty()
+
+            milestone.achievedWorks = worksAchieved.size
+            milestone.totalWorks = works.size
 
             if (isAllWorkAchieved && milestone.achieved == false) {
                 milestone.achieved = true
@@ -40,7 +42,7 @@ class GetAllMilestonesByAssignedGoalInteractorImpl(
             }
 
             val activeWorks = works.filter { it.achieved == false }
-            val displayedWorks = if(activeWorks.size<3) activeWorks else activeWorks.subList(0,3)
+            val displayedWorks = if (activeWorks.size < 3) activeWorks else activeWorks.subList(0, 3)
 
             worksPerMilestone.put(milestone.id, displayedWorks)
         }

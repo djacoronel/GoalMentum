@@ -15,8 +15,7 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="0dp">
 
-    <TextView
-      android:id="@+id/placeholder_item_text"
+    <HorizontalScrollView
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_margin="10dp"
@@ -24,15 +23,23 @@
       android:layout_marginBottom="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
-      android:ellipsize="end"
-      android:gravity="center_vertical"
-      android:maxLines="1"
-      android:text="Work Description"
-      android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+      android:scrollbars="none"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/plus_icon"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
+      app:layout_constraintTop_toTopOf="parent">
+
+      <TextView
+        android:id="@+id/placeholder_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:text="@string/work_description_placeholder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+    </HorizontalScrollView>
 
     <ImageView
       android:id="@+id/plus_icon"
@@ -43,6 +50,5 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/ic_dash_black_24dp"/>
-
   </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

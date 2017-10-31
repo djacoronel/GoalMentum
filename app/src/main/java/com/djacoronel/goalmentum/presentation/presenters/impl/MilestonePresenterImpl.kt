@@ -4,6 +4,7 @@ import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.GetMilestoneByIdInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.*
+import com.djacoronel.goalmentum.domain.interactors.impl.milestone.GetMilestoneByIdInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.*
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
@@ -12,7 +13,6 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.MilestonePresenter
-import com.djacoronel.milestonementum.domain.interactors.impl.milestone.GetMilestoneByIdInteractorImpl
 
 /**
  * Created by djacoronel on 10/28/17.

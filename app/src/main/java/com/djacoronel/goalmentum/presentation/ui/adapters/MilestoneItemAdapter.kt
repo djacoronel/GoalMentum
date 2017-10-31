@@ -43,6 +43,9 @@ class MilestoneItemAdapter(
             if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
             else expanded_achieved_icon.visibility = View.GONE
 
+            val workCount = "${milestone.achievedWorks}/${milestone.totalWorks}"
+            work_count.text = workCount
+
             placeholder.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expand_button.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }

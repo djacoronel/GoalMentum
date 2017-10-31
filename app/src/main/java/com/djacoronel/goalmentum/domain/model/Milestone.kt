@@ -13,6 +13,8 @@ class Milestone {
     var description: String? = null
     var date: Date? = null
     var achieved: Boolean = false
+    var achievedWorks: Int = 0
+    var totalWorks: Int = 0
 
     constructor(assignedGoal: Long, description: String) {
         id = Date().time

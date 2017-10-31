@@ -100,10 +100,10 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
     }
 
     override fun onWorkAdded(work: Work) {
+        mMilestonePresenter.getMilestoneById(milestoneId)
         mAdapter.addWork(work)
         work_recycler.smoothScrollToPosition(mAdapter.itemCount)
         input_item_text.text.clear()
-        mMilestonePresenter.getMilestoneById(milestoneId)
     }
 
     override fun onClickEditWork(work: Work) {

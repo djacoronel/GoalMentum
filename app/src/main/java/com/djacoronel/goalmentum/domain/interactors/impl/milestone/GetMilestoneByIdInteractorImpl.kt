@@ -1,4 +1,4 @@
-package com.djacoronel.milestonementum.domain.interactors.impl.milestone
+package com.djacoronel.goalmentum.domain.interactors.impl.milestone
 
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
@@ -29,6 +29,9 @@ class GetMilestoneByIdInteractorImpl(
             val works = workRepository.getWorksByAssignedMilestone(milestone.id)
             val worksAchieved = works.filter { it.achieved == true }
             val isAllWorkAchieved = worksAchieved.size == works.size && works.isNotEmpty()
+
+            milestone.achievedWorks = worksAchieved.size
+            milestone.totalWorks = works.size
 
             if (isAllWorkAchieved && milestone.achieved == false) {
                 milestone.achieved = true
