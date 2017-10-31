@@ -8,7 +8,6 @@ import com.djacoronel.goalmentum.domain.model.Work
  * Created by djacoronel on 10/6/17.
  */
 interface GetAllWorkInteractor : Interactor {
-
     interface Callback {
         fun onWorkRetrieved(workList: List<Work>)
     }

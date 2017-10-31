@@ -13,7 +13,7 @@
       android:orientation="vertical">
       <include layout="@layout/card_line_graph"/>
       <include layout="@layout/card_bar_graph"/>
-      <include layout="@layout/card_analysis_card"/>
+      <include layout="@layout/card_analysis"/>
     </LinearLayout>
   </ScrollView>
 </LinearLayout>

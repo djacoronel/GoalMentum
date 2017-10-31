@@ -14,12 +14,22 @@ import com.db.chart.model.LineSet
 import com.db.chart.model.Point
 
 import com.djacoronel.goalmentum.R
+import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
+import com.djacoronel.goalmentum.presentation.presenters.AnalyzeGoalsPresenter
+import com.djacoronel.goalmentum.presentation.presenters.impl.AnalyzeGoalPresenterImpl
+import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
+import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
+import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
+import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.card_bar_graph.view.*
 import kotlinx.android.synthetic.main.card_line_graph.view.*
 import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
 
 
-class AnalyzeGoalsFragment : Fragment() {
+class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
+    var colorPrimary: Int = 0
+    var colorPrimaryDark: Int = 0
+    var colorAccent: Int = 0
 
     fun newInstance(): AnalyzeGoalsFragment {
         return AnalyzeGoalsFragment()
@@ -29,39 +39,23 @@ class AnalyzeGoalsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_analyze_goals, container, false)
 
-        val colorPrimary = ContextCompat.getColor(context,R.color.colorPrimary)
-        val colorPrimaryDark = ContextCompat.getColor(context,R.color.colorPrimaryDark)
-        val colorAccent = ContextCompat.getColor(context,R.color.colorAccent)
+        colorPrimary = ContextCompat.getColor(context, R.color.colorPrimary)
+        colorPrimaryDark = ContextCompat.getColor(context, R.color.colorPrimaryDark)
+        colorAccent = ContextCompat.getColor(context, R.color.colorAccent)
 
-        val lineSet = LineSet()
-        with(lineSet){
-            addPoint(Point("Mon", 1f))
-            addPoint(Point("Tue", 5f))
-            addPoint(Point("Wed", 3f))
-            addPoint(Point("Thu", 6f))
-            addPoint(Point("Fri", 1f))
-            addPoint(Point("Sat", 2f))
-            addPoint(Point("Sun", 4f))
+        val analyzeGoalsPresenter = AnalyzeGoalPresenterImpl(
+                ThreadExecutor.instance,
+                MainThreadImpl.instance,
+                this,
+                GoalRepositoryImpl(),
+                MilestoneRepositoryImpl(),
+                WorkRepositoryImpl()
+        )
 
-            setDotsRadius(10f)
-            setDotsColor(colorAccent)
-            color = colorAccent
-            setFill(colorPrimaryDark)
-        }
-        
-
-        with(view.line_chart){
-            addData(lineSet)
-            setLabelsColor(Color.WHITE)
-            setStep(1)
-            setBorderSpacing(40)
-            setFontSize(30)
-            show(Animation(400))
-        }
-
+        analyzeGoalsPresenter.getWeeklyLineGraph()
 
         val barSet = BarSet()
-        with(barSet){
+        with(barSet) {
             addBar(Bar("Goal1", 1f))
             addBar(Bar("Goal2", 5f))
             addBar(Bar("Goal3", 3f))
@@ -72,7 +66,7 @@ class AnalyzeGoalsFragment : Fragment() {
             setColor(colorAccent)
         }
 
-        with(view.bar_chart){
+        with(view.bar_chart) {
             addData(barSet)
             setLabelsColor(Color.WHITE)
             setStep(1)
@@ -81,5 +75,29 @@ class AnalyzeGoalsFragment : Fragment() {
             show(Animation(400))
         }
         return view
+    }
+
+    override fun onWeeklyLineGraphRetrieved(lineSet: LineSet) {
+        with(lineSet) {
+            setDotsRadius(10f)
+            setDotsColor(colorAccent)
+            setFill(colorPrimaryDark)
+            color = colorAccent
+        }
+
+        view?.let {
+            with(it.line_chart) {
+                addData(lineSet)
+                setLabelsColor(Color.WHITE)
+                setFontSize(30)
+                show(Animation(400))
+            }
+        }
+    }
+
+    override fun onWeeklyBarGraphRetrieved() {
+    }
+
+    override fun onAnalysisRetrieved() {
     }
 }
