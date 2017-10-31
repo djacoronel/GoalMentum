@@ -28,5 +28,7 @@ interface MainPresenter {
 
     fun getAllGoals()
 
+    fun updateGoal(goal: Goal)
+
     fun deleteGoal(goal: Goal)
 }

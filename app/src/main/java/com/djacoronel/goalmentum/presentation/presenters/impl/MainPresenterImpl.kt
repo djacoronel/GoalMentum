@@ -3,8 +3,10 @@ package com.djacoronel.goalmentum.presentation.presenters.impl
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.goal.DeleteGoalInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetAllGoalsInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.DeleteGoalInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.EditGoalInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetAllGoalsInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
@@ -24,7 +26,8 @@ class MainPresenterImpl(
         private val mGoalRepository: GoalRepository,
         private val mMilestoneRepository: MilestoneRepository,
         private val mWorkRepository: WorkRepository
-) : AbstractPresenter(executor, mainThread), MainPresenter, GetAllGoalsInteractor.Callback, DeleteGoalInteractor.Callback {
+) : AbstractPresenter(executor, mainThread), MainPresenter,
+        GetAllGoalsInteractor.Callback, EditGoalInteractor.Callback, DeleteGoalInteractor.Callback {
 
     override fun getAllGoals() {
         val getGoalsInteractor = GetAllGoalsInteractorImpl(
@@ -40,6 +43,21 @@ class MainPresenterImpl(
 
     override fun onGoalsRetrieved(goalList: List<Goal>) {
         mView.showGoals(goalList)
+    }
+
+    override fun updateGoal(goal: Goal) {
+        val editGoalInteractor = EditGoalInteractorImpl(
+                mExecutor,
+                mMainThread,
+                this,
+                mGoalRepository,
+                goal
+        )
+        editGoalInteractor.execute()
+    }
+
+    override fun onGoalUpdated(goal: Goal) {
+        mView.onGoalUpdated(goal)
     }
 
     override fun deleteGoal(goal: Goal) {

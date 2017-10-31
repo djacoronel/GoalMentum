@@ -11,6 +11,6 @@ interface EditGoalInteractor : Interactor {
 
     interface Callback {
 
-        fun onGoalUpdated(cost: Goal)
+        fun onGoalUpdated(goal: Goal)
     }
 }

@@ -39,7 +39,7 @@ class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneI
             placeholder_item_text.text = work.description
 
             plus_icon.setOnClickListener { mListener.onClickToggleWork(adapterPosition) }
-            setOnLongClickListener { createAndShowPopupMenu(); true }
+            placeholder_item_text.setOnLongClickListener { createAndShowPopupMenu(); true }
 
             if (work.achieved == true) {
                 plus_icon.setImageResource(R.drawable.ic_check_black_24dp)
