@@ -1,10 +1,15 @@
 package com.djacoronel.goalmentum.presentation.presenters.impl
 
+import android.util.Log
+import com.db.chart.model.Bar
 import com.db.chart.model.Point
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.GetWeeklyLineGraphInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.GetAllGoalsInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.GetWeeklyLineGraphInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetAllGoalsInteractorImpl
+import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
@@ -23,8 +28,7 @@ class AnalyzeGoalPresenterImpl(
         private val milestoneRepository: MilestoneRepository,
         private val workRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), AnalyzeGoalsPresenter,
-        GetWeeklyLineGraphInteractor.Callback
-{
+        GetWeeklyLineGraphInteractor.Callback, GetAllGoalsInteractor.Callback {
     override fun getWeeklyLineGraph() {
         val getWeeklyLineGraphInteractor = GetWeeklyLineGraphInteractorImpl(
                 mExecutor,
@@ -40,6 +44,30 @@ class AnalyzeGoalPresenterImpl(
     }
 
     override fun getWeeklyBarGraph() {
+        val getAllGoalsInteractor = GetAllGoalsInteractorImpl(
+                mExecutor,
+                mMainThread,
+                goalRepository,
+                milestoneRepository,
+                workRepository,
+                this
+        )
+        getAllGoalsInteractor.execute()
+    }
+
+    override fun onGoalsRetrieved(goalList: List<Goal>) {
+        val sortedGoalList = goalList.sortedBy { it.achievedWork }
+        val dataBars = mutableListOf<Bar>()
+        val index = sortedGoalList.lastIndex
+
+        for (i in 0..6){
+            if (i <= index)
+                dataBars.add(Bar(sortedGoalList[i].description, sortedGoalList[i].achievedWork.toFloat()))
+            else
+                dataBars.add(0,Bar("",0f))
+        }
+
+        view.onWeeklyBarGraphRetrieved(dataBars)
     }
 
     override fun getAnalysis() {

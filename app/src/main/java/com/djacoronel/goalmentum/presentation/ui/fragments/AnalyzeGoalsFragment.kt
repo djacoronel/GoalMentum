@@ -12,6 +12,7 @@ import com.db.chart.model.Bar
 import com.db.chart.model.BarSet
 import com.db.chart.model.LineSet
 import com.db.chart.model.Point
+import com.db.chart.renderer.AxisRenderer
 
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
@@ -23,8 +24,6 @@ import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.card_bar_graph.view.*
 import kotlinx.android.synthetic.main.card_line_graph.view.*
-import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -55,27 +54,8 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         )
 
         analyzeGoalsPresenter.getWeeklyLineGraph()
+        analyzeGoalsPresenter.getWeeklyBarGraph()
 
-        val barSet = BarSet()
-        with(barSet) {
-            addBar(Bar("Goal1", 1f))
-            addBar(Bar("Goal2", 5f))
-            addBar(Bar("Goal3", 3f))
-            addBar(Bar("Goal4", 6f))
-            addBar(Bar("Goal5", 1f))
-            addBar(Bar("Goal6", 2f))
-            addBar(Bar("Goal7", 4f))
-            setColor(colorAccent)
-        }
-
-        with(view.bar_chart) {
-            addData(barSet)
-            setLabelsColor(Color.WHITE)
-            setStep(1)
-            setBorderSpacing(40)
-            setFontSize(30)
-            show(Animation(400))
-        }
         return view
     }
 
@@ -120,12 +100,31 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                 addData(lastWeekSet)
                 setLabelsColor(Color.WHITE)
                 setFontSize(30)
+                setYLabels(AxisRenderer.LabelPosition.INSIDE)
                 show(Animation(400))
             }
         }
     }
 
-    override fun onWeeklyBarGraphRetrieved() {
+    override fun onWeeklyBarGraphRetrieved(dataBars: List<Bar>) {
+        val barSet = BarSet()
+
+        for (bar in dataBars) {
+            barSet.addBar(bar)
+        }
+
+        barSet.color = colorAccent
+
+        view?.let {
+            with(it.bar_chart) {
+                addData(barSet)
+                setLabelsColor(Color.WHITE)
+                setFontSize(30)
+                setBarSpacing(8f)
+                setYLabels(AxisRenderer.LabelPosition.INSIDE)
+                show(Animation(400))
+            }
+        }
     }
 
     override fun onAnalysisRetrieved() {
