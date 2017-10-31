@@ -22,6 +22,7 @@ import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
+import kotlinx.android.synthetic.main.card_analysis.*
 import kotlinx.android.synthetic.main.card_bar_graph.view.*
 import kotlinx.android.synthetic.main.card_line_graph.view.*
 import java.util.*
@@ -55,6 +56,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
 
         analyzeGoalsPresenter.getWeeklyLineGraph()
         analyzeGoalsPresenter.getWeeklyBarGraph()
+        analyzeGoalsPresenter.getAnalysis()
 
         return view
     }
@@ -127,6 +129,17 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         }
     }
 
-    override fun onAnalysisRetrieved() {
+    override fun onAnalysisRetrieved(data: List<Int>) {
+        view?.let {
+            with(view){
+                average_done_per_day.text = data[0].toString()
+                average_done_per_week.text = data[1].toString()
+                total_work_done.text = data[2].toString()
+                total_milestone_achieved.text = data[3].toString()
+                total_goals_achieved.text = data[4].toString()
+                val days = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+                most_productive_day.text = days[data[5]]
+            }
+        }
     }
 }

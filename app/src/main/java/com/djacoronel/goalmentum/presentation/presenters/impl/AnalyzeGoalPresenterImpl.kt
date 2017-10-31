@@ -1,12 +1,13 @@
 package com.djacoronel.goalmentum.presentation.presenters.impl
 
-import android.util.Log
 import com.db.chart.model.Bar
 import com.db.chart.model.Point
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
+import com.djacoronel.goalmentum.domain.interactors.base.GetAnalysisInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.GetWeeklyLineGraphInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetAllGoalsInteractor
+import com.djacoronel.goalmentum.domain.interactors.impl.GetAnalysisInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.GetWeeklyLineGraphInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetAllGoalsInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Goal
@@ -28,7 +29,9 @@ class AnalyzeGoalPresenterImpl(
         private val milestoneRepository: MilestoneRepository,
         private val workRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), AnalyzeGoalsPresenter,
-        GetWeeklyLineGraphInteractor.Callback, GetAllGoalsInteractor.Callback {
+        GetWeeklyLineGraphInteractor.Callback, GetAllGoalsInteractor.Callback ,
+        GetAnalysisInteractor.Callback
+{
     override fun getWeeklyLineGraph() {
         val getWeeklyLineGraphInteractor = GetWeeklyLineGraphInteractorImpl(
                 mExecutor,
@@ -71,5 +74,18 @@ class AnalyzeGoalPresenterImpl(
     }
 
     override fun getAnalysis() {
+        val getAnalysisInteractor = GetAnalysisInteractorImpl(
+                mExecutor,
+                mMainThread,
+                goalRepository,
+                milestoneRepository,
+                workRepository,
+                this
+        )
+        getAnalysisInteractor.execute()
+    }
+
+    override fun onAnalysisRetrieved(data: List<Int>) {
+        view.onAnalysisRetrieved(data)
     }
 }

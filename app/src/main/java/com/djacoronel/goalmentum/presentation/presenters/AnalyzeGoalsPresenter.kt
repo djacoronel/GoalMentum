@@ -13,7 +13,7 @@ interface AnalyzeGoalsPresenter {
 
         fun onWeeklyBarGraphRetrieved(dataBars: List<Bar>)
 
-        fun onAnalysisRetrieved()
+        fun onAnalysisRetrieved(data: List<Int>)
     }
 
     fun getWeeklyLineGraph()
