@@ -1,13 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context="com.djacoronel.goalmentum.presentation.ui.fragments.AnalyzeGoalsFragment">
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.djacoronel.goalmentum.presentation.ui.fragments.AnalyzeGoalsFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Analyze Goals Fragment" />
-
-</FrameLayout>
+    android:layout_height="match_parent">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+      <include layout="@layout/card_line_graph"/>
+      <include layout="@layout/card_bar_graph"/>
+      <include layout="@layout/card_analysis_card"/>
+    </LinearLayout>
+  </ScrollView>
+</LinearLayout>

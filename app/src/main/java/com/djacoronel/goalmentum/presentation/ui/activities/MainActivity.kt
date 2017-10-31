@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         var fragment = Fragment()
         when (itemId) {
             R.id.active_goals -> fragment = ActiveGoalsFragment().newInstance()
-            R.id.analyze_goals -> fragment = AnalyzeGoalsFragment.newInstance("", "")
+            R.id.analyze_goals -> fragment = AnalyzeGoalsFragment().newInstance()
             R.id.achieved_goals -> fragment = AchievedGoalsFragment().newInstance()
         }
         val fragmentTransaction = supportFragmentManager.beginTransaction()
