@@ -85,6 +85,10 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     override fun onMilestoneRetrieved(milestone: Milestone) {
         expanded_milestone_card_text.text = milestone.description
+
+        val workCount = "${milestone.achievedWorks}/${milestone.totalWorks}"
+        work_count.text = workCount
+
         if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
         else expanded_achieved_icon.visibility = View.GONE
     }
