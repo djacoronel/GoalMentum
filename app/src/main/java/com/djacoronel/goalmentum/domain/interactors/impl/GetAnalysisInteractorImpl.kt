@@ -51,34 +51,38 @@ class GetAnalysisInteractorImpl(
         val sumPerDay = mutableListOf<Int>()
 
         for (i in 0..6) {
-            sumPerDay.add(works.filter { it.date == calendar.time && it.achieved == true }.size)
+            sumPerDay.add(works.filter { it.dateAchieved == calendar.time }.size)
             calendar.add(Calendar.DATE, -1)
         }
 
-        return sumPerDay.sum() / sumPerDay.filter { it != 0 }.size
+        val numOfDaysWithWorkDone = sumPerDay.filter { it != 0 }.size
 
+        return if (numOfDaysWithWorkDone == 0) 0
+        else sumPerDay.sum() / numOfDaysWithWorkDone
     }
 
     fun getAverageWorkPerWeek(): Int {
         val works = workRepository.allWorks
         val calendar = Calendar.getInstance()
         calendar.time = DateUtils.today
+        calendar.firstDayOfWeek = Calendar.MONDAY
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
-        val sumPerDay = mutableListOf<Int>()
+        val sumPerWeek = mutableListOf<Int>()
 
-        for (i in 0..27) {
-            sumPerDay.add(works.filter { it.date == calendar.time && it.achieved == true }.size)
-            calendar.add(Calendar.DATE, -1)
+        for (i in 1..4) {
+            var sum = 0
+            for (j in 1..7) {
+                sum += works.filter { it.dateAchieved == calendar.time }.size
+                calendar.add(Calendar.DATE, -1)
+            }
+            sumPerWeek.add(sum)
         }
 
-        var divisor = (sumPerDay.filter { it != 0 }.size / 7)
-        if (divisor == 0) divisor = 1
+        val divisor = sumPerWeek.filter { it != 0 }.size
 
-        val result = sumPerDay.sum()/divisor
-
-            Log.i("DIVISOR", sumPerDay.sum().toString())
-        return result
+        return if (divisor == 0) 0
+        else sumPerWeek.sum() / divisor
     }
 
     fun getMostProductiveDay(): Int {
