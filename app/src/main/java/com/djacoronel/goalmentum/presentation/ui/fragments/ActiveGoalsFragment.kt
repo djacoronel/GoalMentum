@@ -51,15 +51,12 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
     }
 
     private fun init(view: View) {
-        // setup recycler view adapter
-        mAdapter = GoalItemAdapter(this)
-
         // setup recycler view
+        mAdapter = GoalItemAdapter(this)
         view.goal_recycler.layoutManager = LinearLayoutManager(activity)
         view.goal_recycler.layoutManager.isAutoMeasureEnabled = false
         view.goal_recycler.adapter = mAdapter
 
-        // instantiate the presenter
         mMainPresenter = MainPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
@@ -146,12 +143,6 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
 
     override fun onGoalDeleted(goal: Goal) {
         mAdapter.deleteGoal(goal)
-    }
-
-    fun editGoal(goalId: Long) {
-        val intent = Intent(context, AddGoalActivity::class.java)
-        intent.putExtra(EXTRA_GOAL_ID, goalId)
-        startActivityForResult(intent, EDIT_GOAL_REQUEST)
     }
 
     companion object {

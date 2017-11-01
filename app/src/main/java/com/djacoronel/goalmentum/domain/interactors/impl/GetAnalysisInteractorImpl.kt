@@ -78,10 +78,10 @@ class GetAnalysisInteractorImpl(
             sumPerWeek.add(sum)
         }
 
-        val divisor = sumPerWeek.filter { it != 0 }.size
+        val numberOfWeekWithWorkDone = sumPerWeek.filter { it != 0 }.size
 
-        return if (divisor == 0) 0
-        else sumPerWeek.sum() / divisor
+        return if (numberOfWeekWithWorkDone == 0) 0
+        else sumPerWeek.sum() / numberOfWeekWithWorkDone
     }
 
     fun getMostProductiveDay(): Int {
@@ -89,13 +89,13 @@ class GetAnalysisInteractorImpl(
         val calendar = Calendar.getInstance()
         calendar.time = DateUtils.today
 
-        val sums = arrayOf(0, 0, 0, 0, 0, 0, 0)
+        val sumPerDay = arrayOf(0, 0, 0, 0, 0, 0, 0)
 
         for (i in 0..27) {
-            sums[calendar.get(Calendar.DAY_OF_WEEK) - 1] += works.filter { it.dateAchieved == calendar.time }.size
+            sumPerDay[calendar.get(Calendar.DAY_OF_WEEK) - 1] += works.filter { it.dateAchieved == calendar.time }.size
             calendar.add(Calendar.DATE, -1)
         }
 
-        return sums.indexOf(sums.max()!!)
+        return sumPerDay.indexOf(sumPerDay.max()!!)
     }
 }
