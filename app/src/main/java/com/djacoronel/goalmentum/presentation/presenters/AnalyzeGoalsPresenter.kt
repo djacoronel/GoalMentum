@@ -9,7 +9,7 @@ import com.db.chart.model.Point
 interface AnalyzeGoalsPresenter {
 
     interface View{
-        fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>)
+        fun onWeeklyLineGraphRetrieved(currentWeekData: List<Point>, previousWeekData: List<Point>)
 
         fun onWeeklyBarGraphRetrieved(dataBars: List<Bar>)
 

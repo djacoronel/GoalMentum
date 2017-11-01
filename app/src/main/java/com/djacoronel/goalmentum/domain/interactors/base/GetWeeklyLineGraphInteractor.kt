@@ -7,6 +7,6 @@ import com.db.chart.model.Point
  */
 interface GetWeeklyLineGraphInteractor : Interactor {
     interface Callback{
-        fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>)
+        fun onWeeklyLineGraphRetrieved(currentWeekData: List<Point>, previousWeekData: List<Point>)
     }
 }

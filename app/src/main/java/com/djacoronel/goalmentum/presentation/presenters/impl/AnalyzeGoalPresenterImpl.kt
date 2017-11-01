@@ -42,8 +42,8 @@ class AnalyzeGoalPresenterImpl(
         getWeeklyLineGraphInteractor.execute()
     }
 
-    override fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>) {
-        view.onWeeklyLineGraphRetrieved(dataPoints)
+    override fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>, previousWeekData: List<Point>) {
+        view.onWeeklyLineGraphRetrieved(dataPoints, previousWeekData)
     }
 
     override fun getWeeklyBarGraph() {

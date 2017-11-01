@@ -8,6 +8,7 @@ import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.GetWeeklyLineGraphInteractor
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
+import com.djacoronel.goalmentum.util.DateUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,25 +23,45 @@ class GetWeeklyLineGraphInteractorImpl(
         private val mCallback: GetWeeklyLineGraphInteractor.Callback
 ) : AbstractInteractor(threadExecutor, mainThread), GetWeeklyLineGraphInteractor {
     override fun run() {
-        val week = getWeek()
-        val dataPoints = createDataPoints(week)
+        val currentWeek = getCurrentWeek()
+        val dataPoints = createDataPoints(currentWeek)
         val sortedDataPoints = sortDataPoints(dataPoints)
 
-        mMainThread.post(Runnable { mCallback.onWeeklyLineGraphRetrieved(sortedDataPoints) })
+        val previousWeek = getPreviousWeek()
+        val previousWeekData = createDataPoints(previousWeek)
+        val sortedPreviousWeekData = sortDataPoints(previousWeekData)
+
+        mMainThread.post(Runnable { mCallback.onWeeklyLineGraphRetrieved(sortedDataPoints, sortedPreviousWeekData) })
     }
 
-    fun getWeek(): List<Date> {
-        val today = Calendar.getInstance()
-        today.set(Calendar.HOUR_OF_DAY, 0)
-        today.set(Calendar.MINUTE, 0)
-        today.set(Calendar.SECOND, 0)
-        today.set(Calendar.MILLISECOND, 0)
+    fun getCurrentWeek(): List<Date> {
+        val calendar = Calendar.getInstance()
+        calendar.time = DateUtils.today
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
 
         val week = mutableListOf<Date>()
 
         for (i in 0..6) {
-            week.add(today.time)
-            today.add(Calendar.DATE, -1)
+            week.add(calendar.time)
+            calendar.add(Calendar.DATE, 1)
+        }
+
+        return week
+    }
+
+    fun getPreviousWeek(): List<Date>{
+        val calendar = Calendar.getInstance()
+        calendar.time = DateUtils.today
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        calendar.add(Calendar.WEEK_OF_MONTH,-1)
+
+        val week = mutableListOf<Date>()
+
+        for (i in 0..6) {
+            week.add(calendar.time)
+            calendar.add(Calendar.DATE, 1)
         }
 
         return week

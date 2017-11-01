@@ -26,6 +26,10 @@ import kotlinx.android.synthetic.main.card_analysis.*
 import kotlinx.android.synthetic.main.card_bar_graph.view.*
 import kotlinx.android.synthetic.main.card_line_graph.view.*
 import java.util.*
+import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
+import kotlinx.android.synthetic.main.fragment_analyze_goals.*
+import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
 
 
 class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
@@ -58,48 +62,44 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         analyzeGoalsPresenter.getWeeklyBarGraph()
         analyzeGoalsPresenter.getAnalysis()
 
+        runLayoutAnimation(view.analyze_goals)
+
         return view
     }
 
-    override fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>) {
-        val currentWeekSet = LineSet()
-        val lastWeekSet = LineSet()
+    fun runLayoutAnimation(layout: LinearLayout){
+        val slideUp = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_bottom)
+        layout.layoutAnimation = slideUp
+    }
 
-        for (points in dataPoints) {
-            currentWeekSet.addPoint(points)
-            lastWeekSet.addPoint(points)
-        }
+    override fun onWeeklyLineGraphRetrieved(currentWeekData: List<Point>, previousWeekData: List<Point>) {
+        setupLineGraph(currentWeekData, previousWeekData)
+    }
 
-        val today = Calendar.getInstance()
-        val todayIndex = today.get(Calendar.DAY_OF_WEEK)
-        val graphIndex = getGraphIndex(todayIndex)
+    private fun setupLineGraph(currentWeekData: List<Point>, previousWeekData: List<Point>){
+        val currentWeekSet = createLineSet(currentWeekData)
+        val lastWeekSet = createLineSet(previousWeekData)
 
         with(currentWeekSet) {
-            beginAt(0)
-            endAt(graphIndex)
-            setDotsRadius(10f)
-            setFill(colorPrimaryDark)
             color = colorAccent
+            setDotsRadius(10f)
+            setDotsColor(colorAccent)
+
+            endAt(getIndexInGraphOfCurrentDay())
         }
 
         with(lastWeekSet) {
-            beginAt(graphIndex-1)
-            setDotsRadius(10f)
-            setFill(colorPrimaryDark)
             color = Color.LTGRAY
-            setDashed(floatArrayOf(10f, 10f))
-        }
+            setDotsRadius(0f)
+            setDotsColor(Color.LTGRAY)
 
-        val entries = currentWeekSet.entries
-        for (i in 0..entries.lastIndex) {
-            if (i < graphIndex) entries[i].color = colorAccent
-            else entries[i].color = Color.LTGRAY
+            setDashed(floatArrayOf(10f, 10f))
         }
 
         view?.let {
             with(it.line_chart) {
-                addData(currentWeekSet)
                 addData(lastWeekSet)
+                addData(currentWeekSet)
                 setLabelsColor(Color.WHITE)
                 setFontSize(30)
                 setYLabels(AxisRenderer.LabelPosition.INSIDE)
@@ -108,26 +108,23 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         }
     }
 
-    fun getGraphIndex(index: Int): Int{
-        return when(index){
-            Calendar.MONDAY->1
-            Calendar.TUESDAY->2
-            Calendar.WEDNESDAY->3
-            Calendar.THURSDAY->4
-            Calendar.FRIDAY->5
-            Calendar.SATURDAY->6
-            Calendar.SUNDAY->7
-            else->-1
-        }
+    private fun createLineSet(pointData: List<Point>): LineSet{
+        val lineSet = LineSet()
+        pointData.forEach { lineSet.addPoint(it) }
+        return lineSet
+    }
+
+    private fun getIndexInGraphOfCurrentDay(): Int{
+        val today = Calendar.getInstance()
+        val todayNum = today.get(Calendar.DAY_OF_WEEK)
+        val graphIndex = arrayOf(6,0,1,2,3,4,5)
+
+        return graphIndex[todayNum]
     }
 
     override fun onWeeklyBarGraphRetrieved(dataBars: List<Bar>) {
         val barSet = BarSet()
-
-        for (bar in dataBars) {
-            barSet.addBar(bar)
-        }
-
+        dataBars.forEach { barSet.addBar(it) }
         barSet.color = colorAccent
 
         view?.let {
