@@ -1,6 +1,5 @@
 package com.djacoronel.goalmentum.domain.interactors.impl
 
-import android.util.Log
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
@@ -93,7 +92,7 @@ class GetAnalysisInteractorImpl(
         val sums = arrayOf(0, 0, 0, 0, 0, 0, 0)
 
         for (i in 0..27) {
-            sums[calendar.get(Calendar.DAY_OF_WEEK) - 1] += works.filter { it.date == calendar.time && it.achieved == true }.size
+            sums[calendar.get(Calendar.DAY_OF_WEEK) - 1] += works.filter { it.dateAchieved == calendar.time }.size
             calendar.add(Calendar.DATE, -1)
         }
 
