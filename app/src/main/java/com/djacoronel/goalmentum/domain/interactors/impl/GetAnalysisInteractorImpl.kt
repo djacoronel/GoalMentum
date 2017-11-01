@@ -48,15 +48,15 @@ class GetAnalysisInteractorImpl(
         val calendar = Calendar.getInstance()
         calendar.time = DateUtils.today
 
-        var sum = 0
+        val sumPerDay = mutableListOf<Int>()
 
         for (i in 0..6) {
-            sum += works.filter { it.date == calendar.time && it.achieved == true }.size
+            sumPerDay.add(works.filter { it.date == calendar.time && it.achieved == true }.size)
             calendar.add(Calendar.DATE, -1)
         }
 
-        Log.i(sum.toString(),"jlj;dgjks")
-        return (sum / 7.0).toInt()
+        return sumPerDay.sum() / sumPerDay.filter { it != 0 }.size
+
     }
 
     fun getAverageWorkPerWeek(): Int {
@@ -65,14 +65,20 @@ class GetAnalysisInteractorImpl(
         calendar.time = DateUtils.today
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
-        var sum = 0
+        val sumPerDay = mutableListOf<Int>()
 
         for (i in 0..27) {
-            sum += works.filter { it.date == calendar.time && it.achieved == true }.size
-            calendar.add(Calendar.DAY_OF_WEEK, -1)
+            sumPerDay.add(works.filter { it.date == calendar.time && it.achieved == true }.size)
+            calendar.add(Calendar.DATE, -1)
         }
 
-        return sum / 4
+        var divisor = (sumPerDay.filter { it != 0 }.size / 7)
+        if (divisor == 0) divisor = 1
+
+        val result = sumPerDay.sum()/divisor
+
+            Log.i("DIVISOR", sumPerDay.sum().toString())
+        return result
     }
 
     fun getMostProductiveDay(): Int {
@@ -83,11 +89,9 @@ class GetAnalysisInteractorImpl(
         val sums = arrayOf(0, 0, 0, 0, 0, 0, 0)
 
         for (i in 0..27) {
-            sums[calendar.get(Calendar.DAY_OF_WEEK)-1] += works.filter { it.date == calendar.time && it.achieved == true }.size
+            sums[calendar.get(Calendar.DAY_OF_WEEK) - 1] += works.filter { it.date == calendar.time && it.achieved == true }.size
             calendar.add(Calendar.DATE, -1)
         }
-
-        Log.i("PRODUCTIVE:",sums.toList().toString())
 
         return sums.indexOf(sums.max()!!)
     }

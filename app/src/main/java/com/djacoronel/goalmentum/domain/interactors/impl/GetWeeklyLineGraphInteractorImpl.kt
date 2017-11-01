@@ -22,17 +22,11 @@ class GetWeeklyLineGraphInteractorImpl(
         private val mCallback: GetWeeklyLineGraphInteractor.Callback
 ) : AbstractInteractor(threadExecutor, mainThread), GetWeeklyLineGraphInteractor {
     override fun run() {
-        val works = workRepository.allWorks
-        val dateFormat = SimpleDateFormat("EEE", Locale.US)
-        val dataPoints = mutableListOf<Point>()
         val week = getWeek()
+        val dataPoints = createDataPoints(week)
+        val sortedDataPoints = sortDataPoints(dataPoints)
 
-        for (day in week) {
-            val achievedWork = works.filter { it.dateAchieved == day }
-            dataPoints.add(Point(dateFormat.format(day), achievedWork.size.toFloat()))
-        }
-
-        mMainThread.post(Runnable { mCallback.onWeeklyLineGraphRetrieved(dataPoints) })
+        mMainThread.post(Runnable { mCallback.onWeeklyLineGraphRetrieved(sortedDataPoints) })
     }
 
     fun getWeek(): List<Date> {
@@ -42,21 +36,39 @@ class GetWeeklyLineGraphInteractorImpl(
         today.set(Calendar.SECOND, 0)
         today.set(Calendar.MILLISECOND, 0)
 
-        today.firstDayOfWeek = Calendar.MONDAY
-
-        val calendar = Calendar.getInstance()
-        calendar.time = today.time
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-
         val week = mutableListOf<Date>()
 
         for (i in 0..6) {
-            week.add(calendar.time)
-            if (calendar.time == today.time)
-                calendar.add(Calendar.DATE, -7)
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            week.add(today.time)
+            today.add(Calendar.DATE, -1)
         }
 
         return week
+    }
+
+    fun createDataPoints(week: List<Date>): List<Point> {
+        val dateFormat = SimpleDateFormat("EEE", Locale.US)
+        val dataPoints = mutableListOf<Point>()
+        val works = workRepository.allWorks
+
+        for (day in week) {
+            val achievedWork = works.filter { it.dateAchieved == day }
+            dataPoints.add(Point(dateFormat.format(day), achievedWork.size.toFloat()))
+        }
+
+        return dataPoints
+    }
+
+    fun sortDataPoints(dataPoints: List<Point>): List<Point> {
+        val sortedDataPoints = mutableListOf<Point>()
+        sortedDataPoints.add(dataPoints.find { it.label == "Mon" }!!)
+        sortedDataPoints.add(dataPoints.find { it.label == "Tue" }!!)
+        sortedDataPoints.add(dataPoints.find { it.label == "Wed" }!!)
+        sortedDataPoints.add(dataPoints.find { it.label == "Thu" }!!)
+        sortedDataPoints.add(dataPoints.find { it.label == "Fri" }!!)
+        sortedDataPoints.add(dataPoints.find { it.label == "Sat" }!!)
+        sortedDataPoints.add(dataPoints.find { it.label == "Sun" }!!)
+
+        return sortedDataPoints
     }
 }

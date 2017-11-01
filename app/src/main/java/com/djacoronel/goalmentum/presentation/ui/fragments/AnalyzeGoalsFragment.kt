@@ -71,19 +71,19 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         }
 
         val today = Calendar.getInstance()
-        val todayIndex = today.get(Calendar.DAY_OF_WEEK) - 1
+        val todayIndex = today.get(Calendar.DAY_OF_WEEK)
+        val graphIndex = getGraphIndex(todayIndex)
 
         with(currentWeekSet) {
             beginAt(0)
-            endAt(todayIndex)
+            endAt(graphIndex)
             setDotsRadius(10f)
             setFill(colorPrimaryDark)
             color = colorAccent
         }
 
         with(lastWeekSet) {
-            beginAt(todayIndex - 1)
-            endAt(7)
+            beginAt(graphIndex-1)
             setDotsRadius(10f)
             setFill(colorPrimaryDark)
             color = Color.LTGRAY
@@ -92,7 +92,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
 
         val entries = currentWeekSet.entries
         for (i in 0..entries.lastIndex) {
-            if (i < todayIndex) entries[i].color = colorAccent
+            if (i < graphIndex) entries[i].color = colorAccent
             else entries[i].color = Color.LTGRAY
         }
 
@@ -105,6 +105,19 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                 setYLabels(AxisRenderer.LabelPosition.INSIDE)
                 show(Animation(400))
             }
+        }
+    }
+
+    fun getGraphIndex(index: Int): Int{
+        return when(index){
+            Calendar.MONDAY->1
+            Calendar.TUESDAY->2
+            Calendar.WEDNESDAY->3
+            Calendar.THURSDAY->4
+            Calendar.FRIDAY->5
+            Calendar.SATURDAY->6
+            Calendar.SUNDAY->7
+            else->-1
         }
     }
 
@@ -131,7 +144,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
 
     override fun onAnalysisRetrieved(data: List<Int>) {
         view?.let {
-            with(view){
+            with(view) {
                 average_done_per_day.text = data[0].toString()
                 average_done_per_week.text = data[1].toString()
                 total_work_done.text = data[2].toString()
