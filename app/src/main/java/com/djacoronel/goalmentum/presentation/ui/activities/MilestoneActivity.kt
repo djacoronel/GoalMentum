@@ -66,8 +66,9 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         fab.setOnClickListener { fabOnClick() }
         add_task_button.setOnClickListener { onClickAddWork() }
         expanded_milestone_card_text.setOnClickListener { finish() }
+        work_count.setOnClickListener { finish() }
         expand_button.setOnClickListener { finish() }
-        input_work_edittext.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        input_work_edittext.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 onClickAddWork()
                 return@OnKeyListener true

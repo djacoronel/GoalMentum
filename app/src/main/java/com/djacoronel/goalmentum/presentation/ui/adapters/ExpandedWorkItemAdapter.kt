@@ -78,7 +78,8 @@ class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneI
 
     fun showWorks(works: List<Work>) {
         mWorks.clear()
-        mWorks.addAll(works)
+        mWorks.addAll(works.filter { it.achieved == false })
+        mWorks.addAll(works.filter { it.achieved == true })
         notifyDataSetChanged()
     }
 

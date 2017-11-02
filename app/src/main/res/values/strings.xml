@@ -59,4 +59,6 @@
   <string name="label_active">Active</string>
   <string name="label_analyze">Analyze</string>
   <string name="label_achieved">Achieved</string>
+  <string name="header_goals_achieved">OALS ACHIEVED</string>
+  <string name="header_goal_momentum">OAL MOMENTUM</string>
 </resources>

@@ -46,6 +46,7 @@ class MilestoneItemAdapter(
             val workCount = "${milestone.achievedWorks}/${milestone.totalWorks}"
             work_count.text = workCount
 
+            work_count.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             placeholder.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expand_button.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }

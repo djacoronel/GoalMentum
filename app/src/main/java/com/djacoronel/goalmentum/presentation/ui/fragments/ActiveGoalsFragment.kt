@@ -24,6 +24,7 @@ import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
+import kotlinx.android.synthetic.main.fragment_active_goals.*
 import kotlinx.android.synthetic.main.fragment_active_goals.view.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.support.v4.alert
@@ -64,6 +65,9 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
                 MilestoneRepositoryImpl(),
                 WorkRepositoryImpl()
         )
+
+        val headerAnimation = AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)
+        view.header.startAnimation(headerAnimation)
     }
 
     override fun showGoals(goals: List<Goal>) {
