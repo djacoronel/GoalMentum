@@ -3,7 +3,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:card_view="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/input_milestone_card"
+  android:id="@+id/input_work_card"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_gravity="center"
@@ -16,7 +16,7 @@
     tools:layout_editor_absoluteY="0dp">
 
     <EditText
-      android:id="@+id/input_item_text"
+      android:id="@+id/input_work_edittext"
       android:layout_width="0dp"
       android:layout_height="43dp"
       android:layout_margin="15dp"

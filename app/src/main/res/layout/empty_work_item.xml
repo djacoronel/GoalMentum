@@ -17,7 +17,7 @@
     tools:layout_editor_absoluteY="0dp">
 
     <TextView
-      android:id="@+id/placeholder_item_text"
+      android:id="@+id/work_item_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="10dp"
@@ -26,7 +26,7 @@
       android:ellipsize="end"
       android:gravity="center"
       android:maxLines="1"
-      android:text="no current tasks"
+      android:text="@string/label_no_current_tasks"
       android:textAppearance="@style/TextAppearance.AppCompat.Medium"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"

@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
 class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
     var colorPrimary: Int = 0
     var colorPrimaryDark: Int = 0
+    var colorPrimaryLight: Int = 0
     var colorAccent: Int = 0
 
     fun newInstance(): AnalyzeGoalsFragment {
@@ -47,6 +48,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
 
         colorPrimary = ContextCompat.getColor(context, R.color.colorPrimary)
         colorPrimaryDark = ContextCompat.getColor(context, R.color.colorPrimaryDark)
+        colorPrimaryLight = ContextCompat.getColor(context, R.color.colorPrimaryLight)
         colorAccent = ContextCompat.getColor(context, R.color.colorAccent)
 
         val analyzeGoalsPresenter = AnalyzeGoalPresenterImpl(
@@ -84,7 +86,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
             color = colorAccent
             setDotsRadius(10f)
             setDotsColor(colorAccent)
-
+            setFill(Color.LTGRAY)
             endAt(getIndexInGraphOfCurrentDay())
         }
 
@@ -92,7 +94,6 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
             color = Color.LTGRAY
             setDotsRadius(0f)
             setDotsColor(Color.LTGRAY)
-
             setDashed(floatArrayOf(10f, 10f))
         }
 
@@ -100,9 +101,11 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
             with(it.line_chart) {
                 addData(lastWeekSet)
                 addData(currentWeekSet)
-                setLabelsColor(Color.WHITE)
                 setFontSize(30)
-                setYLabels(AxisRenderer.LabelPosition.INSIDE)
+                setXAxis(false)
+                setYAxis(false)
+                setLabelsColor(colorPrimaryLight)
+                setStep(1)
                 show(Animation(400))
             }
         }
@@ -130,9 +133,11 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         view?.let {
             with(it.bar_chart) {
                 addData(barSet)
-                setLabelsColor(Color.WHITE)
                 setFontSize(30)
-                setBarSpacing(8f)
+                setBarSpacing(6f)
+                setXAxis(false)
+                setAxisColor(colorPrimaryLight)
+                setLabelsColor(colorPrimaryLight)
                 setYLabels(AxisRenderer.LabelPosition.INSIDE)
                 show(Animation(400))
             }

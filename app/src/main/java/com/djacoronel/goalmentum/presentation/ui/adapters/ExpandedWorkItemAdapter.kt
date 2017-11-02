@@ -36,17 +36,17 @@ class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneI
 
     class ViewHolder(itemView: View, private val mListener: ExpandedWorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(work: Work) = with(itemView) {
-            placeholder_item_text.text = work.description
+            work_item_text.text = work.description
 
-            plus_icon.setOnClickListener { mListener.onClickToggleWork(adapterPosition) }
-            placeholder_item_text.setOnLongClickListener { createAndShowPopupMenu(); true }
+            achieve_button.setOnClickListener { mListener.onClickToggleWork(adapterPosition) }
+            work_item_text.setOnLongClickListener { createAndShowPopupMenu(); true }
 
             if (work.achieved == true) {
-                plus_icon.setImageResource(R.drawable.ic_check_black_24dp)
-                placeholder_item_text.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                achieve_button.setImageResource(R.drawable.ic_check_black_24dp)
+                work_item_text.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             } else {
-                plus_icon.setImageResource(R.drawable.ic_dash_black_24dp)
-                placeholder_item_text.paintFlags = 0
+                achieve_button.setImageResource(R.drawable.ic_dash_black_24dp)
+                work_item_text.paintFlags = 0
             }
         }
 

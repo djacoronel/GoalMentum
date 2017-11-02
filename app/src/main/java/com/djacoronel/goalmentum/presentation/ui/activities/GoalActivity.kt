@@ -102,8 +102,8 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
 
     fun createInputDialogView(): View {
         val view = View.inflate(this, R.layout.input_dialog, null)
-        view.input_item_text.requestFocus()
-        view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
+        view.input_work_edittext.requestFocus()
+        view.input_work_edittext.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE)
                 view.add_task_button.performClick()
             false
@@ -172,9 +172,9 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         val view = createInputDialogView()
         val alert = alert { customView = view }.show()
 
-        view.input_item_text.hint = "Milestone Description"
+        view.input_work_edittext.hint = "Milestone Description"
         view.add_task_button.setOnClickListener {
-            mGoalPresenter.addNewMilestone(goalId, view.input_item_text.text.toString())
+            mGoalPresenter.addNewMilestone(goalId, view.input_work_edittext.text.toString())
             hideKeyboard(view)
             alert.dismiss()
         }
@@ -190,11 +190,11 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         val view = createInputDialogView()
         val alert = alert { customView = view }.show()
 
-        view.input_item_text.hint = "Milestone Description"
-        view.input_item_text.setText(milestone.description)
+        view.input_work_edittext.hint = "Milestone Description"
+        view.input_work_edittext.setText(milestone.description)
 
         view.add_task_button.setOnClickListener {
-            milestone.description = view.input_item_text.text.toString()
+            milestone.description = view.input_work_edittext.text.toString()
             mGoalPresenter.updateMilestone(milestone)
             hideKeyboard(view)
             alert.dismiss()

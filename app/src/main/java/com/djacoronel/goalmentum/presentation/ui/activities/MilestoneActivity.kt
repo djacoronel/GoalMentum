@@ -36,7 +36,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         init()
     }
 
-    private fun init(){
+    private fun init() {
         milestoneId = intent.getLongExtra("extra_milestone_id_key", -1)
 
         mMilestonePresenter = MilestonePresenterImpl(
@@ -48,7 +48,9 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
                 WorkRepositoryImpl()
         )
 
-        add_task_button.setOnClickListener { onClickAddWork(input_item_text.text.toString()) }
+        fab.setOnClickListener { fabOnClick() }
+
+        add_task_button.setOnClickListener { onClickAddWork(input_work_edittext.text.toString()) }
         expanded_milestone_card_text.setOnClickListener { finish() }
         expand_button.setOnClickListener { finish() }
 
@@ -60,6 +62,24 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         mMilestonePresenter.getAllWorkByAssignedMilestone(milestoneId)
     }
 
+    fun fabOnClick() {
+        showKeyboard()
+        input_work_card.visibility = View.VISIBLE
+        input_work_card.requestFocus()
+
+        fab.hide()
+        fab.visibility = View.GONE
+    }
+
+    fun dismissInput(){
+        hideKeyboard(input_work_edittext)
+        input_work_card.visibility = View.GONE
+
+        fab.show()
+        fab.visibility = View.VISIBLE
+    }
+
+
     fun showKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
@@ -67,13 +87,13 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     fun hideKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun createInputDialogView(): View {
         val view = View.inflate(this, R.layout.input_dialog, null)
-        view.input_item_text.requestFocus()
-        view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
+        view.input_work_edittext.requestFocus()
+        view.input_work_edittext.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE)
                 view.add_task_button.performClick()
             false
@@ -95,8 +115,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     override fun showWorks(milestoneId: Long, works: List<Work>) {
         mAdapter.showWorks(works)
-        if(works.isEmpty())
-            input_item_text.requestFocus()
+        if (works.isEmpty()) fab.performClick()
     }
 
     override fun onClickAddWork(workDescription: String) {
@@ -107,18 +126,18 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         mMilestonePresenter.getMilestoneById(milestoneId)
         mAdapter.addWork(work)
         work_recycler.smoothScrollToPosition(mAdapter.itemCount)
-        input_item_text.text.clear()
+        input_work_edittext.text.clear()
     }
 
     override fun onClickEditWork(work: Work) {
         val view = createInputDialogView()
         val alert = alert { customView = view }.show()
 
-        view.input_item_text.hint = "Work Description"
-        view.input_item_text.setText(work.description)
+        view.input_work_edittext.hint = "Work Description"
+        view.input_work_edittext.setText(work.description)
 
         view.add_task_button.setOnClickListener {
-            work.description = view.input_item_text.text.toString()
+            work.description = view.input_work_edittext.text.toString()
             mMilestonePresenter.updateWork(work)
             hideKeyboard(view)
             alert.dismiss()

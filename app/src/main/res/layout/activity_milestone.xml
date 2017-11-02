@@ -5,8 +5,18 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:animateLayoutChanges="true"
   tools:context="com.djacoronel.goalmentum.presentation.ui.activities.MilestoneActivity">
+
+  <android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/fab_margin"
+    android:clickable="true"
+    android:focusable="true"
+    card_view:layout_constraintBottom_toBottomOf="parent"
+    card_view:layout_constraintEnd_toEndOf="parent"
+    card_view:srcCompat="@drawable/ic_add_black_24dp"/>
 
   <Space
     android:id="@+id/space"
@@ -37,7 +47,8 @@
     android:visibility="gone"
     card_view:layout_constraintStart_toEndOf="@+id/space"
     card_view:layout_constraintTop_toTopOf="parent"
-    card_view:srcCompat="@drawable/ic_check_black_24dp"/>
+    card_view:srcCompat="@drawable/ic_check_black_24dp"
+    android:contentDescription="@string/achieved_icon"/>
 
   <ImageView
     android:id="@+id/expand_button"
@@ -56,23 +67,24 @@
     android:id="@+id/work_count"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="8/8"
+    android:text="@string/placeholder_work_count"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     card_view:layout_constraintBottom_toBottomOf="@+id/expand_button"
     card_view:layout_constraintEnd_toStartOf="@+id/expand_button"
     card_view:layout_constraintTop_toTopOf="@+id/expand_button"/>
+
   <android.support.v7.widget.RecyclerView
     android:id="@+id/work_recycler"
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:paddingTop="1dp"
-    android:paddingBottom="16dp"
+    android:paddingBottom="80dp"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:clipToPadding="false"
-    card_view:layout_constraintBottom_toTopOf="@+id/input_milestone_card"
+    card_view:layout_constraintBottom_toBottomOf="parent"
     card_view:layout_constraintEnd_toEndOf="parent"
     card_view:layout_constraintStart_toStartOf="parent"
     card_view:layout_constraintTop_toBottomOf="@+id/expanded_milestone_card_text"/>
@@ -80,10 +92,12 @@
   <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/input_milestone_card"
+    android:id="@+id/input_work_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:visibility="gone"
+    card_view:cardBackgroundColor="@color/colorPrimary"
     card_view:cardCornerRadius="0dp"
     card_view:layout_constraintBottom_toBottomOf="parent"
     card_view:layout_constraintEnd_toEndOf="parent"
@@ -95,8 +109,8 @@
       tools:layout_editor_absoluteX="0dp"
       tools:layout_editor_absoluteY="0dp">
 
-      <EditText
-        android:id="@+id/input_item_text"
+      <com.djacoronel.goalmentum.util.CustomEditText
+        android:id="@+id/input_work_edittext"
         android:layout_width="0dp"
         android:layout_height="43dp"
         android:layout_margin="15dp"

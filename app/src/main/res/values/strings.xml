@@ -133,4 +133,19 @@
   <string name="add_a_new_task">Add a new task</string>
   <string name="add_task">Add task</string>
   <string name="work_description_placeholder">Work Description</string>
+  <string name="placeholder_analysis_value">0</string>
+  <string name="card_title_analysis">Analysis</string>
+  <string name="label_average_done_per_day">Average done per day:</string>
+  <string name="label_average_done_per_week">Average done per week:</string>
+  <string name="label_total_work_done">Total work done:</string>
+  <string name="label_total_milestones_achieved">Total milestones achieved:</string>
+  <string name="label_total_goals_achieved">Total goals achieved:</string>
+  <string name="label_most_productive_day">Most productive day:</string>
+  <string name="card_title_work_done_per_goal">Work done per goal</string>
+  <string name="card_title_work_done_per_week">Work done per week</string>
+  <string name="label_no_current_tasks">no current tasks</string>
+  <string name="achievement_toggle">Achievement toggle</string>
+  <string name="achieved_icon">Achieved icon</string>
+  <string name="placeholder_work_count">0/0</string>
+  <string name="label_momentum">Momentum</string>
 </resources>

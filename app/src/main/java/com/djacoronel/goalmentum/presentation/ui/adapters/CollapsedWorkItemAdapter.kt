@@ -35,16 +35,16 @@ class CollapsedWorkItemAdapter(val mView: GoalPresenter.View, val mWorks: List<W
 
     class ViewHolder(itemView: View, private val mListener: CollapsedWorkRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(work: Work) = with(itemView) {
-            placeholder_item_text.text = work.description
+            work_item_text.text = work.description
 
-            plus_icon.setOnClickListener { mListener.onClickToggleWork(adapterPosition) }
+            achieve_button.setOnClickListener { mListener.onClickToggleWork(adapterPosition) }
 
             if (work.achieved == true) {
-                plus_icon.setImageResource(R.drawable.ic_check_black_24dp)
-                placeholder_item_text.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                achieve_button.setImageResource(R.drawable.ic_check_black_24dp)
+                work_item_text.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             } else {
-                plus_icon.setImageResource(R.drawable.ic_dash_black_24dp)
-                placeholder_item_text.paintFlags = 0
+                achieve_button.setImageResource(R.drawable.ic_dash_black_24dp)
+                work_item_text.paintFlags = 0
             }
         }
     }

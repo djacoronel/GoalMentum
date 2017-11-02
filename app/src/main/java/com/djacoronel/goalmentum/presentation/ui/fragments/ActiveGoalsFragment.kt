@@ -26,7 +26,6 @@ import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import kotlinx.android.synthetic.main.fragment_active_goals.view.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
-import org.jetbrains.anko.alert
 import org.jetbrains.anko.support.v4.alert
 
 
@@ -101,11 +100,11 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
         val alert = alert { customView = view }.show()
         showKeyboard()
 
-        view.input_item_text.hint = "Goal Description"
-        view.input_item_text.setText(goal.description)
+        view.input_work_edittext.hint = "Goal Description"
+        view.input_work_edittext.setText(goal.description)
 
         view.add_task_button.setOnClickListener {
-            goal.description = view.input_item_text.text.toString()
+            goal.description = view.input_work_edittext.text.toString()
             mMainPresenter.updateGoal(goal)
             hideKeyboard(view)
             alert.dismiss()
@@ -124,8 +123,8 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
 
     fun createInputDialogView(): View {
         val view = View.inflate(context, R.layout.input_dialog, null)
-        view.input_item_text.requestFocus()
-        view.input_item_text.setOnEditorActionListener { _, actionId, _ ->
+        view.input_work_edittext.requestFocus()
+        view.input_work_edittext.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE)
                 view.add_task_button.performClick()
             false
