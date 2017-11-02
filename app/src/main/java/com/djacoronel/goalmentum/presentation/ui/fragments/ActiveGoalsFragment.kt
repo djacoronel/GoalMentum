@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.fragment_active_goals.view.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.support.v4.alert
 
-
 /**
  * Created by djacoronel on 10/7/17.
  */
@@ -51,12 +50,6 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
     }
 
     private fun init(view: View) {
-        // setup recycler view
-        mAdapter = GoalItemAdapter(this)
-        view.goal_recycler.layoutManager = LinearLayoutManager(activity)
-        view.goal_recycler.layoutManager.isAutoMeasureEnabled = false
-        view.goal_recycler.adapter = mAdapter
-
         mMainPresenter = MainPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
@@ -66,8 +59,17 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
                 WorkRepositoryImpl()
         )
 
+        setupGoalRecycler(view)
+
         val headerAnimation = AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)
         view.header.startAnimation(headerAnimation)
+    }
+
+    private fun setupGoalRecycler(view: View){
+        mAdapter = GoalItemAdapter(this)
+        view.goal_recycler.layoutManager = LinearLayoutManager(activity)
+        view.goal_recycler.layoutManager.isAutoMeasureEnabled = false
+        view.goal_recycler.adapter = mAdapter
     }
 
     override fun showGoals(goals: List<Goal>) {
@@ -151,7 +153,6 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
     companion object {
         const val EXTRA_GOAL_ID = "extra_goal_id_key"
         const val EXTRA_GOAL_DESC = "extra_goal_desc_key"
-        const val EDIT_GOAL_REQUEST = 1
         const val ADD_GOAL_REQUEST = 0
     }
 

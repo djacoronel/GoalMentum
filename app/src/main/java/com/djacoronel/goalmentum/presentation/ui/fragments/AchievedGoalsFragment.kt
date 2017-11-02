@@ -20,9 +20,7 @@ import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
-import kotlinx.android.synthetic.main.fragment_achieved_goals.*
-import kotlinx.android.synthetic.main.fragment_active_goals.view.*
-
+import kotlinx.android.synthetic.main.fragment_achieved_goals.view.*
 
 /**
  * Created by djacoronel on 10/7/17.
@@ -45,15 +43,6 @@ class AchievedGoalsFragment : Fragment(), MainPresenter.View {
     }
 
     private fun init(view: View) {
-        // setup recycler view adapter
-        mAdapter = AchievedGoalItemAdapter(this)
-
-        // setup recycler view
-        view.goal_recycler.layoutManager = LinearLayoutManager(activity)
-        view.goal_recycler.layoutManager.isAutoMeasureEnabled = false
-        view.goal_recycler.adapter = mAdapter
-
-        // instantiate the presenter
         mMainPresenter = MainPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
@@ -63,13 +52,32 @@ class AchievedGoalsFragment : Fragment(), MainPresenter.View {
                 WorkRepositoryImpl()
         )
 
+        setupGoalRecycler(view)
+
         val headerAnimation = AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)
         view.header.startAnimation(headerAnimation)
     }
 
+    private fun setupGoalRecycler(view: View) {
+        mAdapter = AchievedGoalItemAdapter(this)
+        view.goal_recycler.layoutManager = LinearLayoutManager(activity)
+        view.goal_recycler.layoutManager.isAutoMeasureEnabled = false
+        view.goal_recycler.adapter = mAdapter
+    }
+
     override fun showGoals(goals: List<Goal>) {
-        mAdapter.showGoals(goals.reversed())
-        view?.let { runLayoutAnimation(it.goal_recycler) }
+        view?.let {
+            if (goals.any { it.achieved == true }) {
+                mAdapter.showGoals(goals.reversed())
+                runLayoutAnimation(it.goal_recycler)
+            } else {
+                it.goal_recycler.visibility = View.GONE
+                it.placeholder_card.visibility = View.VISIBLE
+
+                val placeholderAnimation = AnimationUtils.loadAnimation(it.context, R.anim.item_animation_from_bottom)
+                it.placeholder_card.startAnimation(placeholderAnimation)
+            }
+        }
     }
 
     private fun runLayoutAnimation(recyclerView: RecyclerView) {
@@ -106,12 +114,9 @@ class AchievedGoalsFragment : Fragment(), MainPresenter.View {
     override fun onGoalDeleted(goal: Goal) {
     }
 
-
     companion object {
         const val EXTRA_GOAL_ID = "extra_goal_id_key"
         const val EXTRA_GOAL_DESC = "extra_goal_desc_key"
-        const val EDIT_GOAL_REQUEST = 1
-        const val ADD_GOAL_REQUEST = 0
     }
 
     override fun onResume() {
