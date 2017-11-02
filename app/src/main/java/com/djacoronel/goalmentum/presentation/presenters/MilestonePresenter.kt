@@ -14,7 +14,7 @@ interface MilestonePresenter {
 
         fun showWorks(milestoneId: Long, works: List<Work>)
 
-        fun onClickAddWork(workDescription: String)
+        fun onClickAddWork()
 
         fun onWorkAdded(work: Work)
 

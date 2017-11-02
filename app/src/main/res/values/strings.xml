@@ -56,4 +56,7 @@
   <string name="achieved_icon">Achieved icon</string>
   <string name="placeholder_work_count">0/0</string>
   <string name="label_momentum">Momentum</string>
+  <string name="label_active">Active</string>
+  <string name="label_analyze">Analyze</string>
+  <string name="label_achieved">Achieved</string>
 </resources>

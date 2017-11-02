@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -48,18 +49,31 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
                 WorkRepositoryImpl()
         )
 
-        fab.setOnClickListener { fabOnClick() }
+        mMilestonePresenter.getMilestoneById(milestoneId)
+        mMilestonePresenter.getAllWorkByAssignedMilestone(milestoneId)
 
-        add_task_button.setOnClickListener { onClickAddWork(input_work_edittext.text.toString()) }
-        expanded_milestone_card_text.setOnClickListener { finish() }
-        expand_button.setOnClickListener { finish() }
+        setOnKeyListeners()
+        setupWorkRecycler()
+    }
 
+    fun setupWorkRecycler() {
         mAdapter = ExpandedWorkItemAdapter(this, milestoneId)
         work_recycler.layoutManager = LinearLayoutManager(this)
         work_recycler.adapter = mAdapter
+    }
 
-        mMilestonePresenter.getMilestoneById(milestoneId)
-        mMilestonePresenter.getAllWorkByAssignedMilestone(milestoneId)
+    fun setOnKeyListeners() {
+        fab.setOnClickListener { fabOnClick() }
+        add_task_button.setOnClickListener { onClickAddWork() }
+        expanded_milestone_card_text.setOnClickListener { finish() }
+        expand_button.setOnClickListener { finish() }
+        input_work_edittext.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                onClickAddWork()
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 
     fun fabOnClick() {
@@ -71,14 +85,13 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         fab.visibility = View.GONE
     }
 
-    fun dismissInput(){
+    fun dismissInput() {
         hideKeyboard(input_work_edittext)
         input_work_card.visibility = View.GONE
 
         fab.show()
         fab.visibility = View.VISIBLE
     }
-
 
     fun showKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -118,7 +131,8 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         if (works.isEmpty()) fab.performClick()
     }
 
-    override fun onClickAddWork(workDescription: String) {
+    override fun onClickAddWork() {
+        val workDescription = input_work_edittext.text.toString()
         mMilestonePresenter.addNewWork(milestoneId, workDescription)
     }
 
