@@ -29,7 +29,7 @@ class GoalRepositoryImpl : GoalRepository {
             val costs = SQLite
                     .select()
                     .from(com.djacoronel.goalmentum.storage.model.Goal::class.java)
-                    .where(Goal_Table.achieved.eq(false))
+                    .where(Goal_Table.achieved.eq(true))
                     .queryList()
 
             return GoalStorageModelConverter.convertListToDomainModel(costs)
