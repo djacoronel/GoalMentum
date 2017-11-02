@@ -29,9 +29,8 @@ class AnalyzeGoalPresenterImpl(
         private val milestoneRepository: MilestoneRepository,
         private val workRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), AnalyzeGoalsPresenter,
-        GetWeeklyLineGraphInteractor.Callback, GetAllGoalsInteractor.Callback ,
-        GetAnalysisInteractor.Callback
-{
+        GetWeeklyLineGraphInteractor.Callback, GetAllGoalsInteractor.Callback,
+        GetAnalysisInteractor.Callback {
     override fun getWeeklyLineGraph() {
         val getWeeklyLineGraphInteractor = GetWeeklyLineGraphInteractorImpl(
                 mExecutor,
@@ -42,8 +41,8 @@ class AnalyzeGoalPresenterImpl(
         getWeeklyLineGraphInteractor.execute()
     }
 
-    override fun onWeeklyLineGraphRetrieved(dataPoints: List<Point>, previousWeekData: List<Point>) {
-        view.onWeeklyLineGraphRetrieved(dataPoints, previousWeekData)
+    override fun onWeeklyLineGraphRetrieved(currentWeekData: List<Point>, previousWeekData: List<Point>) {
+        view.onWeeklyLineGraphRetrieved(currentWeekData, previousWeekData)
     }
 
     override fun getWeeklyBarGraph() {
@@ -63,11 +62,11 @@ class AnalyzeGoalPresenterImpl(
         val dataBars = mutableListOf<Bar>()
         val index = sortedGoalList.lastIndex
 
-        for (i in 0..6){
+        for (i in 0..6) {
             if (i <= index)
                 dataBars.add(Bar(sortedGoalList[i].description, sortedGoalList[i].achievedWork.toFloat()))
             else
-                dataBars.add(0,Bar("",0f))
+                dataBars.add(0, Bar("", 0f))
         }
 
         view.onWeeklyBarGraphRetrieved(dataBars)

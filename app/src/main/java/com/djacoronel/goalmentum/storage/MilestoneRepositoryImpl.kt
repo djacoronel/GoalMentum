@@ -9,11 +9,10 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 /**
  * Created by djacoronel on 10/6/17.
  */
-class MilestoneRepositoryImpl() : MilestoneRepository {
+class MilestoneRepositoryImpl : MilestoneRepository {
 
     override val allMilestones: List<Milestone>
         get() {
-
             val milestones = SQLite
                     .select()
                     .from(com.djacoronel.goalmentum.storage.model.Milestone::class.java)
@@ -24,7 +23,6 @@ class MilestoneRepositoryImpl() : MilestoneRepository {
 
     override val allAchievedMilestones: List<Milestone>
         get() {
-
             val costs = SQLite
                     .select()
                     .from(com.djacoronel.goalmentum.storage.model.Milestone::class.java)

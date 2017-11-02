@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -12,11 +11,9 @@
   android:layout_marginRight="15dp"
   android:layout_gravity="center"
   card_view:cardCornerRadius="4dp">
-
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
       android:id="@+id/achieved_goal_card_text"
       android:layout_width="0dp"
@@ -34,20 +31,17 @@
       card_view:layout_constraintEnd_toStartOf="@+id/circular_progress_bar"
       card_view:layout_constraintStart_toStartOf="parent"
       card_view:layout_constraintTop_toTopOf="parent"/>
-
     <com.github.lzyzsd.circleprogress.CircleProgress
       android:id="@+id/circle_progress"
       android:layout_width="60dp"
       android:layout_height="60dp"
       card_view:circle_finished_color="@color/colorPrimary"
       card_view:circle_progress="30"
-      card_view:circle_unfinished_color="@color/colorPrimaryDark"
+      card_view:circle_unfinished_color="@color/colorSecondary"
       card_view:layout_constraintBottom_toBottomOf="@+id/circular_progress_bar"
       card_view:layout_constraintEnd_toEndOf="@+id/circular_progress_bar"
       card_view:layout_constraintStart_toStartOf="@+id/circular_progress_bar"
-      card_view:layout_constraintTop_toTopOf="@+id/circular_progress_bar"
-      />
-
+      card_view:layout_constraintTop_toTopOf="@+id/circular_progress_bar"/>
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
       android:id="@+id/circular_progress_bar"
       android:layout_width="75dp"
@@ -56,14 +50,13 @@
       android:layout_marginBottom="8dp"
       android:layout_marginEnd="8dp"
       android:layout_marginRight="8dp"
-      card_view:cpb_background_progressbar_color="@color/colorPrimaryLight"
+      card_view:cpb_background_progressbar_color="@color/colorSecondaryLight"
       card_view:cpb_background_progressbar_width="8dp"
       card_view:cpb_progressbar_color="@color/colorAccent"
       card_view:cpb_progressbar_width="8dp"
       card_view:layout_constraintBottom_toBottomOf="parent"
       card_view:layout_constraintEnd_toEndOf="parent"
       card_view:layout_constraintTop_toTopOf="parent"/>
-
     <TextView
       android:id="@+id/achieved_duration_text"
       android:textStyle="italic"
@@ -97,6 +90,5 @@
       card_view:layout_constraintBottom_toTopOf="@+id/circular_progress_bar"
       card_view:layout_constraintEnd_toEndOf="@+id/circular_progress_bar"
       card_view:layout_constraintStart_toStartOf="@+id/circular_progress_bar"/>
-
   </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

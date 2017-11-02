@@ -28,14 +28,14 @@ import kotlinx.android.synthetic.main.card_line_graph.view.*
 import java.util.*
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.fragment_analyze_goals.*
 import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
 
 
 class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
     var colorPrimary: Int = 0
     var colorPrimaryDark: Int = 0
-    var colorPrimaryLight: Int = 0
+    var colorSecondary: Int = 0
+    var colorSecondaryLight: Int = 0
     var colorAccent: Int = 0
 
     fun newInstance(): AnalyzeGoalsFragment {
@@ -45,11 +45,6 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_analyze_goals, container, false)
-
-        colorPrimary = ContextCompat.getColor(context, R.color.colorPrimary)
-        colorPrimaryDark = ContextCompat.getColor(context, R.color.colorPrimaryDark)
-        colorPrimaryLight = ContextCompat.getColor(context, R.color.colorPrimaryLight)
-        colorAccent = ContextCompat.getColor(context, R.color.colorAccent)
 
         val analyzeGoalsPresenter = AnalyzeGoalPresenterImpl(
                 ThreadExecutor.instance,
@@ -64,9 +59,18 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         analyzeGoalsPresenter.getWeeklyBarGraph()
         analyzeGoalsPresenter.getAnalysis()
 
+        initializeColors()
         runLayoutAnimation(view.analyze_goals)
 
         return view
+    }
+    
+    fun initializeColors(){
+        colorPrimary = ContextCompat.getColor(context, R.color.colorPrimary)
+        colorPrimaryDark = ContextCompat.getColor(context, R.color.colorPrimaryDark)
+        colorSecondary = ContextCompat.getColor(context, R.color.colorSecondary)
+        colorSecondaryLight = ContextCompat.getColor(context, R.color.colorSecondaryLight)
+        colorAccent = ContextCompat.getColor(context, R.color.colorAccent)
     }
 
     fun runLayoutAnimation(layout: LinearLayout){
@@ -104,7 +108,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                 setFontSize(30)
                 setXAxis(false)
                 setYAxis(false)
-                setLabelsColor(colorPrimaryLight)
+                setLabelsColor(colorSecondaryLight)
                 setStep(1)
                 show(Animation(400))
             }
@@ -136,8 +140,8 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                 setFontSize(30)
                 setBarSpacing(6f)
                 setXAxis(false)
-                setAxisColor(colorPrimaryLight)
-                setLabelsColor(colorPrimaryLight)
+                setAxisColor(colorSecondaryLight)
+                setLabelsColor(colorSecondaryLight)
                 setYLabels(AxisRenderer.LabelPosition.INSIDE)
                 show(Animation(400))
             }
@@ -152,8 +156,9 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                 total_work_done.text = data[2].toString()
                 total_milestone_achieved.text = data[3].toString()
                 total_goals_achieved.text = data[4].toString()
-                val days = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-                most_productive_day.text = days[data[5]]
+
+                val dayLabels = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+                most_productive_day.text = dayLabels[data[5]]
             }
         }
     }

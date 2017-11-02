@@ -11,17 +11,14 @@ class ProgressBarAnimation
     private val mStepDuration: Long = fullDuration / mProgressBar.max
 
     fun setProgress(progress: Int) {
-        var progress = progress
-        if (progress < 0) {
-            progress = 0
-        }
+        var progressCopy = progress
+        if (progressCopy < 0)
+            progressCopy = 0
 
-        if (progress > mProgressBar.max) {
-            progress = mProgressBar.max
-        }
+        if (progressCopy > mProgressBar.max)
+            progressCopy = mProgressBar.max
 
-        mTo = progress
-
+        mTo = progressCopy
         mFrom = mProgressBar.progress
         duration = Math.abs(mTo - mFrom) * mStepDuration
         mProgressBar.startAnimation(this)

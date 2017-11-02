@@ -11,9 +11,9 @@ interface MilestoneRepository {
 
     val allAchievedMilestones: List<Milestone>
 
-    fun insert(Milestone: Milestone)
+    fun insert(milestone: Milestone)
 
-    fun update(Milestone: Milestone)
+    fun update(milestone: Milestone)
 
     fun getMilestoneById(id: Long): Milestone?
 

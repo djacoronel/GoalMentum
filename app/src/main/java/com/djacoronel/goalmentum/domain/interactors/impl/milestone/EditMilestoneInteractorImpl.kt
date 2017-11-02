@@ -6,7 +6,6 @@ import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.EditMilestoneInteractor
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
-import java.util.*
 
 
 /**

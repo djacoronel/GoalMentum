@@ -1,6 +1,6 @@
 package com.djacoronel.goalmentum.util
 
-import android.content.Context
+import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,19 +24,19 @@ object DateUtils {
             return c.time
         }
 
-    /**
+    @SuppressLint("SimpleDateFormat") /**
      * Converts a dateCreated to the textual representation of dates used by people.
      *
      * @param date
      * @return If the dateCreated is of today, then this method will return 'Today's'. If its yesterday then 'Yesterday' is returned.
      * Otherwise it returns the dateCreated in the form of dd.mm
      */
-    fun dateToText(context: Context, date: Date): String {
-        var date = date
+    fun dateToText(date: Date): String {
+        var dateCopy = date
         val textDate: String
 
         // clear hours, minutes and smaller time units from the dateCreated
-        date = truncateHours(date)
+        dateCopy = truncateHours(dateCopy)
 
         val c = Calendar.getInstance()
 
@@ -54,10 +54,10 @@ object DateUtils {
         val yesterday = c.time
 
 
-        textDate = when (date) {
+        textDate = when (dateCopy) {
             today -> "Today"
             yesterday -> "Yesterday"
-            else -> formatDate(date, SimpleDateFormat("dd.MM"))
+            else -> formatDate(dateCopy, SimpleDateFormat("dd.MM"))
         }
 
         return textDate
