@@ -74,9 +74,8 @@ class GoalItemAdapter(val mView: MainPresenter.View)
         fun setProgress() {
             val totalWorks = goal.activeWork + goal.achievedWork
             val progress = if (totalWorks == 0) 0f else (goal.achievedWork / (totalWorks).toFloat()) * 100
-            goal.applyDailyMomentumDeductions()
             itemView.circular_progress_bar.setProgressWithAnimation(progress)
-            itemView.circle_progress.progress = goal.momentum
+            itemView.circle_progress.progress = goal.getMomentumWithDeduction()
         }
     }
 

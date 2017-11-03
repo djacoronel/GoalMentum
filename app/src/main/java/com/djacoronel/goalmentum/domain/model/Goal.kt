@@ -69,11 +69,18 @@ class Goal {
     }
 
     fun updateMomentum(momentumAdjustment: Int){
+        applyDailyMomentumDeductions()
         momentum += momentumAdjustment
         adjustMomentumToLimits()
+        momentumDateUpdated = DateUtils.today
     }
 
-    fun applyDailyMomentumDeductions(){
+    fun getMomentumWithDeduction(): Int{
+        applyDailyMomentumDeductions()
+        return momentum
+    }
+
+    private fun applyDailyMomentumDeductions(){
         val currentDate = Date()
         val elapsedDays = getDifferenceDays(momentumDateUpdated!!, currentDate)
 
@@ -89,9 +96,12 @@ class Goal {
     fun getStringRemainingDays(): String {
         val remainingDays = getRemainingDays()
         return when {
-            remainingDays.toInt() == 0 -> "(DUE!)"
+            remainingDays.toInt() > 1 -> "($remainingDays days remaining)"
             remainingDays.toInt() == 1 -> "($remainingDays day remaining)"
-            else -> "($remainingDays days remaining)"
+            remainingDays.toInt() == 0 -> "(DUE!)"
+            remainingDays.toInt() == -1 -> "($remainingDays day overdue)"
+            remainingDays.toInt() < 0 -> "($remainingDays days overdue)"
+            else -> "Invalid remaining days value"
         }
     }
 

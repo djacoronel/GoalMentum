@@ -35,10 +35,9 @@ class ToggleWorkAchieveStatusInteractorImpl(
 
         workToEdit?.let {
             it.achieved = !it.achieved
-            if (it.achieved == true)
-                it.dateAchieved = DateUtils.today
-            else
-                it.dateAchieved = Date()
+
+            if (it.achieved == true) it.dateAchieved = DateUtils.today
+            else it.dateAchieved = Date()
             workRepository.update(it)
 
             updateMilestoneAchieveStatus(it.assignedMilestone)
@@ -55,13 +54,9 @@ class ToggleWorkAchieveStatusInteractorImpl(
             val worksAchieved = works.filter { it.achieved == true }
             val isAllWorkAchieved = worksAchieved.size == works.size && works.isNotEmpty()
 
-            if (isAllWorkAchieved && it.achieved == false) {
-                it.achieved = true
-                milestoneRepository.update(it)
-            } else if (!isAllWorkAchieved && it.achieved == true) {
-                it.achieved = false
-                milestoneRepository.update(it)
-            }
+            if (isAllWorkAchieved && it.achieved == false) it.achieved = true
+            else if (!isAllWorkAchieved && it.achieved == true) it.achieved = false
+            milestoneRepository.update(it)
 
             updateGoalMomentum(it.assignedGoal)
             updateGoalAchieveStatus(it.assignedGoal)
@@ -73,10 +68,7 @@ class ToggleWorkAchieveStatusInteractorImpl(
 
         goalToUpdate?.let {
             val momentum = if (work.achieved == true) -10 else 10
-            it.applyDailyMomentumDeductions()
             it.updateMomentum(momentum)
-            it.momentumDateUpdated = DateUtils.today
-
             goalRepository.update(it)
         }
     }
@@ -86,17 +78,10 @@ class ToggleWorkAchieveStatusInteractorImpl(
 
         goalToAchieve?.let {
             val mMilestones = milestoneRepository.getMilestonesByAssignedGoal(goalId)
-
             val milestonesAchieved = mMilestones.filter { it.achieved == true }
             val isAllMilestoneAchieved = milestonesAchieved.size == mMilestones.size && mMilestones.isNotEmpty()
-
-            if (isAllMilestoneAchieved) {
-                it.achieved = true
-                goalRepository.update(goalToAchieve)
-            } else {
-                it.achieved = false
-                goalRepository.update(goalToAchieve)
-            }
+            it.achieved = isAllMilestoneAchieved
+            goalRepository.update(goalToAchieve)
         }
     }
 }

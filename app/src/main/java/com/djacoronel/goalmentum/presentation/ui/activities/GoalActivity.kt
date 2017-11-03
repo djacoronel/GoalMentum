@@ -123,7 +123,7 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
     }
 
     fun setGoalProgress(goal: Goal) {
-        setMomentumProgress(goal.momentum)
+        setMomentumProgress(goal.getMomentumWithDeduction())
         setAchievedProgress(goal.activeWork, goal.achievedWork)
     }
 
