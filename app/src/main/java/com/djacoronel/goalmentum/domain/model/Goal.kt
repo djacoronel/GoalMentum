@@ -99,8 +99,8 @@ class Goal {
             remainingDays.toInt() > 1 -> "($remainingDays days remaining)"
             remainingDays.toInt() == 1 -> "($remainingDays day remaining)"
             remainingDays.toInt() == 0 -> "(DUE!)"
-            remainingDays.toInt() == -1 -> "($remainingDays day overdue)"
-            remainingDays.toInt() < 0 -> "($remainingDays days overdue)"
+            remainingDays.toInt() == -1 -> "(${-remainingDays} day overdue)"
+            remainingDays.toInt() < 0 -> "(${-remainingDays} days overdue)"
             else -> "Invalid remaining days value"
         }
     }
