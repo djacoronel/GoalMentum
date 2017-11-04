@@ -1,24 +1,24 @@
 package com.djacoronel.goalmentum.presentation.presenters
 
-import com.db.chart.model.Bar
-import com.db.chart.model.Point
-
 /**
  * Created by djacoronel on 10/9/17.
  */
 interface AnalyzeGoalsPresenter {
 
     interface View{
-        fun onWeeklyLineGraphRetrieved(currentWeekData: List<Point>, previousWeekData: List<Point>)
+        fun onWeeklyLineGraphRetrieved(
+                currentWeekData: List<Pair<String, Int>>,
+                previousWeekData: List<Pair<String, Int>>
+        )
 
-        fun onWeeklyBarGraphRetrieved(dataBars: List<Bar>)
+        fun onWeeklyBarGraphRetrieved(dataBars: List<Pair<String,Int>>)
 
         fun onAnalysisRetrieved(data: List<Int>)
     }
 
-    fun getWeeklyLineGraph()
+    fun getLineGraphData()
 
-    fun getWeeklyBarGraph()
+    fun getBarGraphData()
 
-    fun getAnalysis()
+    fun getAnalysisData()
 }

@@ -103,4 +103,47 @@ object DateUtils {
         // and get that as a Date
         return c.time
     }
+
+    fun convertValueToMondayFirst(dayValue: Int): Int{
+        val mapping = listOf(-1,7,1,2,3,4,5,6)
+        return mapping[dayValue]
+    }
+
+    fun getDayOfWeekLabel(dayValue: Int): String{
+        val dayLabels = listOf("Invalid day value", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+        return dayLabels[dayValue]
+    }
+
+    fun getCurrentWeek(): List<Date> {
+        val calendar = Calendar.getInstance()
+        calendar.time = DateUtils.today
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+
+        val week = mutableListOf<Date>()
+
+        for (i in 0..6) {
+            week.add(calendar.time)
+            calendar.add(Calendar.DATE, 1)
+        }
+
+        return week
+    }
+
+    fun getPreviousWeek(): List<Date>{
+        val calendar = Calendar.getInstance()
+        calendar.time = DateUtils.today
+        calendar.firstDayOfWeek = Calendar.MONDAY
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        calendar.add(Calendar.WEEK_OF_MONTH,-1)
+
+        val week = mutableListOf<Date>()
+
+        for (i in 0..6) {
+            week.add(calendar.time)
+            calendar.add(Calendar.DATE, 1)
+        }
+
+        return week
+    }
 }

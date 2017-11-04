@@ -3,7 +3,7 @@ package com.djacoronel.goalmentum.domain.interactors.impl
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.GetAnalysisInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.GetAnalysisDataInteractor
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
@@ -14,14 +14,14 @@ import java.util.*
 /**
  * Created by djacoronel on 10/31/17.
  */
-class GetAnalysisInteractorImpl(
+class GetAnalysisDataInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
         private val goalRepository: GoalRepository,
         private val milestoneRepository: MilestoneRepository,
         private val workRepository: WorkRepository,
-        private val mCallback: GetAnalysisInteractor.Callback
-) : AbstractInteractor(threadExecutor, mainThread), GetAnalysisInteractor {
+        private val mCallback: GetAnalysisDataInteractor.Callback
+) : AbstractInteractor(threadExecutor, mainThread), GetAnalysisDataInteractor {
     override fun run() {
         val goals = goalRepository.allGoals.filter { it.achieved == true }.size
         val milestones = milestoneRepository.allMilestones.filter { it.achieved == true }.size
@@ -39,7 +39,7 @@ class GetAnalysisInteractorImpl(
             add(getMostProductiveDay())
         }
 
-        mMainThread.post(Runnable { mCallback.onAnalysisRetrieved(data) })
+        mMainThread.post(Runnable { mCallback.onAnalysisDataRetrieved(data) })
     }
 
     fun getAverageWorkPerDay(): Int {
@@ -92,10 +92,11 @@ class GetAnalysisInteractorImpl(
         val sumPerDay = arrayOf(0, 0, 0, 0, 0, 0, 0)
 
         for (i in 0..27) {
-            sumPerDay[calendar.get(Calendar.DAY_OF_WEEK) - 1] += works.filter { it.dateAchieved == calendar.time }.size
+            val dayOfWeek = DateUtils.convertValueToMondayFirst(calendar.get(Calendar.DAY_OF_WEEK))
+            sumPerDay[dayOfWeek - 1] += works.filter { it.dateAchieved == calendar.time }.size
             calendar.add(Calendar.DATE, -1)
         }
 
-        return sumPerDay.indexOf(sumPerDay.max()!!)
+        return sumPerDay.indexOf(sumPerDay.max()!!) + 1
     }
 }

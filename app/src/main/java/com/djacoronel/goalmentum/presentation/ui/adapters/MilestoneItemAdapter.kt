@@ -40,29 +40,29 @@ class MilestoneItemAdapter(
     class ViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(milestone: Milestone, mAdapter: CollapsedWorkItemAdapter) = with(itemView) {
 
-            if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
-            else expanded_achieved_icon.visibility = View.GONE
+            expanded_milestone_card_text.text = milestone.description
 
             val workCount = "${milestone.achievedWorks}/${milestone.totalWorks}"
             work_count.text = workCount
 
+            if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
+            else expanded_achieved_icon.visibility = View.GONE
+
+            if (mAdapter.mWorks.isEmpty()) placeholder.visibility = View.VISIBLE
+            else placeholder.visibility = View.GONE
+
+            work_recycler.layoutManager = LinearLayoutManager(context)
+            work_recycler.adapter = mAdapter
+
+            setOnClickListeners()
+        }
+
+        fun setOnClickListeners() = with(itemView) {
             work_count.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             placeholder.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expand_button.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
-            expanded_milestone_card_text.text = milestone.description
-            expanded_milestone_card_text.setOnLongClickListener {
-                createAndShowPopupMenu()
-                true
-            }
-
-            if (mAdapter.mWorks.isEmpty())
-                placeholder.visibility = View.VISIBLE
-            else
-                placeholder.visibility = View.GONE
-
-            work_recycler.layoutManager = LinearLayoutManager(context)
-            work_recycler.adapter = mAdapter
+            expanded_milestone_card_text.setOnLongClickListener { createAndShowPopupMenu(); true }
         }
 
         fun createAndShowPopupMenu() {
@@ -97,7 +97,8 @@ class MilestoneItemAdapter(
 
     fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>) {
         mMilestones.clear()
-        mMilestones.addAll(milestones)
+        mMilestones.addAll(milestones.filter { it.achieved == false })
+        mMilestones.addAll(milestones.filter { it.achieved == true })
 
         for (milestoneId in displayedWorks.keys) {
             mWorkAdapters.put(milestoneId, CollapsedWorkItemAdapter(mView, displayedWorks[milestoneId]!!))
@@ -130,9 +131,7 @@ class MilestoneItemAdapter(
     fun updateWorkAdapter(milestoneId: Long, works: List<Work>) {
         mWorkAdapters[milestoneId] = CollapsedWorkItemAdapter(mView, works)
         val milestoneToUpdate = mMilestones.find { it.id == milestoneId }
-        milestoneToUpdate.let {
-            notifyItemChanged(mMilestones.indexOf(it))
-        }
+        milestoneToUpdate?.let { notifyItemChanged(mMilestones.indexOf(it)) }
     }
 
     fun updateWork(work: Work) {

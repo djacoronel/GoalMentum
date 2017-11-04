@@ -4,13 +4,12 @@ import com.db.chart.model.Bar
 import com.db.chart.model.Point
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
-import com.djacoronel.goalmentum.domain.interactors.base.GetAnalysisInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.GetWeeklyLineGraphInteractor
-import com.djacoronel.goalmentum.domain.interactors.base.goal.GetAllGoalsInteractor
-import com.djacoronel.goalmentum.domain.interactors.impl.GetAnalysisInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.GetWeeklyLineGraphInteractorImpl
-import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetAllGoalsInteractorImpl
-import com.djacoronel.goalmentum.domain.model.Goal
+import com.djacoronel.goalmentum.domain.interactors.base.GetAnalysisDataInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.GetBarGraphDataInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.GetLineGraphDataInteractor
+import com.djacoronel.goalmentum.domain.interactors.impl.GetAnalysisDataInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.GetBarGraphDataInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.GetLineGraphDataInteractorImpl
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
@@ -29,10 +28,10 @@ class AnalyzeGoalPresenterImpl(
         private val milestoneRepository: MilestoneRepository,
         private val workRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), AnalyzeGoalsPresenter,
-        GetWeeklyLineGraphInteractor.Callback, GetAllGoalsInteractor.Callback,
-        GetAnalysisInteractor.Callback {
-    override fun getWeeklyLineGraph() {
-        val getWeeklyLineGraphInteractor = GetWeeklyLineGraphInteractorImpl(
+        GetLineGraphDataInteractor.Callback, GetBarGraphDataInteractor.Callback,
+        GetAnalysisDataInteractor.Callback {
+    override fun getLineGraphData() {
+        val getWeeklyLineGraphInteractor = GetLineGraphDataInteractorImpl(
                 mExecutor,
                 mMainThread,
                 workRepository,
@@ -41,12 +40,12 @@ class AnalyzeGoalPresenterImpl(
         getWeeklyLineGraphInteractor.execute()
     }
 
-    override fun onWeeklyLineGraphRetrieved(currentWeekData: List<Point>, previousWeekData: List<Point>) {
+    override fun onLineGraphDataRetrieved(currentWeekData: List<Pair<String, Int>>, previousWeekData: List<Pair<String, Int>>) {
         view.onWeeklyLineGraphRetrieved(currentWeekData, previousWeekData)
     }
 
-    override fun getWeeklyBarGraph() {
-        val getAllGoalsInteractor = GetAllGoalsInteractorImpl(
+    override fun getBarGraphData() {
+        val getBarGraphDataInteractor = GetBarGraphDataInteractorImpl(
                 mExecutor,
                 mMainThread,
                 goalRepository,
@@ -54,26 +53,15 @@ class AnalyzeGoalPresenterImpl(
                 workRepository,
                 this
         )
-        getAllGoalsInteractor.execute()
+        getBarGraphDataInteractor.execute()
     }
 
-    override fun onGoalsRetrieved(goalList: List<Goal>) {
-        val sortedGoalList = goalList.sortedBy { it.achievedWork }
-        val dataBars = mutableListOf<Bar>()
-        val index = sortedGoalList.lastIndex
-
-        for (i in 0..6) {
-            if (i <= index)
-                dataBars.add(Bar(sortedGoalList[i].description, sortedGoalList[i].achievedWork.toFloat()))
-            else
-                dataBars.add(0, Bar("", 0f))
-        }
-
-        view.onWeeklyBarGraphRetrieved(dataBars)
+    override fun onBarGraphDataRetrieved(barData: List<Pair<String,Int>>) {
+        view.onWeeklyBarGraphRetrieved(barData)
     }
 
-    override fun getAnalysis() {
-        val getAnalysisInteractor = GetAnalysisInteractorImpl(
+    override fun getAnalysisData() {
+        val getAnalysisInteractor = GetAnalysisDataInteractorImpl(
                 mExecutor,
                 mMainThread,
                 goalRepository,
@@ -84,7 +72,7 @@ class AnalyzeGoalPresenterImpl(
         getAnalysisInteractor.execute()
     }
 
-    override fun onAnalysisRetrieved(data: List<Int>) {
+    override fun onAnalysisDataRetrieved(data: List<Int>) {
         view.onAnalysisRetrieved(data)
     }
 }

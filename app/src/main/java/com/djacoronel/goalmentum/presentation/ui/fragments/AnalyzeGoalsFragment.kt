@@ -11,7 +11,6 @@ import com.db.chart.animation.Animation
 import com.db.chart.model.Bar
 import com.db.chart.model.BarSet
 import com.db.chart.model.LineSet
-import com.db.chart.model.Point
 import com.db.chart.renderer.AxisRenderer
 
 import com.djacoronel.goalmentum.R
@@ -28,6 +27,7 @@ import kotlinx.android.synthetic.main.card_line_graph.view.*
 import java.util.*
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
+import com.djacoronel.goalmentum.util.DateUtils
 import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
 
 
@@ -46,6 +46,8 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_analyze_goals, container, false)
 
+        initializeColors()
+
         val analyzeGoalsPresenter = AnalyzeGoalPresenterImpl(
                 ThreadExecutor.instance,
                 MainThreadImpl.instance,
@@ -55,17 +57,16 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                 WorkRepositoryImpl()
         )
 
-        analyzeGoalsPresenter.getWeeklyLineGraph()
-        analyzeGoalsPresenter.getWeeklyBarGraph()
-        analyzeGoalsPresenter.getAnalysis()
+        analyzeGoalsPresenter.getLineGraphData()
+        analyzeGoalsPresenter.getBarGraphData()
+        analyzeGoalsPresenter.getAnalysisData()
 
-        initializeColors()
         runLayoutAnimation(view.analyze_goals)
 
         return view
     }
-    
-    fun initializeColors(){
+
+    fun initializeColors() {
         colorPrimary = ContextCompat.getColor(context, R.color.colorPrimary)
         colorPrimaryDark = ContextCompat.getColor(context, R.color.colorPrimaryDark)
         colorSecondary = ContextCompat.getColor(context, R.color.colorSecondary)
@@ -73,16 +74,19 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         colorAccent = ContextCompat.getColor(context, R.color.colorAccent)
     }
 
-    fun runLayoutAnimation(layout: LinearLayout){
+    fun runLayoutAnimation(layout: LinearLayout) {
         val slideUp = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_bottom)
         layout.layoutAnimation = slideUp
     }
 
-    override fun onWeeklyLineGraphRetrieved(currentWeekData: List<Point>, previousWeekData: List<Point>) {
+    override fun onWeeklyLineGraphRetrieved(
+            currentWeekData: List<Pair<String, Int>>, previousWeekData: List<Pair<String, Int>>) {
         setupLineGraph(currentWeekData, previousWeekData)
     }
 
-    private fun setupLineGraph(currentWeekData: List<Point>, previousWeekData: List<Point>){
+    private fun setupLineGraph(
+            currentWeekData: List<Pair<String, Int>>, previousWeekData: List<Pair<String, Int>>)
+    {
         val currentWeekSet = createLineSet(currentWeekData)
         val lastWeekSet = createLineSet(previousWeekData)
 
@@ -115,23 +119,23 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         }
     }
 
-    private fun createLineSet(pointData: List<Point>): LineSet{
+    private fun createLineSet(pointData: List<Pair<String, Int>>): LineSet {
         val lineSet = LineSet()
-        pointData.forEach { lineSet.addPoint(it) }
+        pointData.forEach { lineSet.addPoint(it.first, it.second.toFloat()) }
+
         return lineSet
     }
 
-    private fun getIndexInGraphOfCurrentDay(): Int{
+    private fun getIndexInGraphOfCurrentDay(): Int {
         val today = Calendar.getInstance()
-        val todayNum = today.get(Calendar.DAY_OF_WEEK)
-        val graphIndex = arrayOf(6,0,1,2,3,4,5)
+        val todayValue = today.get(Calendar.DAY_OF_WEEK)
 
-        return graphIndex[todayNum]
+        return DateUtils.convertValueToMondayFirst(todayValue)
     }
 
-    override fun onWeeklyBarGraphRetrieved(dataBars: List<Bar>) {
+    override fun onWeeklyBarGraphRetrieved(dataBars: List<Pair<String,Int>>) {
         val barSet = BarSet()
-        dataBars.forEach { barSet.addBar(it) }
+        dataBars.forEach { barSet.addBar(it.first, it.second.toFloat()) }
         barSet.color = colorAccent
 
         view?.let {
@@ -156,9 +160,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
                 total_work_done.text = data[2].toString()
                 total_milestone_achieved.text = data[3].toString()
                 total_goals_achieved.text = data[4].toString()
-
-                val dayLabels = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-                most_productive_day.text = dayLabels[data[5]]
+                most_productive_day.text = DateUtils.getDayOfWeekLabel(data[5])
             }
         }
     }
