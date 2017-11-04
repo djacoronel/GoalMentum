@@ -8,11 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.db.chart.animation.Animation
-import com.db.chart.model.Bar
 import com.db.chart.model.BarSet
 import com.db.chart.model.LineSet
 import com.db.chart.renderer.AxisRenderer
-
 import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.presentation.presenters.AnalyzeGoalsPresenter
@@ -29,7 +27,6 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import com.djacoronel.goalmentum.util.DateUtils
 import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
-
 
 class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
     var colorPrimary: Int = 0

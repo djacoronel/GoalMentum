@@ -1,7 +1,5 @@
 package com.djacoronel.goalmentum.presentation.presenters.impl
 
-import com.db.chart.model.Bar
-import com.db.chart.model.Point
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.GetAnalysisDataInteractor
@@ -40,7 +38,8 @@ class AnalyzeGoalPresenterImpl(
         getWeeklyLineGraphInteractor.execute()
     }
 
-    override fun onLineGraphDataRetrieved(currentWeekData: List<Pair<String, Int>>, previousWeekData: List<Pair<String, Int>>) {
+    override fun onLineGraphDataRetrieved(
+            currentWeekData: List<Pair<String, Int>>, previousWeekData: List<Pair<String, Int>>) {
         view.onWeeklyLineGraphRetrieved(currentWeekData, previousWeekData)
     }
 
@@ -56,7 +55,7 @@ class AnalyzeGoalPresenterImpl(
         getBarGraphDataInteractor.execute()
     }
 
-    override fun onBarGraphDataRetrieved(barData: List<Pair<String,Int>>) {
+    override fun onBarGraphDataRetrieved(barData: List<Pair<String, Int>>) {
         view.onWeeklyBarGraphRetrieved(barData)
     }
 
