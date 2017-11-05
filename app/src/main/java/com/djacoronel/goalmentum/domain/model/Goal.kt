@@ -84,7 +84,9 @@ class Goal {
         val currentDate = Date()
         val elapsedDays = getDifferenceDays(momentumDateUpdated!!, currentDate)
 
-        momentum += -10 * elapsedDays.toInt()
+
+        for (i in 1..elapsedDays.toInt())
+            momentum += -10 * i
         adjustMomentumToLimits()
     }
 
