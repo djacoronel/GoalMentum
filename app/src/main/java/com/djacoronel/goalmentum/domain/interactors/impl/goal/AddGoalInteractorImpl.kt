@@ -19,6 +19,7 @@ class AddGoalInteractorImpl(
 
     override fun run() {
         val goal = Goal(mDescription, mDuration)
+
         mGoalRepository.insert(goal)
 
         mMainThread.post(Runnable { mCallback.onGoalAdded(goal.id) })
