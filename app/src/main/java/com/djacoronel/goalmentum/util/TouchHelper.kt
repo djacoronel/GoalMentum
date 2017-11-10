@@ -11,12 +11,12 @@ internal class TouchHelper(private val listAdapter: GoalItemAdapter) :
         ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        if (viewHolder.adapterPosition != listAdapter.getTotalItems() - 1 &&
+        return if (viewHolder.adapterPosition != listAdapter.getTotalItems() - 1 &&
                 target.adapterPosition != listAdapter.getTotalItems() - 1) {
             listAdapter.swapItemPositions(viewHolder.adapterPosition, target.adapterPosition)
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 

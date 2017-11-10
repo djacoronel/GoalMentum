@@ -24,7 +24,8 @@ import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
 
 
-class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
+class
+MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     lateinit var mAdapter: ExpandedWorkItemAdapter
     lateinit var mMilestonePresenter: MilestonePresenter
@@ -96,7 +97,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
 
     fun showKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 
     fun hideKeyboard(view: View) {

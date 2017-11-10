@@ -52,23 +52,6 @@ class GoalItemAdapter(val mView: MainPresenter.View)
             itemView.setOnClickListener {
                 mListener.onClickViewGoal(adapterPosition)
             }
-            itemView.setOnLongClickListener {
-                createAndShowPopupMenu()
-                true
-            }
-        }
-
-        fun createAndShowPopupMenu() {
-            val popup = PopupMenu(itemView.context, itemView, Gravity.END)
-            popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
-            popup.setOnMenuItemClickListener { item ->
-                when (item.title) {
-                    "Edit" -> mListener.onClickEditGoal(adapterPosition)
-                    "Delete" -> mListener.onClickDeleteGoal(adapterPosition)
-                }
-                true
-            }
-            popup.show()
         }
 
         fun setProgress() {
@@ -119,14 +102,6 @@ class GoalItemAdapter(val mView: MainPresenter.View)
 
     override fun onClickAddGoal() {
         mView.onClickAddGoal()
-    }
-
-    override fun onClickEditGoal(position: Int) {
-        mView.onClickEditGoal(mGoals[position])
-    }
-
-    override fun onClickDeleteGoal(position: Int) {
-        mView.onClickDeleteGoal(mGoals[position])
     }
 
     fun showGoals(goals: List<Goal>) {

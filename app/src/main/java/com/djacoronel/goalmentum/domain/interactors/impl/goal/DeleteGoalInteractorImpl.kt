@@ -15,9 +15,9 @@ import com.djacoronel.goalmentum.domain.repository.GoalRepository
 class DeleteGoalInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mGoal: Goal,
+        private val mGoalRepository: GoalRepository,
         private val mCallback: DeleteGoalInteractor.Callback,
-        private val mGoalRepository: GoalRepository
+        private val mGoal: Goal
 ) : AbstractInteractor(threadExecutor, mainThread), DeleteGoalInteractor {
 
     override fun run() {

@@ -13,6 +13,14 @@ interface GoalPresenter {
 
         fun onGoalRetrieved(goal: Goal)
 
+        fun onClickEditGoal(goal: Goal)
+
+        fun onGoalUpdated(goal: Goal)
+
+        fun onClickDeleteGoal(goal: Goal)
+
+        fun onGoalDeleted(goal: Goal)
+
         fun onMilestoneRetrieved(milestone: Milestone)
 
         fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>)
@@ -41,6 +49,10 @@ interface GoalPresenter {
     }
 
     fun getGoalById(goalId: Long)
+
+    fun deleteGoal(goal: Goal)
+
+    fun updateGoal(goal: Goal)
 
     fun getMilestoneById(milestoneId: Long)
 

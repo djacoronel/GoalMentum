@@ -7,9 +7,7 @@ import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -31,14 +29,36 @@ import kotlinx.android.synthetic.main.activity_goal.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import kotlinx.android.synthetic.main.momentum_bar.*
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.yesButton
 
 
 class GoalActivity : AppCompatActivity(), GoalPresenter.View {
 
     private lateinit var mGoalPresenter: GoalPresenter
     private lateinit var mAdapter: MilestoneItemAdapter
+    private lateinit var goal: Goal
     private var goalId: Long = 0
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_view_goal, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_edit -> {
+                onClickEditGoal(goal)
+                true
+            }
+            R.id.menu_delete -> {
+                onClickDeleteGoal(goal)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +70,6 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
 
     private fun init() {
         goalId = intent.getLongExtra("extra_goal_id_key", -1)
-        title = intent.getStringExtra("extra_goal_desc_key")
 
         mGoalPresenter = GoalPresenterImpl(
                 ThreadExecutor.instance,
@@ -114,12 +133,46 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
     }
 
     override fun onGoalRetrieved(goal: Goal) {
+        this.goal = goal
+        collapsing_toolbar.title = goal.description
         setGoalProgress(goal)
 
         if (goal.achieved == true) {
             toast("Goal achieved! Hooray!")
             finish()
         }
+    }
+
+    override fun onClickEditGoal(goal: Goal) {
+        val view = createInputDialogView()
+        val alert = alert { customView = view }.show()
+
+        view.input_work_edittext.hint = "Goal Description"
+        view.input_work_edittext.setText(goal.description)
+
+        view.add_task_button.setOnClickListener {
+            goal.description = view.input_work_edittext.text.toString()
+            mGoalPresenter.updateGoal(goal)
+            hideKeyboard(view)
+            alert.dismiss()
+        }
+    }
+
+    override fun onGoalUpdated(goal: Goal) {
+        collapsing_toolbar.title = goal.description
+    }
+
+    override fun onClickDeleteGoal(goal: Goal) {
+        alert {
+            message = "Are you sure you want to delete this goal?"
+            yesButton { mGoalPresenter.deleteGoal(goal) }
+            noButton {  }
+        }.show()
+    }
+
+    override fun onGoalDeleted(goal: Goal) {
+        toast("Goal Deleted")
+        finish()
     }
 
     fun setGoalProgress(goal: Goal) {

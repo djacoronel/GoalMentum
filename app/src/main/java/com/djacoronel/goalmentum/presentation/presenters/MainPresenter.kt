@@ -17,22 +17,10 @@ interface MainPresenter {
 
         fun onGoalAdded(goal: Goal)
 
-        fun onClickEditGoal(goal: Goal)
-
-        fun onGoalUpdated(goal: Goal)
-
-        fun onClickDeleteGoal(goal: Goal)
-
-        fun onGoalDeleted(goal: Goal)
-
         fun onSwapGoalPositions(goal1: Goal, goal2: Goal)
     }
 
     fun getAllGoals()
-
-    fun updateGoal(goal: Goal)
-
-    fun deleteGoal(goal: Goal)
 
     fun swapGoalPositions(goal1: Goal, goal2: Goal)
 }

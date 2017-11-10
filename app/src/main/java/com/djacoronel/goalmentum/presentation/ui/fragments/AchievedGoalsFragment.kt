@@ -102,18 +102,6 @@ class AchievedGoalsFragment : Fragment(), MainPresenter.View {
     override fun onGoalAdded(goal: Goal) {
     }
 
-    override fun onClickEditGoal(goal: Goal) {
-    }
-
-    override fun onGoalUpdated(goal: Goal) {
-    }
-
-    override fun onClickDeleteGoal(goal: Goal) {
-    }
-
-    override fun onGoalDeleted(goal: Goal) {
-    }
-
     override fun onSwapGoalPositions(goal1: Goal, goal2: Goal) {
     }
 

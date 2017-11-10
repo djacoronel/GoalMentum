@@ -2,11 +2,15 @@ package com.djacoronel.goalmentum.presentation.presenters.impl
 
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
+import com.djacoronel.goalmentum.domain.interactors.base.goal.DeleteGoalInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.SwapGoalPositionsInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.ToggleWorkAchieveStatusInteractor
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.DeleteGoalInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.EditGoalInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.SwapGoalPositionsInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.*
@@ -34,6 +38,8 @@ class GoalPresenterImpl(
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), GoalPresenter,
         GetGoalByIdInteractor.Callback,
+        DeleteGoalInteractor.Callback,
+        EditGoalInteractor.Callback,
         GetMilestoneByIdInteractor.Callback,
         AddMilestoneInteractor.Callback,
         EditMilestoneInteractor.Callback,
@@ -61,6 +67,36 @@ class GoalPresenterImpl(
     }
 
     override fun noGoalFound() {
+    }
+
+    override fun deleteGoal(goal: Goal) {
+        val deleteGoalInteractor = DeleteGoalInteractorImpl(
+                mExecutor,
+                mMainThread,
+                mGoalRepository,
+                this,
+                goal
+        )
+        deleteGoalInteractor.execute()
+    }
+
+    override fun onGoalDeleted(goal: Goal) {
+        mView.onGoalDeleted(goal)
+    }
+
+    override fun updateGoal(goal: Goal) {
+        val editGoalInteractor = EditGoalInteractorImpl(
+                mExecutor,
+                mMainThread,
+                mGoalRepository,
+                this,
+                goal
+        )
+        editGoalInteractor.execute()
+    }
+
+    override fun onGoalUpdated(goal: Goal) {
+        mView.onGoalUpdated(goal)
     }
 
 

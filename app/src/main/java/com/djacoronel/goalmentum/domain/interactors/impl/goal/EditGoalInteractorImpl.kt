@@ -15,8 +15,8 @@ import com.djacoronel.goalmentum.domain.repository.GoalRepository
 class EditGoalInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mCallback: EditGoalInteractor.Callback,
         private val mGoalRepository: GoalRepository,
+        private val mCallback: EditGoalInteractor.Callback,
         private val mUpdatedGoal: Goal
 ) : AbstractInteractor(threadExecutor, mainThread), EditGoalInteractor {
 

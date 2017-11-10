@@ -7,6 +7,4 @@ interface GoalRecyclerClickListener {
 
     fun onClickAddGoal()
     fun onClickViewGoal(position: Int)
-    fun onClickEditGoal(position: Int)
-    fun onClickDeleteGoal(position: Int)
 }

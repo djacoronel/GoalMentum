@@ -30,8 +30,6 @@ class MainPresenterImpl(
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), MainPresenter,
         GetAllGoalsInteractor.Callback,
-        EditGoalInteractor.Callback,
-        DeleteGoalInteractor.Callback,
         SwapGoalPositionsInteractor.Callback
 {
 
@@ -49,36 +47,6 @@ class MainPresenterImpl(
 
     override fun onGoalsRetrieved(goalList: List<Goal>) {
         mView.showGoals(goalList)
-    }
-
-    override fun updateGoal(goal: Goal) {
-        val editGoalInteractor = EditGoalInteractorImpl(
-                mExecutor,
-                mMainThread,
-                this,
-                mGoalRepository,
-                goal
-        )
-        editGoalInteractor.execute()
-    }
-
-    override fun onGoalUpdated(goal: Goal) {
-        mView.onGoalUpdated(goal)
-    }
-
-    override fun deleteGoal(goal: Goal) {
-        val deleteCostInteractor = DeleteGoalInteractorImpl(
-                mExecutor,
-                mMainThread,
-                goal,
-                this,
-                mGoalRepository
-        )
-        deleteCostInteractor.execute()
-    }
-
-    override fun onGoalDeleted(goal: Goal) {
-        mView.onGoalDeleted(goal)
     }
 
     override fun swapGoalPositions(goal1: Goal, goal2: Goal) {

@@ -107,57 +107,8 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
     override fun onGoalAdded(goal: Goal) {
     }
 
-    override fun onClickEditGoal(goal: Goal) {
-        val view = createInputDialogView()
-        val alert = alert { customView = view }.show()
-        showKeyboard()
-
-        view.input_work_edittext.hint = "Goal Description"
-        view.input_work_edittext.setText(goal.description)
-
-        view.add_task_button.setOnClickListener {
-            goal.description = view.input_work_edittext.text.toString()
-            mMainPresenter.updateGoal(goal)
-            hideKeyboard(view)
-            alert.dismiss()
-        }
-    }
-
     override fun onSwapGoalPositions(goal1: Goal, goal2: Goal) {
         mMainPresenter.swapGoalPositions(goal1, goal2)
-    }
-
-    fun showKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-    }
-
-    fun hideKeyboard(view: View) {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInputFromWindow(view.windowToken, 0, 0)
-    }
-
-    fun createInputDialogView(): View {
-        val view = View.inflate(context, R.layout.input_dialog, null)
-        view.input_work_edittext.requestFocus()
-        view.input_work_edittext.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE)
-                view.add_task_button.performClick()
-            false
-        }
-        return view
-    }
-
-    override fun onGoalUpdated(goal: Goal) {
-        mAdapter.updateGoal(goal)
-    }
-
-    override fun onClickDeleteGoal(goal: Goal) {
-        mMainPresenter.deleteGoal(goal)
-    }
-
-    override fun onGoalDeleted(goal: Goal) {
-        mAdapter.deleteGoal(goal)
     }
 
     companion object {
