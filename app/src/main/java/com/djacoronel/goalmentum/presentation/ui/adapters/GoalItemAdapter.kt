@@ -131,7 +131,7 @@ class GoalItemAdapter(val mView: MainPresenter.View)
 
     fun showGoals(goals: List<Goal>) {
         val unAchievedGoals = goals.filter { it.achieved == false }
-        val inputGoalEntry = Goal("Input Goal", "Forever")
+        val inputGoalEntry = Goal(unAchievedGoals.lastIndex,"Input Goal", "Forever")
 
         mGoals.clear()
         mGoals.addAll(unAchievedGoals)

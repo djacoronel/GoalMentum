@@ -11,6 +11,7 @@ object GoalStorageModelConverter {
     fun convertToStorageModel(goal: com.djacoronel.goalmentum.domain.model.Goal): Goal {
         return Goal(
                 goal.id,
+                goal.positionInList,
                 goal.description!!,
                 goal.dateCreated!!,
                 goal.duration!!,
@@ -23,6 +24,7 @@ object GoalStorageModelConverter {
     fun convertToDomainModel(goal: Goal): com.djacoronel.goalmentum.domain.model.Goal {
         return com.djacoronel.goalmentum.domain.model.Goal(
                 goal.id,
+                goal.positionInList,
                 goal.description!!,
                 goal.date!!,
                 goal.duration!!,

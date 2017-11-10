@@ -11,17 +11,19 @@ import com.djacoronel.goalmentum.domain.repository.GoalRepository
 class AddGoalInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mCallback: AddGoalInteractor.Callback,
-        private val mGoalRepository: GoalRepository,
-        private val mDescription: String,
-        private val mDuration: String
+        private val callback: AddGoalInteractor.Callback,
+        private val goalRepository: GoalRepository,
+        private val description: String,
+        private val duration: String
 ) : AbstractInteractor(threadExecutor, mainThread), AddGoalInteractor {
 
     override fun run() {
-        val goal = Goal(mDescription, mDuration)
+        val positionInList = goalRepository.allGoals.size
 
-        mGoalRepository.insert(goal)
+        val goal = Goal(positionInList, description, duration)
 
-        mMainThread.post(Runnable { mCallback.onGoalAdded(goal.id) })
+        goalRepository.insert(goal)
+
+        mMainThread.post(Runnable { callback.onGoalAdded(goal.id) })
     }
 }

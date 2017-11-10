@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 class Goal {
     var id: Long = 0
         private set
+    var positionInList: Int = 0
     var description: String? = null
     var dateCreated: Date? = null
     var duration: String? = null
@@ -23,9 +24,10 @@ class Goal {
     var achievedWorkToday: Int = 0
     var achievedMilestone: Int = 0
 
-    constructor(description: String, duration: String) {
+    constructor(positionInList: Int, description: String, duration: String) {
         val currentDate = DateUtils.today
         this.id = Date().time
+        this.positionInList = positionInList
         this.description = description
         this.dateCreated = currentDate
         this.duration = duration
@@ -34,8 +36,9 @@ class Goal {
         this.momentumDateUpdated = currentDate
     }
 
-    constructor(id: Long, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int, momentumDateUpdated: Date) {
+    constructor(id: Long, positionInList: Int, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int, momentumDateUpdated: Date) {
         this.id = id
+        this.positionInList = positionInList
         this.description = description
         this.dateCreated = date
         this.duration = duration

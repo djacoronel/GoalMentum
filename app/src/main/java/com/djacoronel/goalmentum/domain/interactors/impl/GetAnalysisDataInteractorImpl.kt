@@ -4,6 +4,7 @@ import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.AbstractInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.GetAnalysisDataInteractor
+import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.domain.repository.WorkRepository
@@ -23,27 +24,27 @@ class GetAnalysisDataInteractorImpl(
         private val mCallback: GetAnalysisDataInteractor.Callback
 ) : AbstractInteractor(threadExecutor, mainThread), GetAnalysisDataInteractor {
     override fun run() {
-        val goals = goalRepository.allGoals.filter { it.achieved == true }.size
-        val milestones = milestoneRepository.allMilestones.filter { it.achieved == true }.size
-        val works = workRepository.allWorks.filter { it.achieved == true }.size
+        val works = workRepository.allWorks
 
+        val achievedGoals = goalRepository.allGoals.filter { it.achieved == true }.size
+        val achievedMilestones = milestoneRepository.allMilestones.filter { it.achieved == true }.size
+        val achievedWorks = works.filter { it.achieved == true }.size
 
         val data = mutableListOf<Int>()
 
         with(data) {
-            add(getAverageWorkPerDay())
-            add(getAverageWorkPerWeek())
-            add(works)
-            add(milestones)
-            add(goals)
-            add(getMostProductiveDay())
+            add(getAverageWorkPerDay(works))
+            add(getAverageWorkPerWeek(works))
+            add(achievedWorks)
+            add(achievedMilestones)
+            add(achievedGoals)
+            add(getMostProductiveDay(works))
         }
 
         mMainThread.post(Runnable { mCallback.onAnalysisDataRetrieved(data) })
     }
 
-    fun getAverageWorkPerDay(): Int {
-        val works = workRepository.allWorks
+    fun getAverageWorkPerDay(works: List<Work>): Int {
         val calendar = Calendar.getInstance()
         calendar.time = DateUtils.today
 
@@ -60,8 +61,7 @@ class GetAnalysisDataInteractorImpl(
         else sumPerDay.sum() / numOfDaysWithWorkDone
     }
 
-    fun getAverageWorkPerWeek(): Int {
-        val works = workRepository.allWorks
+    fun getAverageWorkPerWeek(works: List<Work>): Int {
         val calendar = Calendar.getInstance()
         calendar.time = DateUtils.today
         calendar.firstDayOfWeek = Calendar.MONDAY
@@ -84,8 +84,7 @@ class GetAnalysisDataInteractorImpl(
         else sumPerWeek.sum() / numberOfWeekWithWorkDone
     }
 
-    fun getMostProductiveDay(): Int {
-        val works = workRepository.allWorks
+    fun getMostProductiveDay(works: List<Work>): Int {
         val calendar = Calendar.getInstance()
         calendar.time = DateUtils.today
 
