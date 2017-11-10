@@ -114,6 +114,9 @@ class AchievedGoalsFragment : Fragment(), MainPresenter.View {
     override fun onGoalDeleted(goal: Goal) {
     }
 
+    override fun onSwapGoalPositions(goal1: Goal, goal2: Goal) {
+    }
+
     companion object {
         const val EXTRA_GOAL_ID = "extra_goal_id_key"
         const val EXTRA_GOAL_DESC = "extra_goal_desc_key"

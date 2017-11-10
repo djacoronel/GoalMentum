@@ -3,10 +3,12 @@ package com.djacoronel.goalmentum.presentation.presenters.impl
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetGoalByIdInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.SwapGoalPositionsInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.base.work.GetAllWorksByAssignedMilestoneInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.work.ToggleWorkAchieveStatusInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetGoalByIdInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.SwapGoalPositionsInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.milestone.*
 import com.djacoronel.goalmentum.domain.interactors.impl.work.GetWorksByAssignedMilestoneInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.work.ToggleWorkAchieveStatusInteractorImpl
@@ -38,7 +40,8 @@ class GoalPresenterImpl(
         GetAllMilestonesByAssignedGoalInteractor.Callback,
         DeleteMilestoneInteractor.Callback,
         GetAllWorksByAssignedMilestoneInteractor.Callback,
-        ToggleWorkAchieveStatusInteractor.Callback {
+        ToggleWorkAchieveStatusInteractor.Callback
+{
 
     override fun getGoalById(goalId: Long) {
         val getGoalByIdInteractor = GetGoalByIdInteractorImpl(

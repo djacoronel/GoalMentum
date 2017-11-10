@@ -5,9 +5,11 @@ import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.goal.DeleteGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.EditGoalInteractor
 import com.djacoronel.goalmentum.domain.interactors.base.goal.GetAllGoalsInteractor
+import com.djacoronel.goalmentum.domain.interactors.base.goal.SwapGoalPositionsInteractor
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.DeleteGoalInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.EditGoalInteractorImpl
 import com.djacoronel.goalmentum.domain.interactors.impl.goal.GetAllGoalsInteractorImpl
+import com.djacoronel.goalmentum.domain.interactors.impl.goal.SwapGoalPositionsInteractorImpl
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
@@ -27,7 +29,11 @@ class MainPresenterImpl(
         private val mMilestoneRepository: MilestoneRepository,
         private val mWorkRepository: WorkRepository
 ) : AbstractPresenter(executor, mainThread), MainPresenter,
-        GetAllGoalsInteractor.Callback, EditGoalInteractor.Callback, DeleteGoalInteractor.Callback {
+        GetAllGoalsInteractor.Callback,
+        EditGoalInteractor.Callback,
+        DeleteGoalInteractor.Callback,
+        SwapGoalPositionsInteractor.Callback
+{
 
     override fun getAllGoals() {
         val getGoalsInteractor = GetAllGoalsInteractorImpl(
@@ -73,5 +79,20 @@ class MainPresenterImpl(
 
     override fun onGoalDeleted(goal: Goal) {
         mView.onGoalDeleted(goal)
+    }
+
+    override fun swapGoalPositions(goal1: Goal, goal2: Goal) {
+        val swapGoalPositionsInteractor = SwapGoalPositionsInteractorImpl(
+                mExecutor,
+                mMainThread,
+                mGoalRepository,
+                this,
+                goal1,
+                goal2
+        )
+        swapGoalPositionsInteractor.execute()
+    }
+
+    override fun onGoalPositionsSwapped() {
     }
 }

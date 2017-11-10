@@ -24,10 +24,12 @@ import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
-import kotlinx.android.synthetic.main.fragment_active_goals.*
 import kotlinx.android.synthetic.main.fragment_active_goals.view.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.support.v4.alert
+import android.support.v7.widget.helper.ItemTouchHelper
+import com.djacoronel.goalmentum.util.TouchHelper
+
 
 /**
  * Created by djacoronel on 10/7/17.
@@ -70,6 +72,10 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
         view.goal_recycler.layoutManager = LinearLayoutManager(activity)
         view.goal_recycler.layoutManager.isAutoMeasureEnabled = false
         view.goal_recycler.adapter = mAdapter
+
+        val callback = TouchHelper(mAdapter)
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(view.goal_recycler)
     }
 
     override fun showGoals(goals: List<Goal>) {
@@ -115,6 +121,10 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
             hideKeyboard(view)
             alert.dismiss()
         }
+    }
+
+    override fun onSwapGoalPositions(goal1: Goal, goal2: Goal) {
+        mMainPresenter.swapGoalPositions(goal1, goal2)
     }
 
     fun showKeyboard() {

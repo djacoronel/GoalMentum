@@ -151,4 +151,26 @@ class GoalItemAdapter(val mView: MainPresenter.View)
         mGoals.removeAt(index)
         notifyItemRemoved(index)
     }
+
+    fun swapItemPositions(fromPosition: Int, toPosition: Int){
+        val goal1 = mGoals[fromPosition]
+        val goal2 = mGoals[toPosition]
+        val tempPosition = goal1.positionInList
+
+        goal1.positionInList = goal2.positionInList
+        goal2.positionInList = tempPosition
+        mView.onSwapGoalPositions(goal1, goal2)
+        mGoals.swap(fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+    fun getTotalItems(): Int{
+        return mGoals.size
+    }
+
+    fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
+        val tmp = this[index1] // 'this' corresponds to the list
+        this[index1] = this[index2]
+        this[index2] = tmp
+    }
 }
