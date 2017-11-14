@@ -4,7 +4,7 @@
   <string name="title_dashboard">Dashboard</string>
   <string name="title_notifications">Notifications</string>
   <string name="title_activity_edit_goal">EditGoalActivity</string>
-  <string name="title_activity_view_goal">ViewGoalActivity</string>
+  <string name="title_activity_view_goal"> </string>
   <string name="action_settings">Settings</string>
 
   <string-array name="numbers_array">
