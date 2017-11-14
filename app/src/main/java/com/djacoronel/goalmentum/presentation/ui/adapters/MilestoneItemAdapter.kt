@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.milestone_item.view.*
  */
 class MilestoneItemAdapter(
         val mView: GoalPresenter.View
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), MilestoneRecyclerClickListener {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), MilestoneRecyclerClickListener, AdapterItemSwapper {
     val mMilestones = mutableListOf<Milestone>()
     val mWorkAdapters = hashMapOf<Long, CollapsedWorkItemAdapter>()
 
@@ -60,13 +60,12 @@ class MilestoneItemAdapter(
         fun setOnClickListeners() = with(itemView) {
             work_count.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             placeholder.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
-            expand_button.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
+            item_menu.setOnClickListener { createAndShowPopupMenu() }
             expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
-            expanded_milestone_card_text.setOnLongClickListener { createAndShowPopupMenu(); true }
         }
 
         fun createAndShowPopupMenu() {
-            val popup = PopupMenu(itemView.context, itemView.expanded_milestone_card_text, Gravity.END)
+            val popup = PopupMenu(itemView.context, itemView.item_menu, Gravity.END)
             popup.menuInflater.inflate(R.menu.menu_view_goal, popup.menu)
             popup.setOnMenuItemClickListener { item ->
                 when (item.title) {
@@ -97,7 +96,7 @@ class MilestoneItemAdapter(
 
     fun showMilestones(milestones: List<Milestone>, displayedWorks: HashMap<Long, List<Work>>) {
         mMilestones.clear()
-        mMilestones.addAll(milestones.filter { it.achieved == false })
+        mMilestones.addAll(milestones.filter { it.achieved == false }.sortedBy { it.positionInList })
         mMilestones.addAll(milestones.filter { it.achieved == true })
 
         for (milestoneId in displayedWorks.keys) {
@@ -136,5 +135,27 @@ class MilestoneItemAdapter(
 
     fun updateWork(work: Work) {
         mWorkAdapters[work.assignedMilestone]?.updateWork(work)
+    }
+
+    override fun swapItemPositions(fromPosition: Int, toPosition: Int){
+        val milestone1 = mMilestones[fromPosition]
+        val milestone2 = mMilestones[toPosition]
+        val tempPosition = milestone1.positionInList
+
+        milestone1.positionInList = milestone2.positionInList
+        milestone2.positionInList = tempPosition
+        mView.onSwapMilestonePositions(milestone1, milestone2)
+        mMilestones.swap(fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+    override fun getTotalItems(): Int{
+        return mMilestones.size
+    }
+
+    fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
+        val tmp = this[index1] // 'this' corresponds to the list
+        this[index1] = this[index2]
+        this[index2] = tmp
     }
 }

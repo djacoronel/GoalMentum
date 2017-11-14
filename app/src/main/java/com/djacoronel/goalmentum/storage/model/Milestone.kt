@@ -17,6 +17,9 @@ class Milestone : BaseModel {
     var id: Long = 0
 
     @Column
+    var positionInList: Int = 0
+
+    @Column
     var assignedGoal: Long = 0
 
     @Column
@@ -28,14 +31,15 @@ class Milestone : BaseModel {
     @Column(getterName = "getAchieved")
     var achieved: Boolean = false
 
-    constructor() {}
+    constructor()
 
-    constructor(assignedGoal: Long, description: String, date: Date) {
-        this.id = Date().time
+    constructor(id: Long, positionInList: Int, assignedGoal: Long, description: String, date: Date, achieved: Boolean) {
+        this.id = id
+        this.positionInList = positionInList
         this.assignedGoal = assignedGoal
         this.description = description
         this.date = date
-        this.achieved = false
+        this.achieved = achieved
     }
 
     override fun toString(): String {

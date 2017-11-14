@@ -46,6 +46,8 @@ interface GoalPresenter {
         fun onDisplayedWorksAchieved(milestoneId: Long)
 
         fun onNewDisplayedWorksRetrieved(milestoneId: Long, works: List<Work>)
+
+        fun onSwapMilestonePositions(milestone1: Milestone, milestone2: Milestone)
     }
 
     fun getGoalById(goalId: Long)
@@ -67,4 +69,6 @@ interface GoalPresenter {
     fun getAllWorkByAssignedMilestone(milestoneId: Long)
 
     fun toggleWork(work: Work)
+
+    fun swapMilestonePositions(milestone1: Milestone, milestone2: Milestone)
 }

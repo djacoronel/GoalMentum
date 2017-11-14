@@ -5,19 +5,15 @@ package com.djacoronel.goalmentum.util
  */
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import com.djacoronel.goalmentum.presentation.ui.adapters.AdapterItemSwapper
 import com.djacoronel.goalmentum.presentation.ui.adapters.GoalItemAdapter
 
-internal class TouchHelper(private val listAdapter: GoalItemAdapter) :
+internal class TouchHelper(private val listAdapter: AdapterItemSwapper) :
         ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        return if (viewHolder.adapterPosition != listAdapter.getTotalItems() - 1 &&
-                target.adapterPosition != listAdapter.getTotalItems() - 1) {
-            listAdapter.swapItemPositions(viewHolder.adapterPosition, target.adapterPosition)
-            true
-        } else {
-            false
-        }
+        listAdapter.swapItemPositions(viewHolder.adapterPosition, target.adapterPosition)
+        return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

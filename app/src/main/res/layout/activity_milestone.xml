@@ -46,7 +46,7 @@
     card_view:layout_constraintTop_toTopOf="parent"
     card_view:srcCompat="@drawable/ic_check_black_24dp"/>
   <ImageView
-    android:id="@+id/expand_button"
+    android:id="@+id/item_menu"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"
@@ -63,9 +63,9 @@
     android:layout_height="wrap_content"
     android:text="@string/placeholder_work_count"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    card_view:layout_constraintBottom_toBottomOf="@+id/expand_button"
-    card_view:layout_constraintEnd_toStartOf="@+id/expand_button"
-    card_view:layout_constraintTop_toTopOf="@+id/expand_button"/>
+    card_view:layout_constraintBottom_toBottomOf="@+id/item_menu"
+    card_view:layout_constraintEnd_toStartOf="@+id/item_menu"
+    card_view:layout_constraintTop_toTopOf="@+id/item_menu"/>
   <android.support.v7.widget.RecyclerView
     android:id="@+id/work_recycler"
     android:layout_width="0dp"

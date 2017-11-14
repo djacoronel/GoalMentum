@@ -29,6 +29,8 @@ interface MilestonePresenter {
         fun onClickToggleWork(work: Work)
 
         fun onWorkToggled(work: Work)
+
+        fun onSwapWorkPositions(work1: Work, work2: Work)
     }
 
     fun getMilestoneById(milestoneId: Long)
@@ -42,4 +44,6 @@ interface MilestonePresenter {
     fun deleteWork(workId: Long)
 
     fun toggleWork(work: Work)
+
+    fun swapWorkPositions(work1: Work, work2: Work)
 }

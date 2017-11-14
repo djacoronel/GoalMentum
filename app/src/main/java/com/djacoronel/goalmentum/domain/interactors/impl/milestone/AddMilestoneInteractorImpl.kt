@@ -14,16 +14,17 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 class AddMilestoneInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mCallback: AddMilestoneInteractor.Callback,
-        private val mMilestoneRepository: MilestoneRepository,
-        private val mAssignedGoal: Long,
-        private val mDescription: String
+        private val callback: AddMilestoneInteractor.Callback,
+        private val milestoneRepository: MilestoneRepository,
+        private val assignedGoal: Long,
+        private val description: String
 ) : AbstractInteractor(threadExecutor, mainThread), AddMilestoneInteractor {
 
     override fun run() {
-        val milestone = Milestone(mAssignedGoal, mDescription)
-        mMilestoneRepository.insert(milestone)
+        val newMilestonePosition = milestoneRepository.allMilestones.lastIndex + 1
+        val milestone = Milestone(newMilestonePosition, assignedGoal, description)
+        milestoneRepository.insert(milestone)
 
-        mMainThread.post(Runnable { mCallback.onMilestoneAdded(milestone) })
+        mMainThread.post(Runnable { callback.onMilestoneAdded(milestone) })
     }
 }

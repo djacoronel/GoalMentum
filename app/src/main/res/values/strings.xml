@@ -62,4 +62,5 @@
   <string name="header_goals_achieved">OALS ACHIEVED</string>
   <string name="header_goal_momentum">OAL MOMENTUM</string>
   <string name="empty_achievements_message">No achievements yet.\nKeep that momentum going!</string>
+  <string name="work_count_placeholder">8/8</string>
 </resources>

@@ -12,12 +12,16 @@ import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.MilestonePresenter
 import com.djacoronel.goalmentum.presentation.ui.listeners.ExpandedWorkRecyclerClickListener
 import kotlinx.android.synthetic.main.work_item.view.*
+import android.view.MotionEvent
+import android.support.v4.view.MotionEventCompat
+
+
 
 /**
  * Created by djacoronel on 10/10/17.
  */
-class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneId: Long) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-        ExpandedWorkRecyclerClickListener {
+class ExpandedWorkItemAdapter(val dragStartListener: OnDragStartListener, val mView: MilestonePresenter.View, val milestoneId: Long) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>(), ExpandedWorkRecyclerClickListener, AdapterItemSwapper {
     val mWorks = mutableListOf<Work>()
 
     override fun getItemCount() = mWorks.size
@@ -28,6 +32,12 @@ class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneI
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         (holder as ViewHolder).bind(mWorks[position])
+        holder.itemView.achieve_button.setOnTouchListener({ _, event ->
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                dragStartListener.onDragStarted(holder)
+            }
+            false
+        })
     }
 
     private fun ViewGroup.inflate(layoutRes: Int): View {
@@ -78,7 +88,7 @@ class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneI
 
     fun showWorks(works: List<Work>) {
         mWorks.clear()
-        mWorks.addAll(works.filter { it.achieved == false })
+        mWorks.addAll(works.filter { it.achieved == false }.sortedBy { it.positionInList })
         mWorks.addAll(works.filter { it.achieved == true })
         notifyDataSetChanged()
     }
@@ -103,5 +113,31 @@ class ExpandedWorkItemAdapter(val mView: MilestonePresenter.View, val milestoneI
         val index = mWorks.indexOf(workToBeDeleted)
         mWorks.removeAt(index)
         notifyItemRemoved(index)
+    }
+
+    override fun swapItemPositions(fromPosition: Int, toPosition: Int){
+        val work1 = mWorks[fromPosition]
+        val work2 = mWorks[toPosition]
+        val tempPosition = work1.positionInList
+
+        work1.positionInList = work2.positionInList
+        work2.positionInList = tempPosition
+        mView.onSwapWorkPositions(work1, work2)
+        mWorks.swap(fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+    override fun getTotalItems(): Int{
+        return mWorks.size
+    }
+
+    fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
+        val tmp = this[index1] // 'this' corresponds to the list
+        this[index1] = this[index2]
+        this[index2] = tmp
+    }
+
+    interface OnDragStartListener {
+        fun onDragStarted(viewHolder: RecyclerView.ViewHolder)
     }
 }

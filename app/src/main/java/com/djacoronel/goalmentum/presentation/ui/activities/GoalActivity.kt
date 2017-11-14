@@ -7,6 +7,7 @@ import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
@@ -24,6 +25,7 @@ import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import com.djacoronel.goalmentum.util.ProgressBarAnimation
+import com.djacoronel.goalmentum.util.TouchHelper
 import kotlinx.android.synthetic.main.achieved_bar.*
 import kotlinx.android.synthetic.main.activity_goal.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
@@ -93,6 +95,10 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         mAdapter = MilestoneItemAdapter(this)
         milestone_recycler.layoutManager = LinearLayoutManager(this)
         milestone_recycler.adapter = mAdapter
+
+        val callback = TouchHelper(mAdapter)
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(milestone_recycler)
     }
 
     fun setupProgressBarsViewPager() {
@@ -293,6 +299,10 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
 
     override fun onNewDisplayedWorksRetrieved(milestoneId: Long, works: List<Work>) {
         mAdapter.updateWorkAdapter(milestoneId, works)
+    }
+
+    override fun onSwapMilestonePositions(milestone1: Milestone, milestone2: Milestone) {
+        mGoalPresenter.swapMilestonePositions(milestone1, milestone2)
     }
 
     override fun onResume() {

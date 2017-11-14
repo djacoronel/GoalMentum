@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <android.support.constraint.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -11,7 +10,6 @@
   android:padding="0dp"
   tools:layout_editor_absoluteX="0dp"
   tools:layout_editor_absoluteY="0dp">
-
   <Space
     android:id="@+id/space"
     android:layout_width="16dp"
@@ -32,7 +30,6 @@
     card_view:layout_constraintEnd_toStartOf="@+id/work_count"
     card_view:layout_constraintStart_toEndOf="@+id/expanded_achieved_icon"
     card_view:layout_constraintTop_toTopOf="parent"/>
-
   <ImageView
     android:id="@+id/expanded_achieved_icon"
     android:layout_width="wrap_content"
@@ -43,18 +40,17 @@
     card_view:layout_constraintTop_toTopOf="parent"
     card_view:srcCompat="@drawable/ic_check_black_24dp"/>
   <ImageView
-    android:id="@+id/expand_button"
+    android:id="@+id/item_menu"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
+    android:layout_marginTop="19dp"
     android:layout_marginEnd="16dp"
-    android:layout_marginRight="16dp"
     android:contentDescription="@string/collapse_milestone_card"
     android:scaleType="centerCrop"
     card_view:layout_constraintEnd_toEndOf="parent"
     card_view:layout_constraintTop_toTopOf="parent"
-    card_view:srcCompat="@drawable/ic_expand_less_black_40dp"/>
-
+    card_view:srcCompat="@drawable/ic_more_vert_black_24dp"
+    android:layout_marginRight="16dp"/>
   <android.support.v7.widget.CardView
     android:id="@+id/cardView"
     android:layout_width="match_parent"
@@ -67,29 +63,25 @@
     card_view:layout_constraintEnd_toEndOf="parent"
     card_view:layout_constraintStart_toStartOf="parent"
     card_view:layout_constraintTop_toBottomOf="@id/expanded_milestone_card_text">
-
     <include
       android:id="@+id/placeholder"
       layout="@layout/empty_work_item"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:visibility="visible"/>
-
     <android.support.v7.widget.RecyclerView
       android:id="@+id/work_recycler"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
-
   </android.support.v7.widget.CardView>
   <TextView
     android:id="@+id/work_count"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="8/8"
+    android:layout_marginEnd="8dp"
+    android:text="@string/work_count_placeholder"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    card_view:layout_constraintBottom_toBottomOf="@+id/expand_button"
-    card_view:layout_constraintEnd_toStartOf="@+id/expand_button"
-    card_view:layout_constraintTop_toTopOf="@+id/expand_button"/>
-
-
+    card_view:layout_constraintBottom_toBottomOf="@+id/item_menu"
+    card_view:layout_constraintEnd_toStartOf="@+id/item_menu"
+    card_view:layout_constraintTop_toTopOf="@+id/item_menu"/>
 </android.support.constraint.ConstraintLayout>

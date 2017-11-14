@@ -1,8 +1,6 @@
 package com.djacoronel.goalmentum.presentation.ui.adapters
 
-import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,7 @@ import kotlinx.android.synthetic.main.goal_item.view.*
  * Created by djacoronel on 10/7/17.
  */
 class GoalItemAdapter(val mView: MainPresenter.View)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>(), GoalRecyclerClickListener {
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>(), GoalRecyclerClickListener, AdapterItemSwapper {
 
     val mGoals = mutableListOf<Goal>()
 
@@ -109,7 +107,7 @@ class GoalItemAdapter(val mView: MainPresenter.View)
         val inputGoalEntry = Goal(unAchievedGoals.lastIndex,"Input Goal", "Forever")
 
         mGoals.clear()
-        mGoals.addAll(unAchievedGoals)
+        mGoals.addAll(unAchievedGoals.sortedBy { it.positionInList })
         mGoals.add(inputGoalEntry)
         notifyDataSetChanged()
     }
@@ -127,19 +125,21 @@ class GoalItemAdapter(val mView: MainPresenter.View)
         notifyItemRemoved(index)
     }
 
-    fun swapItemPositions(fromPosition: Int, toPosition: Int){
-        val goal1 = mGoals[fromPosition]
-        val goal2 = mGoals[toPosition]
-        val tempPosition = goal1.positionInList
+    override fun swapItemPositions(fromPosition: Int, toPosition: Int){
+        if(fromPosition != mGoals.lastIndex && toPosition != mGoals.lastIndex){
+            val goal1 = mGoals[fromPosition]
+            val goal2 = mGoals[toPosition]
+            val tempPosition = goal1.positionInList
 
-        goal1.positionInList = goal2.positionInList
-        goal2.positionInList = tempPosition
-        mView.onSwapGoalPositions(goal1, goal2)
-        mGoals.swap(fromPosition, toPosition)
-        notifyItemMoved(fromPosition, toPosition)
+            goal1.positionInList = goal2.positionInList
+            goal2.positionInList = tempPosition
+            mView.onSwapGoalPositions(goal1, goal2)
+            mGoals.swap(fromPosition, toPosition)
+            notifyItemMoved(fromPosition, toPosition)
+        }
     }
 
-    fun getTotalItems(): Int{
+    override fun getTotalItems(): Int{
         return mGoals.size
     }
 

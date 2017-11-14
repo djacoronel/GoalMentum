@@ -26,7 +26,6 @@ class CollapsedWorkItemAdapter(val mView: GoalPresenter.View, val mWorks: List<W
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         (holder as ViewHolder).bind(mWorks[position])
-
     }
 
     private fun ViewGroup.inflate(layoutRes: Int): View {

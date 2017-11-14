@@ -46,7 +46,8 @@ class GoalPresenterImpl(
         GetAllMilestonesByAssignedGoalInteractor.Callback,
         DeleteMilestoneInteractor.Callback,
         GetAllWorksByAssignedMilestoneInteractor.Callback,
-        ToggleWorkAchieveStatusInteractor.Callback
+        ToggleWorkAchieveStatusInteractor.Callback,
+        SwapMilestonePositionsInteractor.Callback
 {
 
     override fun getGoalById(goalId: Long) {
@@ -221,5 +222,21 @@ class GoalPresenterImpl(
 
     override fun onWorkAchieveStatusToggled(work: Work) {
         mView.onWorkToggled(work)
+    }
+
+    override fun swapMilestonePositions(milestone1: Milestone, milestone2: Milestone) {
+        val swapMilestonePositionsInteractor = SwapMilestonePositionsInteractorImpl(
+                mExecutor,
+                mMainThread,
+                mMilestoneRepository,
+                this,
+                milestone1,
+                milestone2
+        )
+
+        swapMilestonePositionsInteractor.execute()
+    }
+
+    override fun onMilestonePositionsSwapped() {
     }
 }

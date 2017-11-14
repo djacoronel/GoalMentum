@@ -14,15 +14,16 @@ import com.djacoronel.goalmentum.domain.repository.WorkRepository
 class AddWorkInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mCallback: AddWorkInteractor.Callback,
-        private val mWorkRepository: WorkRepository,
-        private val mAssignedMilestone: Long,
-        private val mDescription: String
+        private val callback: AddWorkInteractor.Callback,
+        private val workRepository: WorkRepository,
+        private val assignedMilestone: Long,
+        private val description: String
 ) : AbstractInteractor(threadExecutor, mainThread), AddWorkInteractor {
 
     override fun run() {
-        val work = Work(mAssignedMilestone, mDescription)
-        mWorkRepository.insert(work)
-        mMainThread.post(Runnable { mCallback.onWorkAdded(work) })
+        val newWorkPosition = workRepository.allWorks.lastIndex + 1
+        val work = Work(newWorkPosition, assignedMilestone, description)
+        workRepository.insert(work)
+        mMainThread.post(Runnable { callback.onWorkAdded(work) })
     }
 }

@@ -41,7 +41,7 @@ class GetAllMilestonesByAssignedGoalInteractorImpl(
                 milestoneRepository.update(milestone)
             }
 
-            val activeWorks = works.filter { it.achieved == false }
+            val activeWorks = works.filter { it.achieved == false }.sortedBy { it.positionInList }
             val displayedWorks = if (activeWorks.size < 3) activeWorks else activeWorks.subList(0, 3)
 
             worksPerMilestone.put(milestone.id, displayedWorks)

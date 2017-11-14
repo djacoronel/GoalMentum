@@ -9,14 +9,16 @@ import java.util.*
 class Work {
     var id: Long = 0
         private set
+    var positionInList: Int = 0
     var assignedMilestone: Long = 0
     var description: String? = null
     var date: Date? = null
     var achieved: Boolean = false
     var dateAchieved: Date? = null
 
-    constructor(assignedMilestone: Long, description: String) {
+    constructor(positionInList: Int, assignedMilestone: Long, description: String) {
         this.id = Date().time
+        this.positionInList = positionInList
         this.assignedMilestone = assignedMilestone
         this.description = description
         this.date = DateUtils.today
@@ -24,8 +26,9 @@ class Work {
         this.dateAchieved = DateUtils.createDate(1,1,1)
     }
 
-    constructor(id: Long, assignedMilestone: Long, description: String, date: Date, achieved: Boolean, dateAchieved: Date) {
+    constructor(id: Long, positionInList: Int, assignedMilestone: Long, description: String, date: Date, achieved: Boolean, dateAchieved: Date) {
         this.id = id
+        this.positionInList = positionInList
         this.assignedMilestone = assignedMilestone
         this.description = description
         this.date = date

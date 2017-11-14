@@ -31,7 +31,8 @@ class MilestonePresenterImpl(
         AddWorkInteractor.Callback,
         EditWorkInteractor.Callback,
         DeleteWorkInteractor.Callback,
-        ToggleWorkAchieveStatusInteractor.Callback
+        ToggleWorkAchieveStatusInteractor.Callback,
+        SwapWorkPositionsInteractor.Callback
 {
     override fun getMilestoneById(milestoneId: Long) {
         val getMilestoneByIdInteractor = GetMilestoneByIdInteractorImpl(
@@ -134,5 +135,20 @@ class MilestonePresenterImpl(
 
     override fun onWorkAchieveStatusToggled(work: Work) {
         mView.onWorkToggled(work)
+    }
+
+    override fun swapWorkPositions(work1: Work, work2: Work) {
+        val swapWorkPositionsInteractor = SwapWorkPositionsInteractorImpl(
+                mExecutor,
+                mMainThread,
+                mWorkRepository,
+                this,
+                work1,
+                work2
+        )
+        swapWorkPositionsInteractor.execute()
+    }
+
+    override fun onWorkPositionsSwapped() {
     }
 }

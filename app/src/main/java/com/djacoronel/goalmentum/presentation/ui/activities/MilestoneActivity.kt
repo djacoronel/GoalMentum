@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -19,16 +21,17 @@ import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
 import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
 import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
+import com.djacoronel.goalmentum.util.TouchHelper
 import kotlinx.android.synthetic.main.activity_milestone.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
 
 
-class
-MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
+class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View, ExpandedWorkItemAdapter.OnDragStartListener {
 
     lateinit var mAdapter: ExpandedWorkItemAdapter
     lateinit var mMilestonePresenter: MilestonePresenter
+    lateinit var itemTouchHelper: ItemTouchHelper
     var milestoneId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,9 +61,13 @@ MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
     }
 
     fun setupWorkRecycler() {
-        mAdapter = ExpandedWorkItemAdapter(this, milestoneId)
+        mAdapter = ExpandedWorkItemAdapter(this, this, milestoneId)
         work_recycler.layoutManager = LinearLayoutManager(this)
         work_recycler.adapter = mAdapter
+
+        val callback = TouchHelper(mAdapter)
+        itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(work_recycler)
     }
 
     fun setOnKeyListeners() {
@@ -68,7 +75,7 @@ MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
         add_task_button.setOnClickListener { onClickAddWork() }
         expanded_milestone_card_text.setOnClickListener { finish() }
         work_count.setOnClickListener { finish() }
-        expand_button.setOnClickListener { finish() }
+        item_menu.setOnClickListener { finish() }
         input_work_edittext.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 onClickAddWork()
@@ -180,5 +187,13 @@ MilestoneActivity : AppCompatActivity(), MilestonePresenter.View {
     override fun onWorkToggled(work: Work) {
         mAdapter.updateWork(work)
         mMilestonePresenter.getMilestoneById(milestoneId)
+    }
+
+    override fun onSwapWorkPositions(work1: Work, work2: Work) {
+        mMilestonePresenter.swapWorkPositions(work1, work2)
+    }
+
+    override fun onDragStarted(viewHolder: RecyclerView.ViewHolder) {
+        itemTouchHelper.startDrag(viewHolder)
     }
 }

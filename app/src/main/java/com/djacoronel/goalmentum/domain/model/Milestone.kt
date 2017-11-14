@@ -9,6 +9,7 @@ import java.util.*
 class Milestone {
     var id: Long = 0
         private set
+    var positionInList: Int = 0
     var assignedGoal: Long = 0
     var description: String? = null
     var date: Date? = null
@@ -16,17 +17,18 @@ class Milestone {
     var achievedWorks: Int = 0
     var totalWorks: Int = 0
 
-    constructor(assignedGoal: Long, description: String) {
+    constructor(positionInList: Int, assignedGoal: Long, description: String) {
         id = Date().time
-
+        this.positionInList = positionInList
         this.assignedGoal = assignedGoal
         this.description = description
         this.date = DateUtils.today
         this.achieved = false
     }
 
-    constructor(id: Long, assignedGoal: Long, description: String, date: Date, achieved: Boolean) {
+    constructor(id: Long, positionInList: Int, assignedGoal: Long, description: String, date: Date, achieved: Boolean) {
         this.id = id
+        this.positionInList = positionInList
         this.assignedGoal = assignedGoal
         this.description = description
         this.date = date

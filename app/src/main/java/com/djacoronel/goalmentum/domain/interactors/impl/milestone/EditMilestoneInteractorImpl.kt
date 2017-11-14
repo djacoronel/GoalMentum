@@ -15,21 +15,21 @@ import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 class EditMilestoneInteractorImpl(
         threadExecutor: Executor,
         mainThread: MainThread,
-        private val mMilestoneRepository: MilestoneRepository,
-        private val mCallback: EditMilestoneInteractor.Callback,
-        private val mUpdatedMilestone: Milestone
+        private val milestoneRepository: MilestoneRepository,
+        private val callback: EditMilestoneInteractor.Callback,
+        private val updatedMilestone: Milestone
 ) : AbstractInteractor(threadExecutor, mainThread), EditMilestoneInteractor {
 
     override fun run() {
-        val milestoneId = mUpdatedMilestone.id
-        val milestoneToEdit = mMilestoneRepository.getMilestoneById(milestoneId)
+        val milestoneId = updatedMilestone.id
+        val milestoneToEdit = milestoneRepository.getMilestoneById(milestoneId)
 
         if (milestoneToEdit == null) {
-            mMilestoneRepository.insert(mUpdatedMilestone)
+            milestoneRepository.insert(updatedMilestone)
         } else {
-            mMilestoneRepository.update(mUpdatedMilestone)
+            milestoneRepository.update(updatedMilestone)
         }
 
-        mMainThread.post(Runnable { mCallback.onMilestoneUpdated(mUpdatedMilestone) })
+        mMainThread.post(Runnable { callback.onMilestoneUpdated(updatedMilestone) })
     }
 }

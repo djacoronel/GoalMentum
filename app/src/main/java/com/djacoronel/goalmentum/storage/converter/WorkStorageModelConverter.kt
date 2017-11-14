@@ -10,6 +10,7 @@ object WorkStorageModelConverter {
     fun convertToStorageModel(work: com.djacoronel.goalmentum.domain.model.Work): Work {
         return Work(
                 work.id,
+                work.positionInList,
                 work.assignedMilestone,
                 work.description!!,
                 work.date!!,
@@ -21,6 +22,7 @@ object WorkStorageModelConverter {
     fun convertToDomainModel(work: Work): com.djacoronel.goalmentum.domain.model.Work {
         return com.djacoronel.goalmentum.domain.model.Work(
                 work.id,
+                work.positionInList,
                 work.assignedMilestone,
                 work.description!!,
                 work.date!!,
