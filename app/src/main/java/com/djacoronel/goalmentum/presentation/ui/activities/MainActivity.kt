@@ -8,10 +8,21 @@ import com.djacoronel.goalmentum.R
 import com.djacoronel.goalmentum.presentation.ui.fragments.AchievedGoalsFragment
 import com.djacoronel.goalmentum.presentation.ui.fragments.ActiveGoalsFragment
 import com.djacoronel.goalmentum.presentation.ui.fragments.AnalyzeGoalsFragment
+import dagger.android.AndroidInjection
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.AndroidInjector
 
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
-class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentDispatchingAndroidInjector
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         setFragment(item.itemId)
@@ -27,12 +38,15 @@ class MainActivity : AppCompatActivity() {
         }
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame, fragment)
-        fragmentTransaction.commit()
+        fragmentTransaction.commitAllowingStateLoss()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        AndroidInjection.inject(this)
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigation.setOnNavigationItemReselectedListener { }
 

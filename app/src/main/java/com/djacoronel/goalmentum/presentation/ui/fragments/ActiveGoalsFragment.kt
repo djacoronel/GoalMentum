@@ -6,29 +6,21 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import com.djacoronel.goalmentum.R
-import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.presentation.presenters.MainPresenter
-import com.djacoronel.goalmentum.presentation.presenters.impl.MainPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.activities.AddGoalActivity
 import com.djacoronel.goalmentum.presentation.ui.activities.GoalActivity
 import com.djacoronel.goalmentum.presentation.ui.adapters.GoalItemAdapter
-import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
-import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
-import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
-import com.djacoronel.goalmentum.threading.MainThreadImpl
-import kotlinx.android.synthetic.main.fragment_active_goals.view.*
-import kotlinx.android.synthetic.main.input_dialog.view.*
-import org.jetbrains.anko.support.v4.alert
-import android.support.v7.widget.helper.ItemTouchHelper
 import com.djacoronel.goalmentum.util.TouchHelper
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_active_goals.view.*
+import javax.inject.Inject
 
 
 /**
@@ -36,7 +28,7 @@ import com.djacoronel.goalmentum.util.TouchHelper
  */
 class ActiveGoalsFragment : Fragment(), MainPresenter.View {
 
-    private lateinit var mMainPresenter: MainPresenter
+    @Inject lateinit var mMainPresenter: MainPresenter
     private lateinit var mAdapter: GoalItemAdapter
 
     fun newInstance(): ActiveGoalsFragment {
@@ -51,16 +43,12 @@ class ActiveGoalsFragment : Fragment(), MainPresenter.View {
         return view
     }
 
-    private fun init(view: View) {
-        mMainPresenter = MainPresenterImpl(
-                ThreadExecutor.instance,
-                MainThreadImpl.instance,
-                this,
-                GoalRepositoryImpl(),
-                MilestoneRepositoryImpl(),
-                WorkRepositoryImpl()
-        )
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
+    }
 
+    private fun init(view: View) {
         setupGoalRecycler(view)
 
         val headerAnimation = AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)

@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.ui.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,24 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.djacoronel.goalmentum.R
-import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.presentation.presenters.MainPresenter
-import com.djacoronel.goalmentum.presentation.presenters.impl.MainPresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.activities.GoalActivity
 import com.djacoronel.goalmentum.presentation.ui.adapters.AchievedGoalItemAdapter
-import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
-import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
-import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
-import com.djacoronel.goalmentum.threading.MainThreadImpl
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_achieved_goals.view.*
+import javax.inject.Inject
 
 /**
  * Created by djacoronel on 10/7/17.
  */
 class AchievedGoalsFragment : Fragment(), MainPresenter.View {
 
-    private lateinit var mMainPresenter: MainPresenter
+    @Inject lateinit var mMainPresenter: MainPresenter
     private lateinit var mAdapter: AchievedGoalItemAdapter
 
     fun newInstance(): AchievedGoalsFragment {
@@ -42,16 +39,12 @@ class AchievedGoalsFragment : Fragment(), MainPresenter.View {
         return view
     }
 
-    private fun init(view: View) {
-        mMainPresenter = MainPresenterImpl(
-                ThreadExecutor.instance,
-                MainThreadImpl.instance,
-                this,
-                GoalRepositoryImpl(),
-                MilestoneRepositoryImpl(),
-                WorkRepositoryImpl()
-        )
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
+    }
 
+    private fun init(view: View) {
         setupGoalRecycler(view)
 
         val headerAnimation = AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)

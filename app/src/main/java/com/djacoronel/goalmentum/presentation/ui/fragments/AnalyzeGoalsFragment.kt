@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.presentation.ui.fragments
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -26,9 +27,15 @@ import java.util.*
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import com.djacoronel.goalmentum.util.DateUtils
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_analyze_goals.view.*
+import javax.inject.Inject
 
 class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
+
+    @Inject
+    lateinit var analyzeGoalsPresenter: AnalyzeGoalsPresenter
+
     var colorPrimary: Int = 0
     var colorPrimaryDark: Int = 0
     var colorSecondary: Int = 0
@@ -39,20 +46,16 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         return AnalyzeGoalsFragment()
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_analyze_goals, container, false)
 
         initializeColors()
-
-        val analyzeGoalsPresenter = AnalyzeGoalPresenterImpl(
-                ThreadExecutor.instance,
-                MainThreadImpl.instance,
-                this,
-                GoalRepositoryImpl(),
-                MilestoneRepositoryImpl(),
-                WorkRepositoryImpl()
-        )
 
         analyzeGoalsPresenter.getLineGraphData()
         analyzeGoalsPresenter.getBarGraphData()
