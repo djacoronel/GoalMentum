@@ -1,5 +1,6 @@
 package com.djacoronel.goalmentum.di
 
+import com.djacoronel.goalmentum.di.scope.FragmentScope
 import com.djacoronel.goalmentum.presentation.ui.fragments.AchievedGoalsFragment
 import com.djacoronel.goalmentum.presentation.ui.fragments.ActiveGoalsFragment
 import com.djacoronel.goalmentum.presentation.ui.fragments.AnalyzeGoalsFragment
@@ -11,12 +12,15 @@ import dagger.android.ContributesAndroidInjector
  */
 @Module
 abstract class FragmentProvider {
+    @FragmentScope
     @ContributesAndroidInjector(modules = arrayOf(ActiveFragmentModule::class))
     abstract fun provideActiveFragmentFactory(): ActiveGoalsFragment
 
+    @FragmentScope
     @ContributesAndroidInjector(modules = arrayOf(AnalyzeFragmentModule::class))
     abstract fun provideAnalyzeFragmentFactory(): AnalyzeGoalsFragment
 
+    @FragmentScope
     @ContributesAndroidInjector(modules = arrayOf(AchievedFragmentModule::class))
     abstract fun provideAchievedFragmentFactory(): AchievedGoalsFragment
 }
