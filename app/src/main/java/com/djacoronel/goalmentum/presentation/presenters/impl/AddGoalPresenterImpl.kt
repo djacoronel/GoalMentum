@@ -11,12 +11,13 @@ import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.domain.repository.MilestoneRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.AddGoalPresenter
+import javax.inject.Inject
 
 
 /**
  * Created by djacoronel on 10/9/17.
  */
-class AddGoalPresenterImpl(
+class AddGoalPresenterImpl @Inject constructor(
         executor: Executor,
         mainThread: MainThread,
         private val mView: AddGoalPresenter.View,

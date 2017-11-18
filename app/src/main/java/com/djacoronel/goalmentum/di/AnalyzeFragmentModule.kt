@@ -2,7 +2,6 @@ package com.djacoronel.goalmentum.di
 
 import com.djacoronel.goalmentum.presentation.presenters.AnalyzeGoalsPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.AnalyzeGoalPresenterImpl
-import com.djacoronel.goalmentum.presentation.ui.fragments.ActiveGoalsFragment
 import com.djacoronel.goalmentum.presentation.ui.fragments.AnalyzeGoalsFragment
 import dagger.Binds
 import dagger.Module

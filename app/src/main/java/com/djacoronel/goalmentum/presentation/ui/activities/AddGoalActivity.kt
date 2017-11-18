@@ -5,31 +5,22 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import com.djacoronel.goalmentum.R
-import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.presentation.presenters.AddGoalPresenter
-import com.djacoronel.goalmentum.presentation.presenters.impl.AddGoalPresenterImpl
-import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
-import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
-import com.djacoronel.goalmentum.threading.MainThreadImpl
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_add_goal.*
 import org.jetbrains.anko.toast
+import javax.inject.Inject
 
 
 class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
 
-    lateinit var mPresenter: AddGoalPresenter
+    @Inject lateinit var mPresenter: AddGoalPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_goal)
 
-        mPresenter = AddGoalPresenterImpl(
-                ThreadExecutor.instance,
-                MainThreadImpl.instance,
-                this,
-                GoalRepositoryImpl(),
-                MilestoneRepositoryImpl()
-        )
+        AndroidInjection.inject(this)
 
         showKeyboard()
         setupDurationPicker()

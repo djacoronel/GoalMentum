@@ -6,7 +6,6 @@ import com.djacoronel.goalmentum.di.DaggerAppComponent
 import com.raizlabs.android.dbflow.config.FlowManager
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import dagger.android.HasServiceInjector
 import javax.inject.Inject
 
 

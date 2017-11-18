@@ -26,6 +26,7 @@ import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
 import com.djacoronel.goalmentum.threading.MainThreadImpl
 import com.djacoronel.goalmentum.util.ProgressBarAnimation
 import com.djacoronel.goalmentum.util.TouchHelper
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.achieved_bar.*
 import kotlinx.android.synthetic.main.activity_goal.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
@@ -34,11 +35,12 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
+import javax.inject.Inject
 
 
 class GoalActivity : AppCompatActivity(), GoalPresenter.View {
 
-    private lateinit var mGoalPresenter: GoalPresenter
+    @Inject lateinit var mGoalPresenter: GoalPresenter
     private lateinit var mAdapter: MilestoneItemAdapter
     private lateinit var goal: Goal
     private var goalId: Long = 0
@@ -67,20 +69,13 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
         setContentView(R.layout.activity_goal)
         setSupportActionBar(toolbar)
 
+        AndroidInjection.inject(this)
+
         init()
     }
 
     private fun init() {
         goalId = intent.getLongExtra("extra_goal_id_key", -1)
-
-        mGoalPresenter = GoalPresenterImpl(
-                ThreadExecutor.instance,
-                MainThreadImpl.instance,
-                this,
-                GoalRepositoryImpl(),
-                MilestoneRepositoryImpl(),
-                WorkRepositoryImpl()
-        )
 
         mGoalPresenter.getAllMilestonesByAssignedGoal(goalId)
         mGoalPresenter.getGoalById(goalId)

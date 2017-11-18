@@ -13,7 +13,6 @@ import com.djacoronel.goalmentum.domain.repository.WorkRepository
 import com.djacoronel.goalmentum.presentation.presenters.AbstractPresenter
 import com.djacoronel.goalmentum.presentation.presenters.MainPresenter
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 /**

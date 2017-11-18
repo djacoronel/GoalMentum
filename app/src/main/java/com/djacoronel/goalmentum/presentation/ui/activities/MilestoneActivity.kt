@@ -11,26 +11,23 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.djacoronel.goalmentum.R
-import com.djacoronel.goalmentum.domain.executor.impl.ThreadExecutor
 import com.djacoronel.goalmentum.domain.model.Milestone
 import com.djacoronel.goalmentum.domain.model.Work
 import com.djacoronel.goalmentum.presentation.presenters.MilestonePresenter
-import com.djacoronel.goalmentum.presentation.presenters.impl.MilestonePresenterImpl
 import com.djacoronel.goalmentum.presentation.ui.adapters.ExpandedWorkItemAdapter
-import com.djacoronel.goalmentum.storage.GoalRepositoryImpl
-import com.djacoronel.goalmentum.storage.MilestoneRepositoryImpl
-import com.djacoronel.goalmentum.storage.WorkRepositoryImpl
-import com.djacoronel.goalmentum.threading.MainThreadImpl
 import com.djacoronel.goalmentum.util.TouchHelper
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_milestone.*
 import kotlinx.android.synthetic.main.input_dialog.view.*
 import org.jetbrains.anko.alert
+import javax.inject.Inject
 
 
 class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View, ExpandedWorkItemAdapter.OnDragStartListener {
 
+    @Inject lateinit var mMilestonePresenter: MilestonePresenter
+
     lateinit var mAdapter: ExpandedWorkItemAdapter
-    lateinit var mMilestonePresenter: MilestonePresenter
     lateinit var itemTouchHelper: ItemTouchHelper
     var milestoneId: Long = 0
 
@@ -38,20 +35,13 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View, Expanded
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_milestone)
 
+        AndroidInjection.inject(this)
+
         init()
     }
 
     private fun init() {
         milestoneId = intent.getLongExtra("extra_milestone_id_key", -1)
-
-        mMilestonePresenter = MilestonePresenterImpl(
-                ThreadExecutor.instance,
-                MainThreadImpl.instance,
-                this,
-                GoalRepositoryImpl(),
-                MilestoneRepositoryImpl(),
-                WorkRepositoryImpl()
-        )
 
         mMilestonePresenter.getMilestoneById(milestoneId)
         mMilestonePresenter.getAllWorkByAssignedMilestone(milestoneId)
