@@ -3,22 +3,22 @@ package com.djacoronel.goalmentum.domain.interactors.impl.goal
 import com.djacoronel.goalmentum.domain.executor.Executor
 import com.djacoronel.goalmentum.domain.executor.MainThread
 import com.djacoronel.goalmentum.domain.interactors.base.goal.AddGoalInteractor
+import com.djacoronel.goalmentum.domain.model.Goal
 import com.djacoronel.goalmentum.domain.repository.GoalRepository
 import com.djacoronel.goalmentum.threading.TestMainThread
+import com.nhaarman.mockito_kotlin.argumentCaptor
+import org.hamcrest.CoreMatchers.`is`
+import org.junit.Assert.assertThat
 
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.*
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
 
 /**
  * Created by djacoronel on 11/6/17.
  */
 class AddGoalInteractorImplTest {
-
 
     private lateinit var mainThread: MainThread
     @Mock
@@ -27,6 +27,8 @@ class AddGoalInteractorImplTest {
     private lateinit var goalRepository: GoalRepository
     @Mock
     private lateinit var callback: AddGoalInteractor.Callback
+
+    private val goalCaptor = argumentCaptor<Goal>()
 
     private val goalDescription = "Test goal description"
     private val goalDuration = "1 day"
@@ -49,13 +51,11 @@ class AddGoalInteractorImplTest {
         )
         interactor.run()
 
-        verify(goalRepository).insert(any())
-        verify(callback).onGoalAdded(ArgumentMatchers.anyLong())
-    }
+        verify(goalRepository).insert(goalCaptor.capture())
+        val insertedGoal = goalCaptor.firstValue
+        assertThat(insertedGoal.description, `is`(goalDescription))
+        assertThat(insertedGoal.duration, `is`(goalDuration))
 
-    private fun <T> any(): T {
-        Mockito.any<T>()
-        return uninitialized()
+        verify(callback).onGoalAdded(insertedGoal.id)
     }
-    private fun <T> uninitialized(): T = null as T
 }
