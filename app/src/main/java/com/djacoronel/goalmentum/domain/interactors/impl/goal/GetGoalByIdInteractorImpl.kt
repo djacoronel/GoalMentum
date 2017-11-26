@@ -30,7 +30,7 @@ class GetGoalByIdInteractorImpl(
 
         goal?.let {
             val works = mutableListOf<Work>()
-            val milestones = milestoneRepository.getMilestonesByAssignedGoal(goal.id)
+            val milestones = milestoneRepository.getMilestonesByAssignedGoal(it.id)
 
             for (milestone in milestones) {
                 works.addAll(workRepository.getWorksByAssignedMilestone(milestone.id))
@@ -41,12 +41,12 @@ class GetGoalByIdInteractorImpl(
             val numberOfAchievedWorkToday = works.filter { it.achieved == true && it.dateAchieved == DateUtils.today }.size
             val numberOfAchievedMilestone = milestones.filter { it.achieved == true }.size
 
-            goal.activeWork = numberOfActiveWork
-            goal.achievedWork = numberOfAchievedWork
-            goal.achievedWorkToday = numberOfAchievedWorkToday
-            goal.achievedMilestone = numberOfAchievedMilestone
+            it.activeWork = numberOfActiveWork
+            it.achievedWork = numberOfAchievedWork
+            it.achievedWorkToday = numberOfAchievedWorkToday
+            it.achievedMilestone = numberOfAchievedMilestone
 
-            mMainThread.post(Runnable { callback.onGoalRetrieved(goal) })
+            mMainThread.post(Runnable { callback.onGoalRetrieved(it) })
         }
     }
 }

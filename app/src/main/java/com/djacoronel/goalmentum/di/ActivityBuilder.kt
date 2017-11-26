@@ -1,5 +1,8 @@
 package com.djacoronel.goalmentum.di
 
+import com.djacoronel.goalmentum.di.module.AddGoalActivityModule
+import com.djacoronel.goalmentum.di.module.GoalActivityModule
+import com.djacoronel.goalmentum.di.module.MilestoneActivityModule
 import com.djacoronel.goalmentum.di.scope.ActivityScope
 import com.djacoronel.goalmentum.presentation.ui.activities.AddGoalActivity
 import com.djacoronel.goalmentum.presentation.ui.activities.GoalActivity

@@ -1,4 +1,4 @@
-package com.djacoronel.goalmentum.di
+package com.djacoronel.goalmentum.di.module
 
 import com.djacoronel.goalmentum.presentation.presenters.AnalyzeGoalsPresenter
 import com.djacoronel.goalmentum.presentation.presenters.impl.AnalyzeGoalPresenterImpl

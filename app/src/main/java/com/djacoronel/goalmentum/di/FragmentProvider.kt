@@ -1,5 +1,8 @@
 package com.djacoronel.goalmentum.di
 
+import com.djacoronel.goalmentum.di.module.AchievedFragmentModule
+import com.djacoronel.goalmentum.di.module.ActiveFragmentModule
+import com.djacoronel.goalmentum.di.module.AnalyzeFragmentModule
 import com.djacoronel.goalmentum.di.scope.FragmentScope
 import com.djacoronel.goalmentum.presentation.ui.fragments.AchievedGoalsFragment
 import com.djacoronel.goalmentum.presentation.ui.fragments.ActiveGoalsFragment
