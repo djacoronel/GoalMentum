@@ -83,5 +83,6 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     card_view:layout_constraintBottom_toBottomOf="@+id/item_menu"
     card_view:layout_constraintEnd_toStartOf="@+id/item_menu"
-    card_view:layout_constraintTop_toTopOf="@+id/item_menu"/>
+    card_view:layout_constraintTop_toTopOf="@+id/item_menu"
+    android:layout_marginRight="8dp"/>
 </android.support.constraint.ConstraintLayout>

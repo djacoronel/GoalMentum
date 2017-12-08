@@ -65,12 +65,10 @@ class GoalActivity : AppCompatActivity(), GoalPresenter.View {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_goal)
         setSupportActionBar(toolbar)
-
-        AndroidInjection.inject(this)
-
         init()
     }
 

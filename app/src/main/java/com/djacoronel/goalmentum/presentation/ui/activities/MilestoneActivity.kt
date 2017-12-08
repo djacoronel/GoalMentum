@@ -32,11 +32,9 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View, Expanded
     var milestoneId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_milestone)
-
-        AndroidInjection.inject(this)
-
         init()
     }
 

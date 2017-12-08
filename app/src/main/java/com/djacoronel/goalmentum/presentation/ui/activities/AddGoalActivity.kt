@@ -17,11 +17,9 @@ class AddGoalActivity : AppCompatActivity(), AddGoalPresenter.View {
     @Inject lateinit var mPresenter: AddGoalPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_goal)
-
-        AndroidInjection.inject(this)
-
         showKeyboard()
         setupDurationPicker()
         setupFab()
