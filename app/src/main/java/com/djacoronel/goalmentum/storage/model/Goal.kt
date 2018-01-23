@@ -18,7 +18,7 @@ class Goal : BaseModel {
     var id: Long = 0
 
     @Column
-    var positionInList = 0
+    var positionInList: Long = 0
 
     @Column
     var description: String? = null
@@ -40,7 +40,7 @@ class Goal : BaseModel {
 
     constructor()
 
-    constructor(id: Long, positionInList:Int, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int, momentumDateUpdated: Date) {
+    constructor(id: Long, positionInList: Long, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int, momentumDateUpdated: Date) {
         this.id = id
         this.positionInList = positionInList
         this.description = description

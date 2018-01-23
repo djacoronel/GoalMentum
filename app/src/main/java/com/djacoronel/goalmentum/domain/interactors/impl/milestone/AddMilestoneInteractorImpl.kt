@@ -21,10 +21,8 @@ class AddMilestoneInteractorImpl(
 ) : AbstractInteractor(threadExecutor, mainThread), AddMilestoneInteractor {
 
     override fun run() {
-        val newMilestonePosition = milestoneRepository.allMilestones.lastIndex + 1
-        val milestone = Milestone(newMilestonePosition, assignedGoal, description)
+        val milestone = Milestone(assignedGoal, description)
         milestoneRepository.insert(milestone)
-
         mMainThread.post(Runnable { callback.onMilestoneAdded(milestone) })
     }
 }

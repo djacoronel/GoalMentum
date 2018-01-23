@@ -61,7 +61,7 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View, Expanded
     fun setOnKeyListeners() {
         fab.setOnClickListener { fabOnClick() }
         add_task_button.setOnClickListener { onClickAddWork() }
-        expanded_milestone_card_text.setOnClickListener { finish() }
+        milestone_card_text.setOnClickListener { finish() }
         work_count.setOnClickListener { finish() }
         item_menu.setOnClickListener { finish() }
         input_work_edittext.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
@@ -114,13 +114,13 @@ class MilestoneActivity : AppCompatActivity(), MilestonePresenter.View, Expanded
     }
 
     override fun onMilestoneRetrieved(milestone: Milestone) {
-        expanded_milestone_card_text.text = milestone.description
+        milestone_card_text.text = milestone.description
 
         val workCount = "${milestone.achievedWorks}/${milestone.totalWorks}"
         work_count.text = workCount
 
-        if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
-        else expanded_achieved_icon.visibility = View.GONE
+        if (milestone.achieved == true) achieved_icon.visibility = View.VISIBLE
+        else achieved_icon.visibility = View.GONE
     }
 
     override fun showWorks(milestoneId: Long, works: List<Work>) {

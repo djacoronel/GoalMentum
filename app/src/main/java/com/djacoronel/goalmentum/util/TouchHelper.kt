@@ -6,7 +6,6 @@ package com.djacoronel.goalmentum.util
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import com.djacoronel.goalmentum.presentation.ui.adapters.AdapterItemSwapper
-import com.djacoronel.goalmentum.presentation.ui.adapters.GoalItemAdapter
 
 internal class TouchHelper(private val listAdapter: AdapterItemSwapper) :
         ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {

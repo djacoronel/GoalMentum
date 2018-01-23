@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 class Goal {
     var id: Long = 0
         private set
-    var positionInList: Int = 0
+    var positionInList: Long = 0
     var description: String? = null
     var dateCreated: Date? = null
     var duration: String? = null
@@ -24,10 +24,10 @@ class Goal {
     var achievedWorkToday: Int = 0
     var achievedMilestone: Int = 0
 
-    constructor(positionInList: Int, description: String, duration: String) {
+    constructor(description: String, duration: String) {
         val currentDate = DateUtils.today
         this.id = Date().time
-        this.positionInList = positionInList
+        this.positionInList = id
         this.description = description
         this.dateCreated = currentDate
         this.duration = duration
@@ -36,7 +36,7 @@ class Goal {
         this.momentumDateUpdated = currentDate
     }
 
-    constructor(id: Long, positionInList: Int, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int, momentumDateUpdated: Date) {
+    constructor(id: Long, positionInList: Long, description: String, date: Date, duration: String, achieved: Boolean, momentum: Int, momentumDateUpdated: Date) {
         this.id = id
         this.positionInList = positionInList
         this.description = description
@@ -71,19 +71,19 @@ class Goal {
                 '}'
     }
 
-    fun updateMomentum(momentumAdjustment: Int){
+    fun updateMomentum(momentumAdjustment: Int) {
         applyDailyMomentumDeductions()
         momentum += momentumAdjustment
         adjustMomentumToLimits()
         momentumDateUpdated = DateUtils.today
     }
 
-    fun getMomentumWithDeduction(): Int{
+    fun getMomentumWithDeduction(): Int {
         applyDailyMomentumDeductions()
         return momentum
     }
 
-    private fun applyDailyMomentumDeductions(){
+    private fun applyDailyMomentumDeductions() {
         val currentDate = Date()
         val elapsedDays = getDifferenceDays(momentumDateUpdated!!, currentDate)
 
@@ -93,7 +93,7 @@ class Goal {
         adjustMomentumToLimits()
     }
 
-    private fun adjustMomentumToLimits(){
+    private fun adjustMomentumToLimits() {
         if (momentum < 0) momentum = 0
         else if (momentum > 100) momentum = 100
     }

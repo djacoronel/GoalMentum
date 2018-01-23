@@ -17,7 +17,7 @@ class Milestone : BaseModel {
     var id: Long = 0
 
     @Column
-    var positionInList: Int = 0
+    var positionInList: Long = 0
 
     @Column
     var assignedGoal: Long = 0
@@ -33,7 +33,7 @@ class Milestone : BaseModel {
 
     constructor()
 
-    constructor(id: Long, positionInList: Int, assignedGoal: Long, description: String, date: Date, achieved: Boolean) {
+    constructor(id: Long, positionInList: Long, assignedGoal: Long, description: String, date: Date, achieved: Boolean) {
         this.id = id
         this.positionInList = positionInList
         this.assignedGoal = assignedGoal

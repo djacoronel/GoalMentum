@@ -21,8 +21,8 @@ class AchievedGoalItemAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(goal: Goal) = with(itemView) {
-            itemView.achieved_goal_card_text.text = goal.description
-            itemView.achieved_duration_text.text = goal.duration
+            itemView.goal_card_text.text = goal.description
+            itemView.duration_text.text = goal.duration
 
             val achievedCount = goal.achievedMilestone.toString() + "M " + goal.achievedWork.toString() + "W"
             itemView.achieved_milestone_work_count.text = achievedCount

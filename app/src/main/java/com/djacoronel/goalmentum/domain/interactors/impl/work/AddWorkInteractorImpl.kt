@@ -21,8 +21,7 @@ class AddWorkInteractorImpl(
 ) : AbstractInteractor(threadExecutor, mainThread), AddWorkInteractor {
 
     override fun run() {
-        val newWorkPosition = workRepository.allWorks.lastIndex + 1
-        val work = Work(newWorkPosition, assignedMilestone, description)
+        val work = Work(assignedMilestone, description)
         workRepository.insert(work)
         mMainThread.post(Runnable { callback.onWorkAdded(work) })
     }

@@ -16,7 +16,6 @@ import android.view.MotionEvent
 import android.support.v4.view.MotionEventCompat
 
 
-
 /**
  * Created by djacoronel on 10/10/17.
  */
@@ -115,19 +114,20 @@ class ExpandedWorkItemAdapter(val dragStartListener: OnDragStartListener, val mV
         notifyItemRemoved(index)
     }
 
-    override fun swapItemPositions(fromPosition: Int, toPosition: Int){
+    override fun swapItemPositions(fromPosition: Int, toPosition: Int) {
         val work1 = mWorks[fromPosition]
         val work2 = mWorks[toPosition]
-        val tempPosition = work1.positionInList
-
-        work1.positionInList = work2.positionInList
-        work2.positionInList = tempPosition
-        mView.onSwapWorkPositions(work1, work2)
-        mWorks.swap(fromPosition, toPosition)
-        notifyItemMoved(fromPosition, toPosition)
+        if (work1.achieved == false && work2.achieved == false) {
+            val tempPosition = work1.positionInList
+            work1.positionInList = work2.positionInList
+            work2.positionInList = tempPosition
+            mView.onSwapWorkPositions(work1, work2)
+            mWorks.swap(fromPosition, toPosition)
+            notifyItemMoved(fromPosition, toPosition)
+        }
     }
 
-    override fun getTotalItems(): Int{
+    override fun getTotalItems(): Int {
         return mWorks.size
     }
 

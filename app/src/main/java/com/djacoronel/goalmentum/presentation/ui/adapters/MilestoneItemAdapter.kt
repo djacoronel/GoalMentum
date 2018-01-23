@@ -39,14 +39,13 @@ class MilestoneItemAdapter(
 
     class ViewHolder(itemView: View, private val mListener: MilestoneRecyclerClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(milestone: Milestone, mAdapter: CollapsedWorkItemAdapter) = with(itemView) {
-
-            expanded_milestone_card_text.text = milestone.description
+            milestone_card_text.text = milestone.description
 
             val workCount = "${milestone.achievedWorks}/${milestone.totalWorks}"
             work_count.text = workCount
 
-            if (milestone.achieved == true) expanded_achieved_icon.visibility = View.VISIBLE
-            else expanded_achieved_icon.visibility = View.GONE
+            if (milestone.achieved == true) achieved_icon.visibility = View.VISIBLE
+            else achieved_icon.visibility = View.GONE
 
             if (mAdapter.mWorks.isEmpty()) placeholder.visibility = View.VISIBLE
             else placeholder.visibility = View.GONE
@@ -61,7 +60,7 @@ class MilestoneItemAdapter(
             work_count.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             placeholder.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
             item_menu.setOnClickListener { createAndShowPopupMenu() }
-            expanded_milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
+            milestone_card_text.setOnClickListener { mListener.onClickExpandMilestone(adapterPosition) }
         }
 
         fun createAndShowPopupMenu() {
@@ -137,19 +136,20 @@ class MilestoneItemAdapter(
         mWorkAdapters[work.assignedMilestone]?.updateWork(work)
     }
 
-    override fun swapItemPositions(fromPosition: Int, toPosition: Int){
+    override fun swapItemPositions(fromPosition: Int, toPosition: Int) {
         val milestone1 = mMilestones[fromPosition]
         val milestone2 = mMilestones[toPosition]
-        val tempPosition = milestone1.positionInList
-
-        milestone1.positionInList = milestone2.positionInList
-        milestone2.positionInList = tempPosition
-        mView.onSwapMilestonePositions(milestone1, milestone2)
-        mMilestones.swap(fromPosition, toPosition)
-        notifyItemMoved(fromPosition, toPosition)
+        if (milestone1.achieved == false && milestone2.achieved == false) {
+            val tempPosition = milestone1.positionInList
+            milestone1.positionInList = milestone2.positionInList
+            milestone2.positionInList = tempPosition
+            mView.onSwapMilestonePositions(milestone1, milestone2)
+            mMilestones.swap(fromPosition, toPosition)
+            notifyItemMoved(fromPosition, toPosition)
+        }
     }
 
-    override fun getTotalItems(): Int{
+    override fun getTotalItems(): Int {
         return mMilestones.size
     }
 

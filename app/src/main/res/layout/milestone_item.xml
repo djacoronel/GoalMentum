@@ -18,7 +18,7 @@
     card_view:layout_constraintStart_toStartOf="parent"
     card_view:layout_constraintTop_toTopOf="parent"/>
   <TextView
-    android:id="@+id/expanded_milestone_card_text"
+    android:id="@+id/milestone_card_text"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:padding="8dp"
@@ -28,10 +28,10 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     card_view:layout_constraintBottom_toTopOf="@+id/cardView"
     card_view:layout_constraintEnd_toStartOf="@+id/work_count"
-    card_view:layout_constraintStart_toEndOf="@+id/expanded_achieved_icon"
+    card_view:layout_constraintStart_toEndOf="@+id/achieved_icon"
     card_view:layout_constraintTop_toTopOf="parent"/>
   <ImageView
-    android:id="@+id/expanded_achieved_icon"
+    android:id="@+id/achieved_icon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="19dp"
@@ -62,7 +62,7 @@
     card_view:layout_constraintBottom_toBottomOf="parent"
     card_view:layout_constraintEnd_toEndOf="parent"
     card_view:layout_constraintStart_toStartOf="parent"
-    card_view:layout_constraintTop_toBottomOf="@id/expanded_milestone_card_text">
+    card_view:layout_constraintTop_toBottomOf="@id/milestone_card_text">
     <include
       android:id="@+id/placeholder"
       layout="@layout/empty_work_item"

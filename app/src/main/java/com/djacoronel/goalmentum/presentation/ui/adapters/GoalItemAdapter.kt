@@ -36,10 +36,10 @@ class GoalItemAdapter(val mView: MainPresenter.View)
         }
 
         fun setTexts() {
-            itemView.achieved_goal_card_text.text = goal.description
+            itemView.goal_card_text.text = goal.description
 
             val durationText = goal.duration + " " + goal.getStringRemainingDays()
-            itemView.achieved_duration_text.text = durationText
+            itemView.duration_text.text = durationText
 
             val totalWorks = goal.activeWork + goal.achievedWork
             val achievedCount = goal.achievedWork.toString() + "/" + totalWorks
@@ -104,25 +104,12 @@ class GoalItemAdapter(val mView: MainPresenter.View)
 
     fun showGoals(goals: List<Goal>) {
         val unAchievedGoals = goals.filter { it.achieved == false }
-        val inputGoalEntry = Goal(unAchievedGoals.lastIndex,"Input Goal", "Forever")
+        val inputGoalEntry = Goal("Input Goal", "Forever")
 
         mGoals.clear()
         mGoals.addAll(unAchievedGoals.sortedBy { it.positionInList })
         mGoals.add(inputGoalEntry)
         notifyDataSetChanged()
-    }
-
-    fun updateGoal(goal: Goal) {
-        val goalToBeUpdated = mGoals.find { it.id == goal.id }
-        goalToBeUpdated?.description = goal.description
-        notifyItemChanged(mGoals.indexOf(goalToBeUpdated))
-    }
-
-    fun deleteGoal(goal: Goal) {
-        val goalToBeDeleted = mGoals.find { it.id == goal.id }
-        val index = mGoals.indexOf(goalToBeDeleted)
-        mGoals.removeAt(index)
-        notifyItemRemoved(index)
     }
 
     override fun swapItemPositions(fromPosition: Int, toPosition: Int){

@@ -18,12 +18,8 @@ class AddGoalInteractorImpl(
 ) : AbstractInteractor(threadExecutor, mainThread), AddGoalInteractor {
 
     override fun run() {
-        val positionInList = goalRepository.allGoals.size
-
-        val goal = Goal(positionInList, description, duration)
-
+        val goal = Goal(description, duration)
         goalRepository.insert(goal)
-
         mMainThread.post(Runnable { callback.onGoalAdded(goal.id) })
     }
 }
