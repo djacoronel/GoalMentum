@@ -63,4 +63,6 @@
   <string name="header_goal_momentum">OAL MOMENTUM</string>
   <string name="empty_achievements_message">No achievements yet.\nKeep that momentum going!</string>
   <string name="work_count_placeholder">8/8</string>
+  <string name="add_goal_description">I am going to achieve this goal in</string>
+  <string name="hint_goal_description">Goal Description</string>
 </resources>
