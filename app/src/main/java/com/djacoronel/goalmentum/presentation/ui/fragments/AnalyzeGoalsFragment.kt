@@ -62,7 +62,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         return view
     }
 
-    fun initializeColors() {
+    private fun initializeColors() {
         colorPrimary = ContextCompat.getColor(context, R.color.colorPrimary)
         colorPrimaryDark = ContextCompat.getColor(context, R.color.colorPrimaryDark)
         colorSecondary = ContextCompat.getColor(context, R.color.colorSecondary)
@@ -70,7 +70,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         colorAccent = ContextCompat.getColor(context, R.color.colorAccent)
     }
 
-    fun runLayoutAnimation(layout: LinearLayout) {
+    private fun runLayoutAnimation(layout: LinearLayout) {
         val slideUp = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_from_bottom)
         layout.layoutAnimation = slideUp
     }
@@ -85,7 +85,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         val currentWeekSet = createLineSet(currentWeekData)
         val lastWeekSet = createLineSet(previousWeekData)
 
-        val fontSize = dpToPx(16)
+        val fontSize = dpToPx(12)
         val dotRadius = dpToPx(5).toFloat()
         val dashDimen = dpToPx(5).toFloat()
 
@@ -140,13 +140,14 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         dataBars.forEach { barSet.addBar(it.first, it.second.toFloat()) }
         barSet.color = colorAccent
 
-        val fontSize = dpToPx(16)
+        val fontSize = dpToPx(12)
+        val spacing = dpToPx(4)
 
         view?.let {
             with(it.bar_chart) {
                 addData(barSet)
                 setFontSize(fontSize)
-                setBarSpacing(6f)
+                setBarSpacing(spacing.toFloat())
                 setXAxis(false)
                 setAxisColor(colorSecondaryLight)
                 setLabelsColor(colorSecondaryLight)
@@ -169,7 +170,7 @@ class AnalyzeGoalsFragment : Fragment(), AnalyzeGoalsPresenter.View {
         }
     }
 
-    fun dpToPx(dp: Int): Int {
+    private fun dpToPx(dp: Int): Int {
         return (dp * Resources.getSystem().displayMetrics.density).toInt()
     }
 }
