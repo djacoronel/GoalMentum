@@ -37,7 +37,7 @@ class GetLineGraphDataInteractorImpl(
         val works = workRepository.allWorks
 
         for (day in week) {
-            val achievedWork = works.filter { it.dateAchieved == day }
+            val achievedWork = works.filter { it.dateAchieved == day && it.achieved == true }
             dataPairs.add(Pair(dateFormat.format(day), achievedWork.size))
         }
 

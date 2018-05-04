@@ -51,7 +51,7 @@ class GetAnalysisDataInteractorImpl(
         val sumPerDay = mutableListOf<Int>()
 
         for (i in 0..6) {
-            sumPerDay.add(works.filter { it.dateAchieved == calendar.time }.size)
+            sumPerDay.add(works.filter { it.dateAchieved == calendar.time && it.achieved == true}.size)
             calendar.add(Calendar.DATE, -1)
         }
 
@@ -72,7 +72,7 @@ class GetAnalysisDataInteractorImpl(
         for (i in 1..4) {
             var sum = 0
             for (j in 1..7) {
-                sum += works.filter { it.dateAchieved == calendar.time }.size
+                sum += works.filter { it.dateAchieved == calendar.time && it.achieved == true}.size
                 calendar.add(Calendar.DATE, -1)
             }
             sumPerWeek.add(sum)
@@ -92,7 +92,7 @@ class GetAnalysisDataInteractorImpl(
 
         for (i in 0..27) {
             val dayOfWeek = DateUtils.convertValueToMondayFirst(calendar.get(Calendar.DAY_OF_WEEK))
-            sumPerDay[dayOfWeek - 1] += works.filter { it.dateAchieved == calendar.time }.size
+            sumPerDay[dayOfWeek - 1] += works.filter { it.dateAchieved == calendar.time && it.achieved == true}.size
             calendar.add(Calendar.DATE, -1)
         }
 
