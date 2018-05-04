@@ -3,6 +3,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
+
   <TextView
     android:id="@+id/header"
     android:textStyle="bold"
@@ -10,8 +11,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:padding="24dp"
-    android:drawableLeft="@mipmap/ic_launcher"
-    android:drawableStart="@mipmap/ic_launcher"
     android:gravity="center"
     android:shadowColor="@color/colorSecondary"
     android:shadowDx="0"
@@ -20,10 +19,12 @@
     android:text="@string/header_goal_momentum"
     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
     android:textColor="@android:color/white"/>
+
   <android.support.v7.widget.RecyclerView
     android:id="@+id/goal_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="80dp"
+    android:paddingTop="70dp"
     android:clipToPadding="false"/>
+
 </FrameLayout>

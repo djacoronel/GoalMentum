@@ -89,7 +89,7 @@ class Goal {
 
 
         for (i in 1..elapsedDays.toInt())
-            momentum += -10 * i
+            momentum += -3 * i
         adjustMomentumToLimits()
     }
 

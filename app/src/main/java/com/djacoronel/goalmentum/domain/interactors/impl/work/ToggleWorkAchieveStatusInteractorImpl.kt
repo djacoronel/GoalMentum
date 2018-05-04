@@ -67,7 +67,7 @@ class ToggleWorkAchieveStatusInteractorImpl(
         val goalToUpdate = goalRepository.getGoalById(goalId)
 
         goalToUpdate?.let {
-            val momentum = if (work.achieved == true) -10 else 10
+            val momentum = if (work.achieved == true) -20 else 20
             it.updateMomentum(momentum)
             goalRepository.update(it)
         }
