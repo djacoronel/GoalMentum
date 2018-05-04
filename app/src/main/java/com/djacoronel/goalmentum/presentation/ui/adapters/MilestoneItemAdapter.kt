@@ -115,6 +115,7 @@ class MilestoneItemAdapter(
         milestoneToBeUpdated?.let {
             it.description = milestone.description
             it.achieved = milestone.achieved
+            it.achievedWorks = milestone.achievedWorks
             notifyItemChanged(mMilestones.indexOf(it))
         }
     }
